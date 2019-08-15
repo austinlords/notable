@@ -1,26 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import NavBar from "./components/navBar";
+import SideBar from "./components/sideBar";
+import "./App.css";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  state = {
+    navbarHeight: "65px"
+  };
+
+  background = {
+    background: "rgba(50, 50, 50, 0.2)",
+    marginTop: this.state.navbarHeight,
+    width: "100vw"
+  };
+
+  render() {
+    const { navbarHeight } = this.state;
+
+    return (
+      <React.Fragment>
+        <NavBar height={navbarHeight} />
+        <main style={this.background}>
+          <SideBar navbarHeight={navbarHeight} />
+        </main>
+      </React.Fragment>
+    );
+  }
 }
 
 export default App;
