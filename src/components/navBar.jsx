@@ -1,12 +1,9 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
 
-const NavBar = ({ height }) => {
+const NavBar = () => {
   return (
-    <nav
-      className="navbar navbar-expand-lg navbar-light bg-secondary fixed-top"
-      style={{ height: height }}
-    >
+    <nav className="navbar navbar-expand-lg navbar-light bg-secondary fixed-top app-navbar px-5">
       <Link className="navbar-brand" to="/">
         Notable
       </Link>
