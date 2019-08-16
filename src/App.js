@@ -15,11 +15,9 @@ class App extends Component {
       <React.Fragment>
         <NavBar />
         <main className="app-background">
-          <div className="container-fluid p-0">
-            <div className="row">
-              <SideBar className="col-3" />
-              <Editor />
-            </div>
+          <div className="app-page">
+            <SideBar />
+            <Editor />
           </div>
         </main>
       </React.Fragment>

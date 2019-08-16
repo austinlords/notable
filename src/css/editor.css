@@ -1,7 +1,5 @@
 .editor-window {
-  width: 100%;
-  padding: 5px;
-  margin: 10px;
-  box-shadow: 1px 1px 1px 1px #000;
-  background: lightcyan;
+  padding: 15px;
+  background: white;
+  min-width: 600px;
 }

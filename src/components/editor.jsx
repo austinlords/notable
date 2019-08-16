@@ -9,7 +9,7 @@ class Editor extends Component {
 
   render() {
     return (
-      <div className="col-9 editor-window">
+      <div className="editor-window">
         <div />
       </div>
     );
