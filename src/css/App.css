@@ -45,3 +45,7 @@
   grid-template-areas: "filter" "search" "content";
   overflow: auto;
 }
+
+.clickable {
+  cursor: pointer;
+}
