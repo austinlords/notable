@@ -26,3 +26,7 @@
   height: 75%;
   background-color: lightcyan;
 }
+
+.editor-draft {
+  height: 500px;
+}

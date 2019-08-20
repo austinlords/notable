@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import EditorMenu from "./editor-menu";
+import DraftEditor from "./draftEditor";
 import "../css/editor.css";
 
 class Editor extends Component {
@@ -12,7 +13,7 @@ class Editor extends Component {
     return (
       <div className="editor-window">
         <EditorMenu />
-        <div className="editor-edit" />
+        <DraftEditor />
       </div>
     );
   }
