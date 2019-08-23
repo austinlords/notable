@@ -47,7 +47,7 @@ const NotesFilter = props => {
           </a>
         </div>
       </div>
-      <button type="button" class="btn btn-primary">
+      <button type="button" className="btn btn-primary">
         All
       </button>
     </div>
