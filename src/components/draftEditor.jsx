@@ -35,6 +35,15 @@ class DraftEditor extends React.Component {
     const raw = convertToRaw(this.state.editorState.getCurrentContent());
     console.log(raw);
 
+    const BLOCK_TYPES = [
+      { label: "Title (H1)", style: "header-one" },
+      { label: "Heading (H3)", style: "header-two" },
+      { label: "Paragraph", style: "none" },
+      { label: "Blockquote", style: "blockquote" },
+      { label: "<Code>", style: "code-block" },
+      { label: "List", style: "" }
+    ];
+
     return (
       <div id="rich-text-editor">
         <div className="editor-control">

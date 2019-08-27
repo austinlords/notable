@@ -62,5 +62,5 @@
 .public-DraftEditor-content {
   height: 500px;
   background: #eee;
-  overflow: scroll;
+  overflow-y: scroll;
 }
