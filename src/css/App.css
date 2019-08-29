@@ -8,16 +8,6 @@
   width: auto;
 }
 
-.app-page {
-  width: 100%;
-  height: calc(100vh - var(--navbar-height));
-  padding: 0;
-  margin: auto;
-  display: grid;
-  grid-template-columns: 350px auto;
-  grid-template-areas: "sidebar editor";
-}
-
 .app-navbar {
   height: var(--navbar-height);
   background-color: white;
@@ -25,25 +15,12 @@
   position: fixed;
   top: 0;
   left: 0;
-  align-items: center;
   box-shadow: 0px 5px 5px -5px black;
   z-index: 1000;
   display: flex;
-  grid-auto-columns: 100px;
   padding: 10px 100px;
   align-items: baseline;
-}
-
-.app-sidebar {
-  height: 100%;
-  width: 100%;
-  background: #eee;
-  padding: 5px;
-  margin: 0px;
-  display: grid;
-  grid-template-rows: 70px 50px auto;
-  grid-template-areas: "filter" "search" "content";
-  overflow: auto;
+  justify-content: space-between;
 }
 
 .clickable {

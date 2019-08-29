@@ -1,15 +1,13 @@
 import React from "react";
-import { Editor, EditorState, RichUtils, convertToRaw } from "draft-js";
-import "../css/editor.css";
+import { Editor, RichUtils } from "draft-js";
+import "../css/notes.css";
 import "draft-js/dist/Draft.css";
 
 class DraftEditor extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { editorState: EditorState.createEmpty() };
-
+    // props: onChange & editorState
     this.focus = () => this.editor.focus();
-    this.onChange = editorState => this.setState({ editorState });
 
     this.handleKeyCommand = this._handleKeyCommand.bind(this);
     this.toggleBlockType = this._toggleBlockType.bind(this);
@@ -19,43 +17,43 @@ class DraftEditor extends React.Component {
   _handleKeyCommand(command, editorState) {
     const newState = RichUtils.handleKeyCommand(editorState, command);
     if (newState) {
-      this.onChange(newState);
+      this.props.onChange(newState);
       return true;
     }
     return false;
   }
 
   _toggleBlockType(blockType) {
-    this.onChange(RichUtils.toggleBlockType(this.state.editorState, blockType));
+    this.props.onChange(
+      RichUtils.toggleBlockType(this.props.editorState, blockType)
+    );
   }
 
   _toggleInlineStyle(inlineStyle) {
-    this.onChange(
-      RichUtils.toggleInlineStyle(this.state.editorState, inlineStyle)
+    this.props.onChange(
+      RichUtils.toggleInlineStyle(this.props.editorState, inlineStyle)
     );
   }
 
   render() {
-    const { editorState } = this.state;
-
     return (
       <div id="rich-text-editor">
         <BlockStyleControls
-          editorState={editorState}
+          editorState={this.props.editorState}
           onToggle={this.toggleBlockType}
         />
         <InlineStyleControls
-          editorState={editorState}
+          editorState={this.props.editorState}
           onToggle={this.toggleInlineStyle}
         />
         <div className="editor-edit" onClick={this.focus}>
           <Editor
             blockStyleFn={getBlockStyle}
             customStyleMap={styleMap}
-            editorState={editorState}
+            editorState={this.props.editorState}
             handleKeyCommand={this.handleKeyCommand}
             keyBindingFn={this.mapKeyToEditorCommand}
-            onChange={this.onChange}
+            onChange={this.props.onChange}
             ref={ref => (this.editor = ref)}
             spellCheck={true}
           />

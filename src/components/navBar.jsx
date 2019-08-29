@@ -9,14 +9,8 @@ const NavBar = () => {
         Notable
       </Link>
       <div className="">
-        <NavLink className="navBar-link" to="/home">
-          Home
-        </NavLink>
-        <NavLink className="navBar-link" to="/features">
-          Features
-        </NavLink>
-        <NavLink className="navBar-link" to="/pricing">
-          Pricing
+        <NavLink className="navBar-link" to="/login">
+          Login
         </NavLink>
       </div>
     </nav>

@@ -6,11 +6,11 @@ function shortContent(content) {
   return content.slice(0, 75) + "...";
 }
 
-function shortTags(tags) {
+/*function shortTags(tags) {
   let totalLength = tags.reduce((a, c) => (a += c.length), 0);
   if (totalLength < 25) return tags;
   for (let i = 0; i < tags.length; i++) {}
-}
+}*/
 
 const NotesPreview = props => {
   return (

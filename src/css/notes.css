@@ -1,3 +1,25 @@
+.app-page {
+  width: 100%;
+  height: calc(100vh - var(--navbar-height));
+  padding: 0;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 350px auto;
+  grid-template-areas: "sidebar editor";
+}
+
+.app-sidebar {
+  height: 100%;
+  width: 100%;
+  background: #eee;
+  padding: 5px;
+  margin: 0px;
+  display: grid;
+  grid-template-rows: 70px 50px auto;
+  grid-template-areas: "filter" "search" "content";
+  overflow: auto;
+}
+
 .editor-window {
   padding: 15px;
   background: white;
