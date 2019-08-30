@@ -20,6 +20,19 @@
   overflow: auto;
 }
 
+.preview-section {
+  overflow-y: scroll;
+}
+
+.preview-text {
+  font-size: 12px;
+}
+
+.preview-tags {
+  font-size: 12px;
+  font-style: italic;
+}
+
 .editor-window {
   padding: 15px;
   background: white;

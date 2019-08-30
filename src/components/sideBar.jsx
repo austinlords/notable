@@ -3,12 +3,12 @@ import NotesFilter from "./notesFilter";
 import NotesPreview from "./notesPreview";
 import NotesSearch from "./notesSearch";
 
-const SideBar = () => {
+const SideBar = props => {
   return (
     <div className="app-sidebar">
       <NotesFilter />
       <NotesSearch />
-      <NotesPreview />
+      <NotesPreview allNotes={props.allNotes} />
     </div>
   );
 };

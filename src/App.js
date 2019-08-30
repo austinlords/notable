@@ -16,6 +16,7 @@ class App extends Component {
         <NavBar />
         <main className="app-background">
           <Switch>
+            <Route path="/notes/:id" component={Notes} />
             <Route path="/notes" component={Notes} />
             <Redirect from="/" exact to="/notes" />
           </Switch>
