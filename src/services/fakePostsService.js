@@ -13,8 +13,8 @@ export const notes = [
   {
     _id: "yh533g54yh5335y4gs4",
     title: "Sapiens",
-    content:
-      "Duis ad ea consectetur dolore nisi laborum commodo adipisicing. Dolore mollit nulla ex est culpa exercitation voluptate officia fugiat occaecat eu. Velit officia cillum dolor aliquip labore veniam adipisicing cupidatat quis. Dolore excepteur tempor est excepteur aute cupidatat reprehenderit. Commodo fugiat quis ea irure veniam. Minim do mollit eiusmod quis anim.",
+    content: `{"blocks":[{"key":"ae4k1","text":"Sapiens","type":"header-one","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"5ot86","text":"","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"1t7bp","text":"Some book notes here. ","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"ddof3","text":"","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"82k66","text":"ADF;LJASDFLJKASDFKLA;LSDF","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}`,
+    preview: "Some book notes here.   ADF;LJASDFLJKASDFKLA;LSDF ",
     tags: ["Books", "History"],
     updated: new Date(
       "Thu Aug 21 2019 20:35:42 GMT-0700 (Pacific Daylight Time)"
@@ -23,8 +23,9 @@ export const notes = [
   {
     _id: "hq34g8vgbnbwoihs2adf",
     title: "Sandy Ridge Trails",
-    content:
-      "Anim in in commodo dolor labore et in id deserunt do exercitation non officia. Ea aliqua incididunt magna adipisicing adipisicing incididunt aliqua irure id laboris occaecat adipisicing. Nostrud occaecat do laborum in ex commodo commodo aliqua incididunt officia ipsum aliqua aute. In magna Lorem labore exercitation culpa sit ex eiusmod laborum do et aliqua. Excepteur sunt anim est in tempor ut aute aliqua fugiat.",
+    content: `{"blocks":[{"key":"ae4k1","text":"Sandy Ride Trail","type":"header-one","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"5ot86","text":"","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"1t7bp","text":"Best mountain biking in Portland. ","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"2p4ml","text":"50 minutes from city center","type":"unordered-list-item","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"8bbuo","text":"purpose-built trails","type":"unordered-list-item","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"dalrm","text":"no hikers!","type":"unordered-list-item","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}`,
+    preview:
+      " Best mountain biking in Portland.  50 minutes from city center purpose-bui...",
     tags: ["Portland", "Mountain Biking"],
     updated: new Date(
       "Thu Aug 29 2019 20:35:42 GMT-0700 (Pacific Daylight Time)"
@@ -36,4 +37,6 @@ export function getNotes() {
   return notes.filter(p => p);
 }
 
-export function getTime() {}
+export function getNote(id) {
+  return notes.find(n => n._id === id);
+}

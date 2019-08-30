@@ -8,7 +8,10 @@ const SideBar = props => {
     <div className="app-sidebar">
       <NotesFilter />
       <NotesSearch />
-      <NotesPreview allNotes={props.allNotes} />
+      <NotesPreview
+        allNotes={props.allNotes}
+        populateEditor={props.populateEditor}
+      />
     </div>
   );
 };

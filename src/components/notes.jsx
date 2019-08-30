@@ -3,7 +3,7 @@ import EditorMenu from "./editor-menu";
 import DraftEditor from "./draftEditor";
 import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
 import SideBar from "./sideBar";
-import { getNotes } from "../services/fakePostsService";
+import { getNotes, getNote } from "../services/fakePostsService";
 import "../css/notes.css";
 
 class Notes extends Component {
@@ -12,8 +12,8 @@ class Notes extends Component {
     this.state = {
       allNotes: getNotes(),
       errors: {},
-      selected: this.props.match.params.id,
-      editorState: EditorState.createEmpty()
+      editorState: EditorState.createEmpty(),
+      selectedNote: null
     };
 
     this.onChange = editorState => {
@@ -31,20 +31,24 @@ class Notes extends Component {
   }
 
   componentDidMount() {
-    this.populateEditor();
+    const id = this.props.match.params.id;
+
+    if (id === "new") {
+      delete window.localStorage.content;
+      this.setState({ editorState: EditorState.createEmpty() });
+      return;
+    }
+
+    const note = getNote(id);
+    if (!note) return this.props.history.replace("/notes");
+
+    const editorState = EditorState.createWithContent(
+      convertFromRaw(JSON.parse(note.content))
+    );
+    this.setState({ editorState });
   }
 
-  populateEditor() {
-    try {
-      const noteId = this.state.selected;
-      if (noteId === "new") {
-        this.setState({ editorState: EditorState.createEmpty() });
-        return;
-      }
-    } catch (ex) {
-      console.log(ex);
-    }
-  }
+  componentDidUpdate() {}
 
   saveContent = content => {
     window.localStorage.setItem(
@@ -95,7 +99,11 @@ class Notes extends Component {
 
     return (
       <div className="app-page">
-        <SideBar editorState={editorState} allNotes={allNotes} />
+        <SideBar
+          editorState={editorState}
+          allNotes={allNotes}
+          populateEditor={this.populateEditor}
+        />
         <div className="editor-window">
           <EditorMenu editorState={editorState} save={this.save} />
           <DraftEditor onChange={this.onChange} editorState={editorState} />
