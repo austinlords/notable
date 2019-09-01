@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import EditorMenu from "./editor-menu";
-import DraftEditor from "./draftEditor";
+import EditorMenu from "./EditorMenu";
+import DraftEditor from "./DraftEditor";
 import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
-import SideBar from "./sideBar";
+import SideBar from "./SideBar";
 import { getNotes, getNote } from "../services/fakePostsService";
 import "../css/notes.css";
 
@@ -30,25 +30,47 @@ class Notes extends Component {
       );
   }
 
-  componentDidMount() {
+  populateEditor() {
     const id = this.props.match.params.id;
 
-    if (id === "new") {
+    if (
+      id === "new" &&
+      this.state.editorState !== EditorState.createEmpty() &&
+      this.state.selectedNote !== null
+    ) {
       delete window.localStorage.content;
-      this.setState({ editorState: EditorState.createEmpty() });
+      this.setState({
+        editorState: EditorState.createEmpty(),
+        selectedNote: null
+      });
       return;
     }
 
     const note = getNote(id);
-    if (!note) return this.props.history.replace("/notes");
+    if (!note && this.state.selectedNote !== null) {
+      delete window.localStorage.content;
+      this.setState({
+        editorState: EditorState.createEmpty(),
+        selectedNote: null
+      });
+      return this.props.history.replace("/notes");
+    }
 
-    const editorState = EditorState.createWithContent(
-      convertFromRaw(JSON.parse(note.content))
-    );
-    this.setState({ editorState });
+    if (note && this.state.selectedNote !== note._id) {
+      const editorState = EditorState.createWithContent(
+        convertFromRaw(JSON.parse(note.content))
+      );
+      this.setState({ editorState, selectedNote: note._id });
+    }
   }
 
-  componentDidUpdate() {}
+  componentDidMount() {
+    this.populateEditor();
+  }
+
+  componentDidUpdate() {
+    this.populateEditor();
+  }
 
   saveContent = content => {
     window.localStorage.setItem(
@@ -76,7 +98,7 @@ class Notes extends Component {
   }
 
   save = () => {
-    const allNotes = [...this.state.allNotes];
+    let allNotes = [...this.state.allNotes];
     const data = {};
     const strContent = window.localStorage.content;
     const currentContent = JSON.parse(strContent);
@@ -87,15 +109,24 @@ class Notes extends Component {
     data.updated = new Date();
     data.preview = this.generatePreview(currentContent, data.title);
     if (!title) data.title = data.preview;
-    data._id = Math.floor(Math.random() * 9999999999).toString();
 
+    // existing note
+    if (this.state.selectedNote) {
+      let noteToUpdate = getNote(this.state.selectedNote);
+      data._id = noteToUpdate._id;
+      allNotes.splice(allNotes.indexOf(noteToUpdate), 1, data);
+      this.setState({ allNotes, selectedNote: data._id });
+      return;
+    }
+
+    // if new note
+    data._id = Math.floor(Math.random() * 9999999999).toString();
     allNotes.push(data);
-    this.setState({ allNotes });
-    console.log(data);
+    this.setState({ allNotes, selectedNote: data._id });
   };
 
   render() {
-    const { editorState, allNotes } = this.state;
+    let { editorState, allNotes } = this.state;
 
     return (
       <div className="app-page">

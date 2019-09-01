@@ -1,7 +1,7 @@
 import React from "react";
-import NotesFilter from "./notesFilter";
-import NotesPreview from "./notesPreview";
-import NotesSearch from "./notesSearch";
+import NotesFilter from "./NotesFilter";
+import NotesPreview from "./NotesPreview";
+import NotesSearch from "./NotesSearch";
 
 const SideBar = props => {
   return (

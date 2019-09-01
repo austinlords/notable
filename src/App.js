@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
-import NavBar from "./components/navBar";
-import Notes from "./components/notes";
+import NavBar from "./components/NavBar";
+import Notes from "./components/Notes";
 import "./css/App.css";
 
 class App extends Component {
