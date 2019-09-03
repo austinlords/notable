@@ -39,6 +39,7 @@
   min-width: 600px;
   display: flex;
   flex-direction: column;
+  max-width: 1200px;
 }
 
 .editor-menu {
@@ -108,6 +109,7 @@
   height: 100%;
   background: rgba(240, 240, 240, 0.5);
   overflow-y: scroll;
+  padding: 10px;
 }
 
 .editor-code {
