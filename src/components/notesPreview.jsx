@@ -25,7 +25,7 @@ const NotesPreview = ({ allNotes }) => {
         >
           <div className="d-flex w-100 justify-content-between">
             <h5 className="mb-1">{p.title}</h5>
-            <small>{p.updated.toLocaleDateString()}</small>
+            <small>date here</small>
           </div>
           <p className="preview-text">{p.preview}</p>
           <small className="preview-tags">Donec id elit non mi porta.</small>

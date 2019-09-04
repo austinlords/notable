@@ -4,6 +4,7 @@ import DraftEditor from "./DraftEditor";
 import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
 import SideBar from "./SideBar";
 import { getNotes, getNote } from "../services/fakePostsService";
+import { saveNote } from "./../services/notesService";
 import "../css/notes.css";
 
 class Notes extends Component {
@@ -97,7 +98,7 @@ class Notes extends Component {
     return preview;
   }
 
-  save = () => {
+  save = async () => {
     let allNotes = [...this.state.allNotes];
     const data = {};
     const strContent = window.localStorage.content;
@@ -105,7 +106,7 @@ class Notes extends Component {
     const title = currentContent.blocks.find(n => n.type === "header-one");
     if (title) data.title = title.text;
 
-    data.content = strContent;
+    data.content = JSON.stringify(strContent);
     data.updated = new Date();
     data.preview = this.generatePreview(currentContent, data.title);
     if (!title) data.title = data.preview;
@@ -120,8 +121,9 @@ class Notes extends Component {
     }
 
     // if new note
-    data._id = Math.floor(Math.random() * 9999999999).toString();
+    console.log(JSON.stringify(data.content));
     allNotes.push(data);
+    await saveNote(data);
     this.setState({ allNotes, selectedNote: data._id });
   };
 
