@@ -15,20 +15,37 @@ import { Link } from "react-router-dom";
 const NotesPreview = ({ allNotes }) => {
   const notes = allNotes;
 
+  const listItemStyle = {
+    padding: "0.5em 0.75em",
+    background: "white"
+  };
+
+  const previewStyle = {
+    fontSize: 12,
+    margin: "3px 0px",
+    lineHeight: 1.25
+  };
+
+  const tagsStyle = {
+    fontSize: 12,
+    fontStyle: "italic"
+  };
+
   return (
     <div className="list-group preview-section">
       {notes.map(p => (
         <Link
           key={p._id}
           to={`/notes/${p._id}`}
+          style={listItemStyle}
           className="list-group-item list-group-item-action"
         >
           <div className="d-flex w-100 justify-content-between">
             <h5 className="mb-1">{p.title}</h5>
             <small>date here</small>
           </div>
-          <p className="preview-text">{p.preview}</p>
-          <small className="preview-tags">Donec id elit non mi porta.</small>
+          <p style={previewStyle}>{p.preview}</p>
+          <small style={tagsStyle}>Donec id elit non mi porta.</small>
         </Link>
       ))}
     </div>

@@ -4,7 +4,7 @@ import DraftEditor from "./DraftEditor";
 import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
 import SideBar from "./SideBar";
 import { getNotes, getNote } from "../services/fakePostsService";
-import { saveNote } from "./../services/notesService";
+import { saveNote } from "../services/notesService";
 import "../css/notes.css";
 
 class Notes extends Component {

@@ -11,6 +11,7 @@ const SideBar = props => {
       <NotesPreview
         allNotes={props.allNotes}
         populateEditor={props.populateEditor}
+        selectedNote={props.selectedNote}
       />
     </div>
   );

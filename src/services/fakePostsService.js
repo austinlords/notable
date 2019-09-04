@@ -6,6 +6,7 @@ export const notes = [
     preview:
       "Just some notes....  Lineup Damian Lillard CJ McCollum Jusif Nurkic Kent Ba...",
     tags: ["Portland", "Sports", "Basketball"],
+    collection: { name: "", color: "" },
     updated: new Date(
       "Thu Aug 26 2019 20:35:42 GMT-0700 (Pacific Daylight Time)"
     )
@@ -16,6 +17,7 @@ export const notes = [
     content: `{"blocks":[{"key":"ae4k1","text":"Sapiens","type":"header-one","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"5ot86","text":"","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"1t7bp","text":"Some book notes here. ","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"ddof3","text":"","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"82k66","text":"ADF;LJASDFLJKASDFKLA;LSDF","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}`,
     preview: "Some book notes here.   ADF;LJASDFLJKASDFKLA;LSDF ",
     tags: ["Books", "History"],
+    collection: { name: "Books", color: "blue" },
     updated: new Date(
       "Thu Aug 21 2019 20:35:42 GMT-0700 (Pacific Daylight Time)"
     )
@@ -25,8 +27,9 @@ export const notes = [
     title: "Sandy Ridge Trails",
     content: `{"blocks":[{"key":"ae4k1","text":"Sandy Ride Trail","type":"header-one","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"5ot86","text":"","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"1t7bp","text":"Best mountain biking in Portland. ","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"2p4ml","text":"50 minutes from city center","type":"unordered-list-item","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"8bbuo","text":"purpose-built trails","type":"unordered-list-item","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"dalrm","text":"no hikers!","type":"unordered-list-item","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}`,
     preview:
-      " Best mountain biking in Portland.  50 minutes from city center purpose-bui...",
+      "Best mountain biking in Portland.  50 minutes from city center purpose-bui...",
     tags: ["Portland", "Mountain Biking"],
+    collection: { name: "Places", color: "purple" },
     updated: new Date(
       "Thu Aug 29 2019 20:35:42 GMT-0700 (Pacific Daylight Time)"
     )
