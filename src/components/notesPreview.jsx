@@ -33,21 +33,22 @@ const NotesPreview = ({ allNotes }) => {
 
   return (
     <div className="list-group preview-section">
-      {notes.map(p => (
-        <Link
-          key={p._id}
-          to={`/notes/${p._id}`}
-          style={listItemStyle}
-          className="list-group-item list-group-item-action"
-        >
-          <div className="d-flex w-100 justify-content-between">
-            <h5 className="mb-1">{p.title}</h5>
-            <small>date here</small>
-          </div>
-          <p style={previewStyle}>{p.preview}</p>
-          <small style={tagsStyle}>Donec id elit non mi porta.</small>
-        </Link>
-      ))}
+      {notes &&
+        notes.map(p => (
+          <Link
+            key={p._id}
+            to={`/notes/${p._id}`}
+            style={listItemStyle}
+            className="list-group-item list-group-item-action"
+          >
+            <div className="d-flex w-100 justify-content-between">
+              <h5 className="mb-1">{p.title}</h5>
+              <small>date here</small>
+            </div>
+            <p style={previewStyle}>{p.preview}</p>
+            <small style={tagsStyle}>Donec id elit non mi porta.</small>
+          </Link>
+        ))}
     </div>
   );
 };

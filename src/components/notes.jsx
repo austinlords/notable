@@ -11,7 +11,7 @@ class Notes extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      allNotes: getNotes(),
+      allNotes: null,
       errors: {},
       editorState: EditorState.createEmpty(),
       selectedNote: null
@@ -31,8 +31,19 @@ class Notes extends Component {
       );
   }
 
+  componentDidMount() {
+    this.setState({ allNotes: getNotes() });
+    this.populateEditor();
+  }
+
+  componentDidUpdate() {
+    this.populateEditor();
+  }
+
   populateEditor() {
     const id = this.props.match.params.id;
+
+    if (!id) return;
 
     if (
       id === "new" &&
@@ -40,37 +51,24 @@ class Notes extends Component {
       this.state.selectedNote !== null
     ) {
       delete window.localStorage.content;
-      this.setState({
+      return this.setState({
         editorState: EditorState.createEmpty(),
         selectedNote: null
       });
-      return;
     }
 
     const note = getNote(id);
-    if (!note && this.state.selectedNote !== null) {
+    if (!note) {
       delete window.localStorage.content;
-      this.setState({
-        editorState: EditorState.createEmpty(),
-        selectedNote: null
-      });
       return this.props.history.replace("/notes");
     }
 
-    if (note && this.state.selectedNote !== note._id) {
+    if (note && this.state.selectedNote !== note) {
       const editorState = EditorState.createWithContent(
         convertFromRaw(JSON.parse(note.content))
       );
-      this.setState({ editorState, selectedNote: note._id });
+      return this.setState({ editorState, selectedNote: note });
     }
-  }
-
-  componentDidMount() {
-    this.populateEditor();
-  }
-
-  componentDidUpdate() {
-    this.populateEditor();
   }
 
   saveContent = content => {
@@ -80,11 +78,11 @@ class Notes extends Component {
     );
   };
 
-  generatePreview(content, title) {
+  generatePreview(content) {
     let preview = "";
     for (let i = 0; i < content.blocks.length; i++) {
       let c = content.blocks[i];
-      if (c.text === title) continue;
+      if (c.type === "header-one") continue;
       else if (preview.length + c.text.length < 75) {
         preview += `${c.text} `;
         continue;
@@ -99,32 +97,44 @@ class Notes extends Component {
   }
 
   save = async () => {
-    let allNotes = [...this.state.allNotes];
-    const data = {};
+    const { allNotes, selectedNote, editorState } = this.state;
+
+    const currentEditorContent = convertToRaw(editorState.getCurrentContent());
+    console.log("currentEditorContent", currentEditorContent);
+
+    const newNote = {
+      title:
+        currentEditorContent.blocks.find(n => n.type === "header-one").text ||
+        "no title",
+      content: JSON.stringify(currentEditorContent),
+      preview: this.generatePreview(currentEditorContent),
+      tags: selectedNote.tags || [],
+      collection: selectedNote.collection || [],
+      id: getNote(selectedNote._id)._id || null
+    };
+
+    /*  function getContent() 
     const strContent = window.localStorage.content;
     const currentContent = JSON.parse(strContent);
     const title = currentContent.blocks.find(n => n.type === "header-one");
-    if (title) data.title = title.text;
+    if (title) newNote.title = title.text;
 
-    data.content = JSON.stringify(strContent);
-    data.updated = new Date();
-    data.preview = this.generatePreview(currentContent, data.title);
-    if (!title) data.title = data.preview;
+    newNote.content = JSON.stringify(strContent);
+    newNote.updated = new Date();
+    newNote.preview = this.generatePreview(currentContent, newNote.title);
+    if (!title) newNote.title = newNote.preview; */
 
     // existing note
-    if (this.state.selectedNote) {
-      let noteToUpdate = getNote(this.state.selectedNote);
-      data._id = noteToUpdate._id;
-      allNotes.splice(allNotes.indexOf(noteToUpdate), 1, data);
-      this.setState({ allNotes, selectedNote: data._id });
+    if (selectedNote) {
+      allNotes.splice(allNotes.indexOf(selectedNote), 1, newNote);
+      this.setState({ allNotes, selectedNote: newNote });
       return;
     }
 
     // if new note
-    console.log(JSON.stringify(data.content));
-    allNotes.push(data);
-    await saveNote(data);
-    this.setState({ allNotes, selectedNote: data._id });
+    allNotes.push(newNote);
+    await saveNote(newNote);
+    this.setState({ allNotes, selectedNote: newNote });
   };
 
   render() {
