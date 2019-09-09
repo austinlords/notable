@@ -3,7 +3,7 @@ import EditorMenu from "./EditorMenu";
 import DraftEditor from "./DraftEditor";
 import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
 import SideBar from "./SideBar";
-import { getNotes, getNote } from "../services/fakePostsService";
+import { notes, getNote } from "../services/fakePostsService";
 import { saveNote } from "../services/notesService";
 import "../css/notes.css";
 
@@ -18,21 +18,19 @@ class Notes extends Component {
     };
 
     this.onChange = editorState => {
-      const contentState = editorState.getCurrentContent();
-      this.saveContent(contentState);
       this.setState({ editorState });
     };
 
-    // persistent DraftEditor content in local storage on refresh
+    /*     // persistent DraftEditor content in local storage on refresh
     this.content = window.localStorage.getItem("content");
     if (this.content)
       this.state.editorState = EditorState.createWithContent(
-        convertFromRaw(JSON.parse(this.content))
-      );
+        convertFromRaw(this.content)
+      ); */
   }
 
   componentDidMount() {
-    this.setState({ allNotes: getNotes() });
+    this.setState({ allNotes: notes });
     this.populateEditor();
   }
 
@@ -50,7 +48,6 @@ class Notes extends Component {
       this.state.editorState !== EditorState.createEmpty() &&
       this.state.selectedNote !== null
     ) {
-      delete window.localStorage.content;
       return this.setState({
         editorState: EditorState.createEmpty(),
         selectedNote: null
@@ -58,24 +55,20 @@ class Notes extends Component {
     }
 
     const note = getNote(id);
-    if (!note) {
-      delete window.localStorage.content;
-      return this.props.history.replace("/notes");
-    }
+
+    if (!note) return this.props.history.replace("/notes");
 
     if (note && this.state.selectedNote !== note) {
       const editorState = EditorState.createWithContent(
-        convertFromRaw(JSON.parse(note.content))
+        convertFromRaw(note.content)
       );
+
       return this.setState({ editorState, selectedNote: note });
     }
   }
 
   saveContent = content => {
-    window.localStorage.setItem(
-      "content",
-      JSON.stringify(convertToRaw(content))
-    );
+    window.localStorage.setItem("content", convertToRaw(content));
   };
 
   generatePreview(content) {
@@ -106,7 +99,7 @@ class Notes extends Component {
       title:
         currentEditorContent.blocks.find(n => n.type === "header-one").text ||
         "no title",
-      content: JSON.stringify(currentEditorContent),
+      content: currentEditorContent,
       preview: this.generatePreview(currentEditorContent),
       tags: selectedNote.tags || [],
       collection: selectedNote.collection || [],

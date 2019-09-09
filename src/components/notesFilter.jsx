@@ -19,12 +19,8 @@ const NotesFilter = props => {
           Collections
         </button>
         <div className="dropdown-menu" aria-labelledby="btnGroupDrop1">
-          <a className="dropdown-item" href="#">
-            Dropdown link
-          </a>
-          <a className="dropdown-item" href="#">
-            Dropdown link
-          </a>
+          <a className="dropdown-item">Dropdown link</a>
+          <a className="dropdown-item">Dropdown link</a>
         </div>
       </div>
       <div className="btn-group" role="group">
@@ -39,12 +35,8 @@ const NotesFilter = props => {
           Topics
         </button>
         <div className="dropdown-menu" aria-labelledby="btnGroupDrop1">
-          <a className="dropdown-item" href="#">
-            Dropdown link
-          </a>
-          <a className="dropdown-item" href="#">
-            Dropdown link
-          </a>
+          <a className="dropdown-item">Dropdown link</a>
+          <a className="dropdown-item">Dropdown link</a>
         </div>
       </div>
       <button type="button" className="btn btn-primary">
