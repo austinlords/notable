@@ -4,7 +4,7 @@ import DraftEditor from "./DraftEditor";
 import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
 import SideBar from "./SideBar";
 import { notes, getNote } from "../services/fakePostsService";
-import { saveNote } from "../services/notesService";
+// import { saveNote } from "../services/notesService";
 import "../css/notes.css";
 
 class Notes extends Component {
@@ -20,13 +20,6 @@ class Notes extends Component {
     this.onChange = editorState => {
       this.setState({ editorState });
     };
-
-    /*     // persistent DraftEditor content in local storage on refresh
-    this.content = window.localStorage.getItem("content");
-    if (this.content)
-      this.state.editorState = EditorState.createWithContent(
-        convertFromRaw(this.content)
-      ); */
   }
 
   componentDidMount() {
@@ -67,66 +60,52 @@ class Notes extends Component {
     }
   }
 
-  saveContent = content => {
-    window.localStorage.setItem("content", convertToRaw(content));
-  };
-
-  generatePreview(content) {
-    let preview = "";
-    for (let i = 0; i < content.blocks.length; i++) {
-      let c = content.blocks[i];
-      if (c.type === "header-one") continue;
-      else if (preview.length + c.text.length < 75) {
-        preview += `${c.text} `;
-        continue;
-      } else {
-        let dif = 75 - preview.length;
-        let part = c.text.slice(0, dif);
-        preview += `${part}...`;
-        break;
-      }
-    }
-    return preview;
-  }
-
   save = async () => {
     const { allNotes, selectedNote, editorState } = this.state;
-
     const currentEditorContent = convertToRaw(editorState.getCurrentContent());
-    console.log("currentEditorContent", currentEditorContent);
+
+    function generateTitle() {
+      let h1 = currentEditorContent.blocks.find(n => n.type === "header-one");
+      return h1 ? h1.text : "(no title)";
+    }
+
+    function generatePreview(content) {
+      let preview = "";
+      for (let i = 0; i < content.blocks.length; i++) {
+        let c = content.blocks[i];
+        if (c.type === "header-one") continue;
+        else if (preview.length + c.text.length < 75) {
+          preview += `${c.text} `;
+          continue;
+        } else {
+          let dif = 75 - preview.length;
+          let part = c.text.slice(0, dif);
+          preview += `${part}...`;
+          break;
+        }
+      }
+      return preview;
+    }
 
     const newNote = {
-      title:
-        currentEditorContent.blocks.find(n => n.type === "header-one").text ||
-        "no title",
+      _id: Date.now().toString(),
+      title: generateTitle(),
       content: currentEditorContent,
-      preview: this.generatePreview(currentEditorContent),
-      tags: selectedNote.tags || [],
-      collection: selectedNote.collection || [],
-      id: getNote(selectedNote._id)._id || null
+      preview: generatePreview(currentEditorContent),
+      tags: (selectedNote && selectedNote.tags) || [],
+      collection: (selectedNote && selectedNote.collection) || []
     };
-
-    /*  function getContent() 
-    const strContent = window.localStorage.content;
-    const currentContent = JSON.parse(strContent);
-    const title = currentContent.blocks.find(n => n.type === "header-one");
-    if (title) newNote.title = title.text;
-
-    newNote.content = JSON.stringify(strContent);
-    newNote.updated = new Date();
-    newNote.preview = this.generatePreview(currentContent, newNote.title);
-    if (!title) newNote.title = newNote.preview; */
 
     // existing note
     if (selectedNote) {
+      newNote._id = selectedNote._id;
       allNotes.splice(allNotes.indexOf(selectedNote), 1, newNote);
-      this.setState({ allNotes, selectedNote: newNote });
-      return;
+      return this.setState({ allNotes, selectedNote: newNote });
     }
 
     // if new note
     allNotes.push(newNote);
-    await saveNote(newNote);
+    // await saveNote(newNote);
     this.setState({ allNotes, selectedNote: newNote });
   };
 

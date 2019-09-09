@@ -136,13 +136,13 @@ export const notes = [
     )
   },
   {
-    _id: "hq34g8vgbnbwoihs2adf",
+    _id: "thtrjsbehrytu5667s5335y",
     title: "Sandy Ridge Trails",
     content: {
       blocks: [
         {
-          key: "d44gr",
-          text: "Portland Trail Blazers",
+          key: "trbr",
+          text: "Sandy Ridge Trails",
           type: "header-one",
           depth: 0,
           inlineStyleRanges: [],
@@ -151,77 +151,8 @@ export const notes = [
         },
         {
           key: "rhc1",
-          text: "Just some notes....",
+          text: "Some of the best mountain biking in Oregon",
           type: "unstyled",
-          depth: 0,
-          inlineStyleRanges: [],
-          entityRanges: [],
-          data: {}
-        },
-        {
-          key: "81bq5",
-          text: "",
-          type: "unstyled",
-          depth: 0,
-          inlineStyleRanges: [],
-          entityRanges: [],
-          data: {}
-        },
-        {
-          key: "20eqn",
-          text: "Lineup",
-          type: "header-three",
-          depth: 0,
-          inlineStyleRanges: [
-            {
-              offset: 0,
-              length: 6,
-              style: "UNDERLINE"
-            }
-          ],
-          entityRanges: [],
-          data: {}
-        },
-        {
-          key: "46tkh",
-          text: "Damian Lillard",
-          type: "unordered-list-item",
-          depth: 0,
-          inlineStyleRanges: [],
-          entityRanges: [],
-          data: {}
-        },
-        {
-          key: "aboo4",
-          text: "CJ McCollum",
-          type: "unordered-list-item",
-          depth: 0,
-          inlineStyleRanges: [],
-          entityRanges: [],
-          data: {}
-        },
-        {
-          key: "fupsb",
-          text: "Jusif Nurkic",
-          type: "unordered-list-item",
-          depth: 0,
-          inlineStyleRanges: [],
-          entityRanges: [],
-          data: {}
-        },
-        {
-          key: "c3u3r",
-          text: "Kent Bazemore",
-          type: "unordered-list-item",
-          depth: 0,
-          inlineStyleRanges: [],
-          entityRanges: [],
-          data: {}
-        },
-        {
-          key: "5cr5i",
-          text: "Rodney Hood",
-          type: "unordered-list-item",
           depth: 0,
           inlineStyleRanges: [],
           entityRanges: [],
