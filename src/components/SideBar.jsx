@@ -6,7 +6,6 @@ import NotesSearch from "./NotesSearch";
 const SideBar = props => {
   return (
     <div className="app-sidebar">
-      <NotesFilter />
       <NotesSearch />
       <NotesPreview
         allNotes={props.allNotes}

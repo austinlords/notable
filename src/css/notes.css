@@ -12,11 +12,11 @@
   height: 100%;
   width: 100%;
   background: #eee;
-  padding: 5px;
+  padding: 15px 5px;
   margin: 0px;
   display: grid;
-  grid-template-rows: 70px 50px auto;
-  grid-template-areas: "filter" "search" "content";
+  grid-template-rows: 50px auto;
+  grid-template-areas: "search" "content";
   overflow: auto;
 }
 
