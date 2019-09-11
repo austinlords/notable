@@ -14,7 +14,8 @@ class Notes extends Component {
       allNotes: null,
       errors: {},
       editorState: EditorState.createEmpty(),
-      selectedNote: null
+      selectedNote: null,
+      searchQuery: ""
     };
 
     this.onChange = editorState => {
@@ -30,6 +31,10 @@ class Notes extends Component {
   componentDidUpdate() {
     this.populateEditor();
   }
+
+  handleSearch = query => {
+    this.setState({ searchQuery: query });
+  };
 
   populateEditor() {
     const id = this.props.match.params.id;
@@ -118,7 +123,7 @@ class Notes extends Component {
   };
 
   render() {
-    let { editorState, allNotes } = this.state;
+    let { editorState, allNotes, searchQuery } = this.state;
 
     return (
       <div className="app-page">
@@ -126,6 +131,8 @@ class Notes extends Component {
           editorState={editorState}
           allNotes={allNotes}
           populateEditor={this.populateEditor}
+          onSearch={this.handleSearch}
+          searchQuery={searchQuery}
         />
         <div className="editor-window">
           <EditorMenu editorState={editorState} save={this.save} />
