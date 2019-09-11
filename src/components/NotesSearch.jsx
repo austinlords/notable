@@ -4,9 +4,9 @@ const NotesSearch = props => {
   return (
     <div className="input-group mb-3">
       <div className="input-group-prepend">
-        <button className="btn btn-outline-secondary" type="button">
+        <span className="btn btn-outline-secondary" type="button" disabled>
           Search
-        </button>
+        </span>
       </div>
       <input
         type="text"

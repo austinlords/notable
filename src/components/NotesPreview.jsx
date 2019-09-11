@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import moment from "moment";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTags } from "@fortawesome/free-solid-svg-icons";
 
 /*function shortContent(content) {
   if (content.length < 75) return content;
@@ -26,23 +28,26 @@ const NotesPreview = ({ allNotes }) => {
   };
 
   const tagsStyle = {
-    fontSize: 12,
-    fontStyle: "italic"
+    fontSize: 11,
+    fontStyle: "italic",
+    marginLeft: "5px",
+    color: "orangered"
   };
 
   const collectionStyle = {
     margin: "5px 5px 5px 0px",
-    borderRadius: "0 5px 5px 0",
+    borderRadius: "0 8px 8px 0",
     writingMode: "vertical-rl",
     textAlign: "center",
-    fontSize: "12px",
+    fontSize: "11px",
     letterSpacing: "0.5px",
-    fontStyle: "italic"
+    fontWeight: "bold",
+    fontStyle: "oblique"
   };
 
   const individualNotes = {
     display: "grid",
-    gridTemplateColumns: "22px auto",
+    gridTemplateColumns: "20px auto",
     width: "100%",
     padding: "0",
     backgroundColor: "white"
@@ -64,7 +69,7 @@ const NotesPreview = ({ allNotes }) => {
                   backgroundColor: n.collection.color
                 }}
               >
-                {n.collection.name}
+                <span style={{}}>{n.collection.name}</span>
               </div>
               <Link
                 key={n._id}
@@ -78,7 +83,19 @@ const NotesPreview = ({ allNotes }) => {
                     <small>{moment(n.updated).format("MMM D 'YY")}</small>
                   </div>
                   <p style={previewStyle}>{n.preview}</p>
-                  <small style={tagsStyle}>Donec id elit non mi porta.</small>
+                  <small>
+                    <FontAwesomeIcon
+                      icon={faTags}
+                      style={{
+                        fontSize: "10px",
+                        opacity: "0.8",
+                        color: "slategray"
+                      }}
+                    />
+                    <span style={tagsStyle}>
+                      {(n.tags && n.tags.join(", ")) || "(no tags)"}
+                    </span>
+                  </small>
                 </div>
               </Link>
             </div>
