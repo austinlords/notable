@@ -2,10 +2,20 @@ import React from "react";
 import NotesPreview from "./NotesPreview";
 import NotesSearch from "./NotesSearch";
 
-const SideBar = ({ searchQuery, allNotes, selectedNote, onSearch }) => {
+const SideBar = ({
+  searchQuery,
+  allNotes,
+  selectedNote,
+  onSearch,
+  onClear
+}) => {
   return (
     <div className="app-sidebar">
-      <NotesSearch onSearch={onSearch} searchQuery={searchQuery} />
+      <NotesSearch
+        onSearch={onSearch}
+        searchQuery={searchQuery}
+        onClear={onClear}
+      />
       <NotesPreview
         allNotes={allNotes}
         selectedNote={selectedNote}

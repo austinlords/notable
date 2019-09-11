@@ -36,6 +36,10 @@ class Notes extends Component {
     this.setState({ searchQuery: query });
   };
 
+  handleClear = () => {
+    this.setState({ searchQuery: "" });
+  };
+
   populateEditor() {
     const id = this.props.match.params.id;
 
@@ -133,6 +137,7 @@ class Notes extends Component {
           populateEditor={this.populateEditor}
           onSearch={this.handleSearch}
           searchQuery={searchQuery}
+          onClear={this.handleClear}
         />
         <div className="editor-window">
           <EditorMenu editorState={editorState} save={this.save} />

@@ -4,16 +4,6 @@ import moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTags } from "@fortawesome/free-solid-svg-icons";
 
-/*function shortContent(content) {
-  if (content.length < 75) return content;
-  return content.slice(0, 75) + "...";
-}*/
-
-/*function shortTags(tags) {
-  let totalLength = tags.reduce((a, c) => (a += c.length), 0);
-  if (totalLength < 25) return tags;
-  for (let i = 0; i < tags.length; i++) {}
-}*/
 class NotesPreview extends Component {
   constructor(props) {
     super(props);
@@ -59,13 +49,57 @@ class NotesPreview extends Component {
 
   filter = notes =>
     notes
-      ? notes.filter(n =>
-          n.content.blocks.find(el =>
-            el.text.toLowerCase().includes(this.props.searchQuery.toLowerCase())
-          )
+      ? notes.filter(
+          n =>
+            n.content.blocks.find(el =>
+              el.text
+                .toLowerCase()
+                .includes(this.props.searchQuery.toLowerCase())
+            ) ||
+            n.tags.find(el =>
+              el.toLowerCase().includes(this.props.searchQuery.toLowerCase())
+            )
         )
       : null;
 
+  generateSearchPreview = note => {
+    let allContent = note.content.blocks
+      .map(n => (n.type !== "header-one" ? n.text : ""))
+      .join(" ");
+    let indexSearchTerm = allContent
+      .toLowerCase()
+      .indexOf(this.props.searchQuery.toLowerCase());
+
+    let previewText = "";
+    const preSearchDistance = 15;
+
+    if (indexSearchTerm < preSearchDistance) {
+      previewText = allContent.slice(
+        0,
+        indexSearchTerm + 50 + preSearchDistance - indexSearchTerm
+      );
+    } else {
+      previewText =
+        "..." + allContent.slice(indexSearchTerm - 15, indexSearchTerm + 50);
+    }
+
+    return (
+      <div>
+        <span>{previewText.slice(0, indexSearchTerm)}</span>
+        <span style={{ backgroundColor: "yellow" }}>
+          {previewText.slice(
+            indexSearchTerm,
+            indexSearchTerm + this.props.searchQuery.length
+          )}
+        </span>
+        <span>
+          {previewText.slice(indexSearchTerm + this.props.searchQuery.length)}
+        </span>
+      </div>
+    );
+  };
+
+  // <span style={{backgroundColor="yellow"}}>{this.props.searchQuery}</span>)
   render() {
     let filtered = this.filter(this.props.allNotes);
 
@@ -98,9 +132,11 @@ class NotesPreview extends Component {
                       <h5 className="mb-1">{n.title}</h5>
                       <small>{moment(n.updated).format("MMM D 'YY")}</small>
                     </div>
-                    <p style={this.previewStyle}>
-                      {this.props.searchQuery ? n.preview : n.preview}
-                    </p>
+                    <div style={this.previewStyle}>
+                      {this.props.searchQuery
+                        ? this.generateSearchPreview(n)
+                        : n.preview}
+                    </div>
                     <small>
                       <FontAwesomeIcon
                         icon={faTags}
