@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import moment from "moment";
 
 /*function shortContent(content) {
   if (content.length < 75) return content;
@@ -29,24 +30,58 @@ const NotesPreview = ({ allNotes }) => {
     fontStyle: "italic"
   };
 
+  const collectionStyle = {
+    margin: "5px 5px 5px 0px",
+    borderRadius: "0 5px 5px 0",
+    writingMode: "vertical-rl",
+    textAlign: "center",
+    fontSize: "12px",
+    letterSpacing: "0.5px",
+    fontStyle: "italic"
+  };
+
+  const individualNotes = {
+    display: "grid",
+    gridTemplateColumns: "22px auto",
+    width: "100%",
+    padding: "0",
+    backgroundColor: "white"
+  };
+
   return (
     <div className="list-group preview-section">
       {allNotes &&
-        allNotes.map(p => {
+        allNotes.map(n => {
           return (
-            <Link
-              key={p._id}
-              to={`/notes/${p._id}`}
-              style={listItemStyle}
-              className="list-group-item list-group-item-action"
+            <div
+              className="list-group-item"
+              style={individualNotes}
+              key={n._id}
             >
-              <div className="d-flex w-100 justify-content-between">
-                <h5 className="mb-1">{p.title}</h5>
-                <small>date here</small>
+              <div
+                style={{
+                  ...collectionStyle,
+                  backgroundColor: n.collection.color
+                }}
+              >
+                {n.collection.name}
               </div>
-              <p style={previewStyle}>{p.preview}</p>
-              <small style={tagsStyle}>Donec id elit non mi porta.</small>
-            </Link>
+              <Link
+                key={n._id}
+                to={`/notes/${n._id}`}
+                style={listItemStyle}
+                className="list-group-item-action"
+              >
+                <div>
+                  <div className="d-flex w-100 justify-content-between">
+                    <h5 className="mb-1">{n.title}</h5>
+                    <small>{moment(n.updated).format("MMM D 'YY")}</small>
+                  </div>
+                  <p style={previewStyle}>{n.preview}</p>
+                  <small style={tagsStyle}>Donec id elit non mi porta.</small>
+                </div>
+              </Link>
+            </div>
           );
         })}
     </div>

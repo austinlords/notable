@@ -97,10 +97,8 @@ export const notes = [
     preview:
       "Just some notes....  Lineup Damian Lillard CJ McCollum Jusif Nurkic Kent Ba...",
     tags: ["Portland", "Sports", "Basketball"],
-    collection: { name: "", color: "" },
-    updated: new Date(
-      "Thu Aug 26 2019 20:35:42 GMT-0700 (Pacific Daylight Time)"
-    )
+    collection: { name: "Other", color: "lightgrey" },
+    updated: "2019-07-11T04:05:42.426Z"
   },
   {
     _id: "yh533g54yh5335y4gs4",
@@ -130,10 +128,8 @@ export const notes = [
     },
     preview: "Insert some book notes here. Nothing much...",
     tags: ["Books", "History"],
-    collection: { name: "Books", color: "blue" },
-    updated: new Date(
-      "Thu Aug 21 2019 20:35:42 GMT-0700 (Pacific Daylight Time)"
-    )
+    collection: { name: "Books", color: "lightblue" },
+    updated: "2019-03-11T04:05:42.426Z"
   },
   {
     _id: "thtrjsbehrytu5667s5335y",
@@ -163,10 +159,8 @@ export const notes = [
     },
     preview: "Some of the best mountain biking in Oregon.",
     tags: ["Portland", "Mountain Biking"],
-    collection: { name: "Places", color: "purple" },
-    updated: new Date(
-      "Thu Aug 29 2019 20:35:42 GMT-0700 (Pacific Daylight Time)"
-    )
+    collection: { name: "Sports", color: "lightgreen" },
+    updated: "2019-08-11T04:05:42.426Z"
   }
 ];
 

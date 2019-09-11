@@ -66,6 +66,14 @@ class Notes extends Component {
 
     function generateTitle() {
       let h1 = currentEditorContent.blocks.find(n => n.type === "header-one");
+      if (h1 && h1.text.length > 24) {
+        h1.text =
+          h1.text
+            .split("")
+            .slice(0, 23)
+            .join("") + "...";
+      }
+
       return h1 ? h1.text : "(no title)";
     }
 

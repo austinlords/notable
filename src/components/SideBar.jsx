@@ -1,5 +1,4 @@
 import React from "react";
-import NotesFilter from "./NotesFilter";
 import NotesPreview from "./NotesPreview";
 import NotesSearch from "./NotesSearch";
 
