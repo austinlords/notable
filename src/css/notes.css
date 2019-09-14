@@ -4,11 +4,11 @@
   padding: 0;
   margin: auto;
   display: grid;
-  grid-template-columns: 350px auto;
+  grid-template-columns: 550px auto;
   grid-template-areas: "sidebar editor";
 }
 
-.app-sidebar {
+.sidebar-preview {
   height: 100%;
   width: 100%;
   background: #eee;
@@ -109,4 +109,8 @@
   font-size: 12px;
   padding: 20px;
   margin: 10px;
+}
+
+.faCaretDropdown {
+  color: silver;
 }
