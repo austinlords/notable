@@ -4,6 +4,7 @@ import DraftEditor from "./DraftEditor";
 import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
 import SideBar from "./SideBar";
 import { notes, getNote } from "../services/fakePostsService";
+import { Collections } from "../services/fakeCollectionsService";
 // import { saveNote } from "../services/notesService";
 import "../css/notes.css";
 
@@ -15,7 +16,8 @@ class Notes extends Component {
       errors: {},
       editorState: EditorState.createEmpty(),
       selectedNote: null,
-      searchQuery: ""
+      searchQuery: "",
+      collections: []
     };
 
     this.onChange = editorState => {
@@ -24,7 +26,7 @@ class Notes extends Component {
   }
 
   componentDidMount() {
-    this.setState({ allNotes: notes });
+    this.setState({ allNotes: notes, collections: Collections });
     this.populateEditor();
   }
 
@@ -127,7 +129,7 @@ class Notes extends Component {
   };
 
   render() {
-    let { editorState, allNotes, searchQuery } = this.state;
+    let { editorState, allNotes, searchQuery, collections } = this.state;
 
     return (
       <div className="app-page">
@@ -138,6 +140,7 @@ class Notes extends Component {
           onSearch={this.handleSearch}
           searchQuery={searchQuery}
           onClear={this.handleClear}
+          collections={collections}
         />
         <div className="editor-window">
           <EditorMenu editorState={editorState} save={this.save} />

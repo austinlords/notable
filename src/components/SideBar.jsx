@@ -13,7 +13,9 @@ class SideBar extends Component {
     super(props);
     this.state = {
       collectionsOpen: false,
-      tagsOpen: false
+      tagsOpen: false,
+      collectionFilter: "",
+      tagsFilter: []
     };
   }
   sidebarStyle = {
@@ -71,14 +73,52 @@ class SideBar extends Component {
     }
   }
 
+  handleRadioSelect(event) {
+    this.setState({
+      collectionFilter: event.target.value
+    });
+  }
+
+  handleCheckboxSelect(event) {
+    let selectedTags = this.state.tagsFilter;
+    let tag = event.target.value;
+    console.log("current selected tags: ", selectedTags);
+    console.log("clicked on tag: ", tag);
+
+    if (selectedTags.includes(tag)) {
+      let newTags = selectedTags;
+      newTags.splice(selectedTags.indexOf(tag), 1);
+      this.setState({
+        tagsFilter: newTags
+      });
+    } else {
+      this.setState({
+        tagsFilter: [...this.state.tagsFilter, tag]
+      });
+    }
+  }
+
   render() {
-    const {
+    console.log("rendering...this.state.tagsFilter: ", this.state.tagsFilter);
+
+    let {
       searchQuery,
       allNotes,
       selectedNote,
       onSearch,
-      onClear
+      onClear,
+      collections
     } = this.props;
+
+    if (this.state.collectionFilter)
+      allNotes =
+        allNotes &&
+        allNotes.filter(n => n.collection.name === this.state.collectionFilter);
+
+    let tags = [];
+    allNotes && allNotes.forEach(n => tags.push(...n.tags));
+    tags = [...new Set(tags)];
+
     return (
       <div style={this.sidebarStyle}>
         <div style={this.filterStyle}>
@@ -124,22 +164,98 @@ class SideBar extends Component {
                 <span> Collections</span>
               </div>
             </div>
-            <div className="collapse multi-collapse" id="collections">
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <div class="input-group-text">
-                    <input
-                      type="radio"
-                      aria-label="Radio button for following text input"
-                    />
-                  </div>
-                </div>
-                <input
-                  type="text"
-                  class="form-control"
-                  aria-label="Text input with radio button"
-                />
+            <div
+              className="collapse multi-collapse"
+              id="collections"
+              style={{ marginLeft: "10px", fontSize: "14px" }}
+            >
+              <div key="allCollections" className="form-check">
+                <label className="form-check-label">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="collection-choices"
+                    id="allCollectionInput"
+                    value=""
+                    checked={!this.state.collectionFilter}
+                    onChange={e => this.handleRadioSelect(e)}
+                  />
+                  All
+                </label>
               </div>
+              {collections.map(c => (
+                <div className="form-check" key={c._id}>
+                  <label className="form-check-label">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="collection-choices"
+                      id={c._id}
+                      value={c.name}
+                      checked={this.state.collectionFilter === c.name}
+                      onChange={e => this.handleRadioSelect(e)}
+                    />
+                    {c.name}
+                  </label>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div style={this.collectionTagStyle}>
+            <div className="list-group">
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "15px auto",
+                  width: "100%",
+                  alignItems: "baseline"
+                }}
+                onClick={() => this.handleDropdownClick()}
+                data-toggle="collapse"
+                data-target="#collections"
+                aria-expanded="false"
+                aria-controls="collections"
+              >
+                <div
+                  style={{
+                    height: "100%",
+                    width: "100%"
+                  }}
+                >
+                  <FontAwesomeIcon
+                    icon={
+                      this.state.collectionsOpen ? faCaretDown : faCaretRight
+                    }
+                    className="faCaretDropdown"
+                  />
+                </div>
+                <span> Tags</span>
+              </div>
+            </div>
+            <div
+              className="collapse multi-collapse"
+              id="collections"
+              style={{ marginLeft: "10px", fontSize: "14px" }}
+            >
+              {tags.map(tag => (
+                <div className="form-check" key={tag}>
+                  <label className="form-check-label">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      name="tag-choices"
+                      id={tag}
+                      value={tag}
+                      checked={
+                        this.state.tagsFilter !== [] &&
+                        this.state.tagsFilter.includes(tag)
+                      }
+                      onChange={e => this.handleCheckboxSelect(e)}
+                    />
+                    {tag}
+                  </label>
+                </div>
+              ))}
             </div>
           </div>
         </div>
