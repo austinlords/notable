@@ -12,8 +12,8 @@ class SideBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      collectionsOpen: false,
-      tagsOpen: false,
+      collectionsOpen: true,
+      tagsOpen: true,
       collectionFilter: "",
       tagsFilter: []
     };
@@ -30,7 +30,7 @@ class SideBar extends Component {
   filterStyle = {
     background: "#112",
     display: "grid",
-    gridTemplateRows: "50px 60px auto",
+    gridTemplateRows: "50px 60px 300px auto",
     overflow: "auto",
     padding: "15px 5px",
     height: "100%",
@@ -64,12 +64,27 @@ class SideBar extends Component {
     cursor: "pointer"
   };
 
-  handleDropdownClick() {
-    let faCaretDown = document.querySelector(".fa-caret-down");
-    if (faCaretDown) {
-      this.setState({ collectionsOpen: false });
-    } else {
-      this.setState({ collectionsOpen: true });
+  handleDropdownClick(e) {
+    const dataTarget = e.currentTarget.getAttribute("data-target");
+    const isExpanded = e.currentTarget.getAttribute("aria-expanded");
+
+    switch (dataTarget) {
+      case "#collections":
+        if (isExpanded === "false") {
+          this.setState({ collectionsOpen: false });
+        } else {
+          this.setState({ collectionsOpen: true });
+        }
+        break;
+      case "#tags":
+        if (isExpanded === "false") {
+          this.setState({ tagsOpen: false });
+        } else {
+          this.setState({ tagsOpen: true });
+        }
+        break;
+      default:
+        break;
     }
   }
 
@@ -82,8 +97,6 @@ class SideBar extends Component {
   handleCheckboxSelect(event) {
     let selectedTags = this.state.tagsFilter;
     let tag = event.target.value;
-    console.log("current selected tags: ", selectedTags);
-    console.log("clicked on tag: ", tag);
 
     if (selectedTags.includes(tag)) {
       let newTags = selectedTags;
@@ -98,9 +111,9 @@ class SideBar extends Component {
     }
   }
 
-  render() {
-    console.log("rendering...this.state.tagsFilter: ", this.state.tagsFilter);
+  filter() {}
 
+  render() {
     let {
       searchQuery,
       allNotes,
@@ -142,10 +155,10 @@ class SideBar extends Component {
                   width: "100%",
                   alignItems: "baseline"
                 }}
-                onClick={() => this.handleDropdownClick()}
+                onClick={e => this.handleDropdownClick(e)}
                 data-toggle="collapse"
                 data-target="#collections"
-                aria-expanded="false"
+                aria-expanded={this.state.collectionsOpen}
                 aria-controls="collections"
               >
                 <div
@@ -165,7 +178,7 @@ class SideBar extends Component {
               </div>
             </div>
             <div
-              className="collapse multi-collapse"
+              className="collapse multi-collapse show"
               id="collections"
               style={{ marginLeft: "10px", fontSize: "14px" }}
             >
@@ -210,11 +223,11 @@ class SideBar extends Component {
                   width: "100%",
                   alignItems: "baseline"
                 }}
-                onClick={() => this.handleDropdownClick()}
+                onClick={e => this.handleDropdownClick(e)}
                 data-toggle="collapse"
-                data-target="#collections"
+                data-target="#tags"
                 aria-expanded="false"
-                aria-controls="collections"
+                aria-controls="tags"
               >
                 <div
                   style={{
@@ -223,9 +236,7 @@ class SideBar extends Component {
                   }}
                 >
                   <FontAwesomeIcon
-                    icon={
-                      this.state.collectionsOpen ? faCaretDown : faCaretRight
-                    }
+                    icon={this.state.tagsOpen ? faCaretDown : faCaretRight}
                     className="faCaretDropdown"
                   />
                 </div>
@@ -233,8 +244,8 @@ class SideBar extends Component {
               </div>
             </div>
             <div
-              className="collapse multi-collapse"
-              id="collections"
+              className="collapse multi-collapse show"
+              id="tags"
               style={{ marginLeft: "10px", fontSize: "14px" }}
             >
               {tags.map(tag => (
