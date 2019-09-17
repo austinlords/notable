@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTags } from "@fortawesome/free-solid-svg-icons";
+import config from "../config";
 
 class NotesPreview extends Component {
   constructor(props) {
@@ -49,57 +50,72 @@ class NotesPreview extends Component {
 
   filter = notes =>
     notes
-      ? notes.filter(
-          n =>
-            n.content.blocks.find(el =>
-              el.text
-                .toLowerCase()
-                .includes(this.props.searchQuery.toLowerCase())
-            ) ||
-            n.tags.find(el =>
-              el.toLowerCase().includes(this.props.searchQuery.toLowerCase())
-            )
+      ? notes.filter(n =>
+          n.content.blocks.find(el =>
+            el.text.toLowerCase().includes(this.props.searchQuery.toLowerCase())
+          )
         )
       : null;
 
   generateSearchPreview = note => {
-    let allContent = note.content.blocks
+    let searchQuery = this.props.searchQuery;
+
+    let previewText = note.content.blocks
       .map(n => (n.type !== "header-one" ? n.text : ""))
       .join(" ");
-    let indexSearchTerm = allContent
+    let startIndex = previewText
       .toLowerCase()
-      .indexOf(this.props.searchQuery.toLowerCase());
+      .indexOf(searchQuery.toLowerCase());
 
-    let previewText = "";
-    const preSearchDistance = 15;
+    if (startIndex === -1) return <div>{previewText}</div>;
+    let endIndex = startIndex + searchQuery.length;
 
-    if (indexSearchTerm < preSearchDistance) {
-      previewText = allContent.slice(
-        0,
-        indexSearchTerm + 50 + preSearchDistance - indexSearchTerm
-      );
-    } else {
-      previewText =
-        "..." + allContent.slice(indexSearchTerm - 15, indexSearchTerm + 50);
+    const preLength = 20;
+    const previewLength = config.notesPreviewLength;
+
+    let pre = previewText.slice(0, startIndex);
+    let highlight = previewText.slice(startIndex, endIndex);
+    let post = previewText.slice(endIndex);
+
+    if (previewText.length > previewLength) {
+      if (pre.length >= previewLength + searchQuery.length + 3)
+        pre = pre.slice(pre.length - preLength);
+      if (post.length > previewLength - searchQuery.length - pre.length)
+        post = post.slice(0, previewLength - pre.length);
     }
 
     return (
       <div>
-        <span>{previewText.slice(0, indexSearchTerm)}</span>
-        <span style={{ backgroundColor: "yellow" }}>
-          {previewText.slice(
-            indexSearchTerm,
-            indexSearchTerm + this.props.searchQuery.length
-          )}
-        </span>
-        <span>
-          {previewText.slice(indexSearchTerm + this.props.searchQuery.length)}
-        </span>
+        <span>{pre}</span>
+        <span style={{ backgroundColor: "yellow" }}>{highlight}</span>
+        <span>{post}</span>
       </div>
     );
   };
 
-  // <span style={{backgroundColor="yellow"}}>{this.props.searchQuery}</span>)
+  generateTitle = note => {
+    let searchQuery = this.props.searchQuery;
+    let title = note.title;
+
+    let startIndex = title.toLowerCase().indexOf(searchQuery.toLowerCase());
+
+    if (startIndex === -1) return <div>{title}</div>;
+
+    let endIndex = startIndex + searchQuery.length;
+
+    let pre = title.slice(0, startIndex);
+    let highlight = title.slice(startIndex, endIndex);
+    let post = title.slice(endIndex);
+
+    return (
+      <div>
+        <span>{pre}</span>
+        <span style={{ backgroundColor: "yellow" }}>{highlight}</span>
+        <span>{post}</span>
+      </div>
+    );
+  };
+
   render() {
     let filtered = this.filter(this.props.allNotes);
 
@@ -129,13 +145,11 @@ class NotesPreview extends Component {
                 >
                   <div>
                     <div className="d-flex w-100 justify-content-between">
-                      <h5 className="mb-1">{n.title}</h5>
+                      <h5 className="mb-1">{this.generateTitle(n)}</h5>
                       <small>{moment(n.updated).format("MMM D 'YY")}</small>
                     </div>
                     <div style={this.previewStyle}>
-                      {this.props.searchQuery
-                        ? this.generateSearchPreview(n)
-                        : n.preview}
+                      {this.generateSearchPreview(n)}
                     </div>
                     <small>
                       <FontAwesomeIcon

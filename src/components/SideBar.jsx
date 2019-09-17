@@ -5,7 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPlus,
   faCaretRight,
-  faCaretDown
+  faCaretDown,
+  faUserCircle
 } from "@fortawesome/free-solid-svg-icons";
 
 class SideBar extends Component {
@@ -30,7 +31,7 @@ class SideBar extends Component {
   filterStyle = {
     background: "#112",
     display: "grid",
-    gridTemplateRows: "50px 60px 300px auto",
+    gridTemplateRows: "40px 60px 300px auto",
     overflow: "auto",
     padding: "15px 5px",
     height: "100%",
@@ -44,11 +45,11 @@ class SideBar extends Component {
     color: "white",
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    borderRadius: "10px"
   };
 
   buttonSectionStyle = {
-    background: "black",
     height: "100%",
     width: "100%",
     color: "white",
@@ -90,7 +91,8 @@ class SideBar extends Component {
 
   handleRadioSelect(event) {
     this.setState({
-      collectionFilter: event.target.value
+      collectionFilter: event.target.value,
+      tagsFilter: []
     });
   }
 
@@ -111,7 +113,30 @@ class SideBar extends Component {
     }
   }
 
-  filter() {}
+  filter(notes) {
+    let filteredNotes = notes;
+
+    if (this.state.collectionFilter)
+      filteredNotes = filteredNotes.filter(
+        n => n.collection.name === this.state.collectionFilter
+      );
+
+    let tags = [];
+    filteredNotes.forEach(n => tags.push(...n.tags));
+    tags = [...new Set(tags)];
+
+    if (this.state.tagsFilter.length > 0) {
+      let lowerTags = this.state.tagsFilter.map(t => t.toLowerCase());
+
+      filteredNotes = filteredNotes.filter(n => {
+        let combinedTags = [...n.tags.map(n => n.toLowerCase()), ...lowerTags];
+        let setTags = [...new Set(combinedTags)];
+        return setTags.length !== combinedTags.length;
+      });
+    }
+
+    return { filteredNotes, tags };
+  }
 
   render() {
     let {
@@ -123,27 +148,36 @@ class SideBar extends Component {
       collections
     } = this.props;
 
-    if (this.state.collectionFilter)
-      allNotes =
-        allNotes &&
-        allNotes.filter(n => n.collection.name === this.state.collectionFilter);
-
     let tags = [];
-    allNotes && allNotes.forEach(n => tags.push(...n.tags));
-    tags = [...new Set(tags)];
+
+    if (allNotes) {
+      let obj = this.filter(allNotes);
+      allNotes = obj.filteredNotes;
+      tags = obj.tags;
+    }
 
     return (
       <div style={this.sidebarStyle}>
         <div style={this.filterStyle}>
-          <div style={this.profileStyle}>Profile section</div>
+          <div style={this.profileStyle} className="clickable">
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "20% auto",
+                width: "100%"
+              }}
+            >
+              <div style={{ display: "flex", margin: "auto" }}>
+                <FontAwesomeIcon icon={faUserCircle} />
+              </div>
+
+              <div style={{ fontSize: "11px" }}>lords.austin@gmail.com</div>
+            </div>
+          </div>
           <div style={this.buttonSectionStyle}>
             <button type="button" className="btn btn-secondary btn-sm">
               <FontAwesomeIcon icon={faPlus} />
               <span> Collection</span>
-            </button>
-            <button type="button" className="btn btn-info btn-sm">
-              <FontAwesomeIcon icon={faPlus} />
-              <span> Tag</span>
             </button>
           </div>
           <div style={this.collectionTagStyle}>
