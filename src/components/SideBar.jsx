@@ -6,7 +6,9 @@ import {
   faPlus,
   faCaretRight,
   faCaretDown,
-  faUserCircle
+  faUserCircle,
+  faBook,
+  faTags
 } from "@fortawesome/free-solid-svg-icons";
 
 class SideBar extends Component {
@@ -158,7 +160,7 @@ class SideBar extends Component {
 
     return (
       <div style={this.sidebarStyle}>
-        <div style={this.filterStyle}>
+        <div id="filterSection" style={this.filterStyle}>
           <div style={this.profileStyle} className="clickable">
             <div
               style={{
@@ -208,7 +210,16 @@ class SideBar extends Component {
                     className="faCaretDropdown"
                   />
                 </div>
-                <span> Collections</span>
+                <div>
+                  <span>Collections </span>
+                  <span style={{ paddingLeft: "10px" }}>
+                    {" "}
+                    <FontAwesomeIcon
+                      icon={faBook}
+                      style={{ fontSize: "14px", transform: "rotate(-20deg)" }}
+                    />
+                  </span>
+                </div>
               </div>
             </div>
             <div
@@ -274,7 +285,16 @@ class SideBar extends Component {
                     className="faCaretDropdown"
                   />
                 </div>
-                <span> Tags</span>
+                <div>
+                  <span>Tags </span>
+                  <span style={{ paddingLeft: "10px" }}>
+                    {" "}
+                    <FontAwesomeIcon
+                      icon={faTags}
+                      style={{ fontSize: "12px" }}
+                    />
+                  </span>
+                </div>
               </div>
             </div>
             <div

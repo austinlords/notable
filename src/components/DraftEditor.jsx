@@ -1,5 +1,7 @@
 import React from "react";
 import { Editor, RichUtils } from "draft-js";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBook, faTags } from "@fortawesome/free-solid-svg-icons";
 import "../css/notes.css";
 import "draft-js/dist/Draft.css";
 
@@ -35,17 +37,49 @@ class DraftEditor extends React.Component {
     );
   }
 
+  controlsStyle = {
+    display: "grid",
+    gridTemplateColumns: "50% 50%",
+    backgroundColor: "rgba(155, 227, 255, 0.25)",
+    padding: "10px 15px",
+    fontFamily: "Arial, Helvetica, sans-serif",
+    fontSize: "14px"
+  };
+
   render() {
     return (
       <div id="rich-text-editor">
-        <BlockStyleControls
-          editorState={this.props.editorState}
-          onToggle={this.toggleBlockType}
-        />
-        <InlineStyleControls
-          editorState={this.props.editorState}
-          onToggle={this.toggleInlineStyle}
-        />
+        <div style={this.controlsStyle}>
+          <div>
+            <BlockStyleControls
+              editorState={this.props.editorState}
+              onToggle={this.toggleBlockType}
+            />
+            <InlineStyleControls
+              editorState={this.props.editorState}
+              onToggle={this.toggleInlineStyle}
+            />
+          </div>
+          <div>
+            <div style={{ textAlign: "right" }}>
+              <FontAwesomeIcon
+                icon={this.props.selectedNote && faBook}
+                style={{ transform: "rotate(-20deg)" }}
+              />
+              <span style={{ marginLeft: "10px", fontSize: "12px" }}>
+                {this.props.selectedNote &&
+                  this.props.selectedNote.collection.name}
+              </span>
+            </div>
+            <div style={{ textAlign: "right" }}>
+              <FontAwesomeIcon icon={this.props.selectedNote && faTags} />
+              <span style={{ marginLeft: "10px", fontSize: "12px" }}>
+                {this.props.selectedNote &&
+                  this.props.selectedNote.tags.join(", ")}
+              </span>
+            </div>
+          </div>
+        </div>
         <div className="editor-edit" onClick={this.focus}>
           <Editor
             blockStyleFn={getBlockStyle}

@@ -126,10 +126,28 @@ class Notes extends Component {
     allNotes.push(newNote);
     // await saveNote(newNote);
     this.setState({ allNotes, selectedNote: newNote });
+    this.props.history.replace(`/notes/${newNote._id}`);
+  };
+
+  handleDelete = () => {
+    let id = this.props.match.params.id;
+
+    this.props.history.replace("/notes");
+    this.setState({
+      allNotes: this.state.allNotes.filter(n => n._id !== id),
+      editorState: EditorState.createEmpty(),
+      selectedNote: null
+    });
   };
 
   render() {
-    let { editorState, allNotes, searchQuery, collections } = this.state;
+    let {
+      editorState,
+      allNotes,
+      searchQuery,
+      collections,
+      selectedNote
+    } = this.state;
 
     return (
       <div className="app-page">
@@ -141,10 +159,19 @@ class Notes extends Component {
           searchQuery={searchQuery}
           onClear={this.handleClear}
           collections={collections}
+          selectedNote={selectedNote}
         />
         <div className="editor-window">
-          <EditorMenu editorState={editorState} save={this.save} />
-          <DraftEditor onChange={this.onChange} editorState={editorState} />
+          <EditorMenu
+            editorState={editorState}
+            save={this.save}
+            handleDelete={this.handleDelete}
+          />
+          <DraftEditor
+            onChange={this.onChange}
+            editorState={editorState}
+            selectedNote={selectedNote}
+          />
         </div>
       </div>
     );
