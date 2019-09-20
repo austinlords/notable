@@ -94,3 +94,10 @@
 .faCaretDropdown {
   color: silver;
 }
+
+.link {
+  font-style: italic;
+  text-decoration: underline;
+  cursor: pointer;
+  color: blue;
+}
