@@ -166,6 +166,7 @@ class Notes extends Component {
             editorState={editorState}
             save={this.save}
             handleDelete={this.handleDelete}
+            selectedNote={selectedNote}
           />
           <DraftEditor
             onChange={this.onChange}

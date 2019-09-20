@@ -44,8 +44,8 @@ class NotesPreview extends Component {
     display: "grid",
     gridTemplateColumns: "20px auto",
     width: "100%",
-    padding: "0",
-    backgroundColor: "white"
+    padding: "1px",
+    marginBottom: "0px"
   };
 
   filter = notes =>
@@ -126,7 +126,19 @@ class NotesPreview extends Component {
             return (
               <div
                 className="list-group-item"
-                style={this.individualNotes}
+                style={{
+                  ...this.individualNotes,
+                  background:
+                    this.props.selectedNote &&
+                    n._id === this.props.selectedNote._id
+                      ? n.collection.color
+                      : "white",
+                  border:
+                    this.props.selectedNote &&
+                    n._id === this.props.selectedNote._id
+                      ? `1px dotted ${n.collection.color}`
+                      : "none"
+                }}
                 key={n._id}
               >
                 <div

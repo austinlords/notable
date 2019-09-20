@@ -1,7 +1,5 @@
 import React from "react";
 import { Editor, RichUtils } from "draft-js";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBook, faTags } from "@fortawesome/free-solid-svg-icons";
 import "../css/notes.css";
 import "draft-js/dist/Draft.css";
 
@@ -59,25 +57,6 @@ class DraftEditor extends React.Component {
               editorState={this.props.editorState}
               onToggle={this.toggleInlineStyle}
             />
-          </div>
-          <div>
-            <div style={{ textAlign: "right" }}>
-              <FontAwesomeIcon
-                icon={this.props.selectedNote && faBook}
-                style={{ transform: "rotate(-20deg)" }}
-              />
-              <span style={{ marginLeft: "10px", fontSize: "12px" }}>
-                {this.props.selectedNote &&
-                  this.props.selectedNote.collection.name}
-              </span>
-            </div>
-            <div style={{ textAlign: "right" }}>
-              <FontAwesomeIcon icon={this.props.selectedNote && faTags} />
-              <span style={{ marginLeft: "10px", fontSize: "12px" }}>
-                {this.props.selectedNote &&
-                  this.props.selectedNote.tags.join(", ")}
-              </span>
-            </div>
           </div>
         </div>
         <div className="editor-edit" onClick={this.focus}>
