@@ -48,12 +48,8 @@ class EditorMenu extends Component {
       this.setState({ tagsPopoverOpen: !this.state.tagsPopoverOpen });
   };
 
-  handleCollectionSelect = event => {
-    let selected = event.target.value;
-  };
-  handleTagsSelect = event => {
-    let selected = event.target.value;
-  };
+  handleCollectionSelect = event => {};
+  handleTagsSelect = event => {};
 
   render() {
     const { save, handleDelete, selectedNote, collections } = this.props;
@@ -87,7 +83,10 @@ class EditorMenu extends Component {
             <span style={{ marginLeft: "10px" }}>
               {selectedNote && (
                 <>
-                  <span id="collection-popover-link" className="link">
+                  <span
+                    id="collection-popover-link"
+                    className="link-no-underline"
+                  >
                     {selectedNote.collection.name}
                   </span>
                   <UncontrolledPopover
@@ -123,13 +122,17 @@ class EditorMenu extends Component {
           </div>
           <div style={{ textAlign: "right" }}>
             {selectedNote && <FontAwesomeIcon icon={faTags} />}
-            <span style={{ marginLeft: "10px" }}>
+            <span style={{ marginLeft: "10px" }} id="tags-popover-link">
               {selectedNote && (
                 <>
                   {selectedNote.tags &&
-                    selectedNote.tags.map(t => (
-                      <span id="tags-popover-link" className="link">
-                        {t}
+                    selectedNote.tags.map((tag, index, tags) => (
+                      <span
+                        key={tag}
+                        className="link-no-underline"
+                        style={{ color: "orangered" }}
+                      >
+                        {index < tags.length - 1 ? tag + ", " : tag}
                       </span>
                     ))}
                   <UncontrolledPopover

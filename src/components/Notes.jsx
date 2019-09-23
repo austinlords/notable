@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import EditorMenu from "./EditorMenu";
 import DraftEditor from "./DraftEditor";
 import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
 import SideBar from "./SideBar";
@@ -17,12 +16,15 @@ class Notes extends Component {
       editorState: EditorState.createEmpty(),
       selectedNote: null,
       searchQuery: "",
-      collections: []
+      collections: [],
+      title: ""
     };
 
     this.onChange = editorState => {
       this.setState({ editorState });
     };
+
+    this.handleTitle = this.handleTitle.bind(this);
   }
 
   componentDidMount() {
@@ -42,6 +44,10 @@ class Notes extends Component {
     this.setState({ searchQuery: "" });
   };
 
+  handleTitle = title => {
+    this.setState({ title });
+  };
+
   populateEditor() {
     const id = this.props.match.params.id;
 
@@ -54,7 +60,8 @@ class Notes extends Component {
     ) {
       return this.setState({
         editorState: EditorState.createEmpty(),
-        selectedNote: null
+        selectedNote: null,
+        title: ""
       });
     }
 
@@ -67,26 +74,17 @@ class Notes extends Component {
         convertFromRaw(note.content)
       );
 
-      return this.setState({ editorState, selectedNote: note });
+      return this.setState({
+        editorState,
+        selectedNote: note,
+        title: note.title
+      });
     }
   }
 
   save = async () => {
-    const { allNotes, selectedNote, editorState } = this.state;
+    const { allNotes, selectedNote, editorState, title } = this.state;
     const currentEditorContent = convertToRaw(editorState.getCurrentContent());
-
-    function generateTitle() {
-      let h1 = currentEditorContent.blocks.find(n => n.type === "header-one");
-      if (h1 && h1.text.length > 24) {
-        h1.text =
-          h1.text
-            .split("")
-            .slice(0, 23)
-            .join("") + "...";
-      }
-
-      return h1 ? h1.text : "(no title)";
-    }
 
     function generatePreview(content) {
       let preview = "";
@@ -108,9 +106,8 @@ class Notes extends Component {
 
     const newNote = {
       _id: Date.now().toString(),
-      title: generateTitle(),
+      title: title,
       content: currentEditorContent,
-      preview: generatePreview(currentEditorContent),
       tags: (selectedNote && selectedNote.tags) || [],
       collection: (selectedNote && selectedNote.collection) || []
     };
@@ -136,7 +133,8 @@ class Notes extends Component {
     this.setState({
       allNotes: this.state.allNotes.filter(n => n._id !== id),
       editorState: EditorState.createEmpty(),
-      selectedNote: null
+      selectedNote: null,
+      title: ""
     });
   };
 
@@ -146,7 +144,8 @@ class Notes extends Component {
       allNotes,
       searchQuery,
       collections,
-      selectedNote
+      selectedNote,
+      title
     } = this.state;
 
     return (
@@ -161,20 +160,16 @@ class Notes extends Component {
           collections={collections}
           selectedNote={selectedNote}
         />
-        <div className="editor-window">
-          <EditorMenu
-            editorState={editorState}
-            save={this.save}
-            handleDelete={this.handleDelete}
-            selectedNote={selectedNote}
-            collections={collections}
-          />
-          <DraftEditor
-            onChange={this.onChange}
-            editorState={editorState}
-            selectedNote={selectedNote}
-          />
-        </div>
+        <DraftEditor
+          onChange={this.onChange}
+          handleTitle={this.handleTitle}
+          title={title}
+          save={this.save}
+          handleDelete={this.handleDelete}
+          collections={collections}
+          editorState={editorState}
+          selectedNote={selectedNote}
+        />
       </div>
     );
   }

@@ -1,17 +1,28 @@
 import React from "react";
 import { Editor, RichUtils } from "draft-js";
+import EditorMenu from "./EditorMenu";
 import "../css/notes.css";
 import "draft-js/dist/Draft.css";
 
 class DraftEditor extends React.Component {
   constructor(props) {
     super(props);
-    // props: onChange & editorState
+    this.state = {
+      title: ""
+    };
+
     this.focus = () => this.editor.focus();
 
     this.handleKeyCommand = this._handleKeyCommand.bind(this);
     this.toggleBlockType = this._toggleBlockType.bind(this);
     this.toggleInlineStyle = this._toggleInlineStyle.bind(this);
+  }
+
+  componentDidMount() {}
+
+  componentDidUpdate() {
+    if (this.props.selectedNote && this.state.title === "")
+      return this.setState({ title: this.props.selectedNote.title });
   }
 
   _handleKeyCommand(command, editorState) {
@@ -46,30 +57,53 @@ class DraftEditor extends React.Component {
 
   render() {
     return (
-      <div id="rich-text-editor">
-        <div style={this.controlsStyle}>
+      <div className="editor-window">
+        <EditorMenu
+          save={this.props.save}
+          handleDelete={this.props.handleDelete}
+          selectedNote={this.props.selectedNote}
+          collections={this.props.collections}
+        />
+        <div id="rich-text-editor">
+          <div style={this.controlsStyle}>
+            <div>
+              <BlockStyleControls
+                editorState={this.props.editorState}
+                onToggle={this.toggleBlockType}
+              />
+              <InlineStyleControls
+                editorState={this.props.editorState}
+                onToggle={this.toggleInlineStyle}
+              />
+            </div>
+          </div>
           <div>
-            <BlockStyleControls
+            <div className="form-group">
+              <textarea
+                rows="1"
+                type="textarea"
+                className="form-control"
+                id="note-title"
+                aria-describedby="note-title-small"
+                placeholder="Title..."
+                value={this.props.title}
+                onChange={e => this.props.handleTitle(e.target.value)}
+              />
+              <hr></hr>
+            </div>
+          </div>
+          <div className="editor-edit" onClick={this.focus}>
+            <Editor
+              blockStyleFn={getBlockStyle}
+              customStyleMap={styleMap}
               editorState={this.props.editorState}
-              onToggle={this.toggleBlockType}
-            />
-            <InlineStyleControls
-              editorState={this.props.editorState}
-              onToggle={this.toggleInlineStyle}
+              handleKeyCommand={this.handleKeyCommand}
+              keyBindingFn={this.mapKeyToEditorCommand}
+              onChange={this.props.onChange}
+              ref={ref => (this.editor = ref)}
+              spellCheck={true}
             />
           </div>
-        </div>
-        <div className="editor-edit" onClick={this.focus}>
-          <Editor
-            blockStyleFn={getBlockStyle}
-            customStyleMap={styleMap}
-            editorState={this.props.editorState}
-            handleKeyCommand={this.handleKeyCommand}
-            keyBindingFn={this.mapKeyToEditorCommand}
-            onChange={this.props.onChange}
-            ref={ref => (this.editor = ref)}
-            spellCheck={true}
-          />
         </div>
       </div>
     );
