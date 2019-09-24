@@ -2,9 +2,8 @@ import React, { Component } from "react";
 import DraftEditor from "./DraftEditor";
 import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
 import SideBar from "./SideBar";
-import { notes, getNote } from "../services/fakePostsService";
+import { notes } from "../services/fakePostsService";
 import { Collections } from "../services/fakeCollectionsService";
-// import { saveNote } from "../services/notesService";
 import "../css/notes.css";
 
 class Notes extends Component {
@@ -52,6 +51,7 @@ class Notes extends Component {
     const id = this.props.match.params.id;
 
     if (!id) return;
+    if (!this.state.allNotes) return;
 
     if (
       id === "new" &&
@@ -65,7 +65,7 @@ class Notes extends Component {
       });
     }
 
-    const note = getNote(id);
+    const note = this.state.allNotes.find(n => n._id === id);
 
     if (!note) return this.props.history.replace("/notes");
 
@@ -82,27 +82,9 @@ class Notes extends Component {
     }
   }
 
-  save = async () => {
+  save = () => {
     const { allNotes, selectedNote, editorState, title } = this.state;
     const currentEditorContent = convertToRaw(editorState.getCurrentContent());
-
-    function generatePreview(content) {
-      let preview = "";
-      for (let i = 0; i < content.blocks.length; i++) {
-        let c = content.blocks[i];
-        if (c.type === "header-one") continue;
-        else if (preview.length + c.text.length < 75) {
-          preview += `${c.text} `;
-          continue;
-        } else {
-          let dif = 75 - preview.length;
-          let part = c.text.slice(0, dif);
-          preview += `${part}...`;
-          break;
-        }
-      }
-      return preview;
-    }
 
     const newNote = {
       _id: Date.now().toString(),
@@ -112,30 +94,27 @@ class Notes extends Component {
       collection: (selectedNote && selectedNote.collection) || []
     };
 
-    // existing note
     if (selectedNote) {
       newNote._id = selectedNote._id;
       allNotes.splice(allNotes.indexOf(selectedNote), 1, newNote);
-      return this.setState({ allNotes, selectedNote: newNote });
+      this.setState({ allNotes, selectedNote: newNote });
+    } else {
+      allNotes.push(newNote);
+      this.setState({ allNotes, selectedNote: newNote });
+      this.props.history.replace(`/notes/${newNote._id}`);
     }
-
-    // if new note
-    allNotes.push(newNote);
-    // await saveNote(newNote);
-    this.setState({ allNotes, selectedNote: newNote });
-    this.props.history.replace(`/notes/${newNote._id}`);
   };
 
   handleDelete = () => {
     let id = this.props.match.params.id;
 
-    this.props.history.replace("/notes");
     this.setState({
       allNotes: this.state.allNotes.filter(n => n._id !== id),
       editorState: EditorState.createEmpty(),
       selectedNote: null,
       title: ""
     });
+    this.props.history.replace("/notes");
   };
 
   render() {
@@ -153,7 +132,6 @@ class Notes extends Component {
         <SideBar
           editorState={editorState}
           allNotes={allNotes}
-          populateEditor={this.populateEditor}
           onSearch={this.handleSearch}
           searchQuery={searchQuery}
           onClear={this.handleClear}

@@ -48,21 +48,21 @@ class NotesPreview extends Component {
     marginBottom: "0px"
   };
 
-  filter = notes =>
-    notes
-      ? notes.filter(n =>
-          n.content.blocks.find(el =>
-            el.text.toLowerCase().includes(this.props.searchQuery.toLowerCase())
-          )
-        )
-      : null;
+  filter = notes => {
+    let search = this.props.searchQuery.toLowerCase();
+
+    if (notes)
+      return notes.filter(
+        n =>
+          n.content.blocks.find(el => el.text.toLowerCase().includes(search)) ||
+          n.title.toLowerCase().includes(search)
+      );
+  };
 
   generateSearchPreview = note => {
     let searchQuery = this.props.searchQuery;
 
-    let previewText = note.content.blocks
-      .map(n => (n.type !== "header-one" ? n.text : ""))
-      .join(" ");
+    let previewText = note.content.blocks.map(n => n.text).join(" ");
     let startIndex = previewText
       .toLowerCase()
       .indexOf(searchQuery.toLowerCase());
