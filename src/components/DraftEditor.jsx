@@ -1,5 +1,6 @@
 import React from "react";
 import { Editor, RichUtils } from "draft-js";
+import Textarea from "react-expanding-textarea";
 import EditorMenu from "./EditorMenu";
 import "../css/notes.css";
 import "draft-js/dist/Draft.css";
@@ -47,50 +48,53 @@ class DraftEditor extends React.Component {
   }
 
   controlsStyle = {
-    display: "grid",
-    gridTemplateColumns: "50% 50%",
-    backgroundColor: "rgba(155, 227, 255, 0.25)",
-    padding: "10px 15px",
+    display: "inline-flex",
     fontFamily: "Arial, Helvetica, sans-serif",
-    fontSize: "14px"
+    fontSize: "14px",
+
+    margin: "auto 0px"
+  };
+
+  verticalLine = {
+    width: "1px",
+    height: "20px",
+    borderRight: "1px solid grey",
+    margin: "auto 5px"
   };
 
   render() {
     return (
       <div className="editor-window">
-        <EditorMenu
-          save={this.props.save}
-          handleDelete={this.props.handleDelete}
-          selectedNote={this.props.selectedNote}
-          collections={this.props.collections}
-        />
-        <div id="rich-text-editor">
-          <div style={this.controlsStyle}>
-            <div>
-              <BlockStyleControls
-                editorState={this.props.editorState}
-                onToggle={this.toggleBlockType}
-              />
-              <InlineStyleControls
-                editorState={this.props.editorState}
-                onToggle={this.toggleInlineStyle}
-              />
-            </div>
+        <div className="editor-menu">
+          <EditorMenu
+            save={this.props.save}
+            handleDelete={this.props.handleDelete}
+            selectedNote={this.props.selectedNote}
+            collections={this.props.collections}
+          />
+          <div id="stying-controls" style={this.controlsStyle}>
+            <InlineStyleControls
+              editorState={this.props.editorState}
+              onToggle={this.toggleInlineStyle}
+            />
+            <div style={this.verticalLine}></div>
+            <BlockStyleControls
+              editorState={this.props.editorState}
+              onToggle={this.toggleBlockType}
+            />
+            <hr></hr>
           </div>
+        </div>
+        <div id="rich-text-editor">
           <div>
-            <div className="form-group">
-              <textarea
-                rows="1"
-                type="textarea"
-                className="form-control"
-                id="note-title"
-                aria-describedby="note-title-small"
-                placeholder="Title..."
-                value={this.props.title}
-                onChange={e => this.props.handleTitle(e.target.value)}
-              />
-              <hr></hr>
-            </div>
+            <Textarea
+              className="textarea"
+              id="title-textarea"
+              placeholder="Title..."
+              value={this.props.title}
+              onChange={e => this.props.handleTitle(e.target.value)}
+            />
+            <hr></hr>
           </div>
           <div className="editor-edit" onClick={this.focus}>
             <Editor

@@ -25,16 +25,29 @@
 }
 
 .editor-window {
-  padding: 15px;
   background: white;
   min-width: 600px;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: 80px auto;
+  height: 100%;
+}
+
+.editor-menu {
+  display: grid;
+  padding: 0 15px;
+  grid-template-rows: 40px auto;
+  background: rgba(0, 174, 255, 0.041);
 }
 
 .editor-menu-option {
-  padding: 5px;
+  padding: 0px 5px;
   border-radius: 2px;
+}
+
+.editor-control-row {
+  margin: 0px 5px;
+  align-items: center;
+  display: flex;
 }
 
 .editor-edit {
@@ -50,7 +63,7 @@
 .editor-styleButton {
   color: #222;
   cursor: pointer;
-  margin-right: 16px;
+  margin: 0 5px;
   padding: 2px 0;
   display: inline-block;
 }
@@ -63,9 +76,22 @@
   width: 100%;
 }
 
+.textarea {
+  width: 100%;
+  outline: 0;
+  padding: 0px 10px;
+  border: none;
+  background-color: #fff;
+  border-left: 1px solid #dee2e2;
+  resize: none;
+  color: #222;
+  font-size: 36px;
+  font-weight: 600;
+  overflow: hidden;
+}
+
 #rich-text-editor {
   padding: 10px;
-  box-shadow: inset 0px 0px 3px rgba(40, 40, 40, 0.5);
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -78,7 +104,6 @@
 
 .public-DraftEditor-content {
   height: 100%;
-  background: rgba(240, 240, 240, 0.5);
   overflow-y: scroll;
   padding: 10px;
 }

@@ -11,31 +11,26 @@ class EditorMenu extends Component {
   };
 
   menuStyle = {
-    margin: "0px auto 10px auto",
+    margin: "auto",
     width: "100%",
-    height: "60px",
-    boxShadow: "1px 1px 3px black",
-    borderRadius: "5px",
-    display: "grid",
-    gridTemplateColumns: "50% auto"
+    height: "100%",
+    display: "inline-flex",
+    justifyContent: "space-between"
   };
 
   crudStyle = {
     display: "inline-flex",
-    justifyContent: "space-around",
     alignItems: "center",
-    width: "100%",
+    justifyContent: "space-around",
+    width: "200px",
     height: "100%",
-    fontSize: "14px"
+    fontSize: "12px"
   };
 
   metaDataStyle = {
-    display: "grid",
-    gridTemplateRows: "50% 50%",
+    display: "inline-flex",
+    alignItems: "center",
     height: "100%",
-    width: "100%",
-    alignItems: "baseline",
-    padding: "10px 30px",
     fontSize: "12px"
   };
 
@@ -73,7 +68,7 @@ class EditorMenu extends Component {
           </div>
         </div>
         <div id="notes-meta-data" style={this.metaDataStyle}>
-          <div style={{ textAlign: "right" }}>
+          <div style={{ textAlign: "right", padding: "0px 10px" }}>
             {selectedNote && (
               <FontAwesomeIcon
                 icon={faBook}
@@ -120,7 +115,7 @@ class EditorMenu extends Component {
               )}
             </span>
           </div>
-          <div style={{ textAlign: "right" }}>
+          <div style={{ textAlign: "right", padding: "0px 10px" }}>
             {selectedNote && <FontAwesomeIcon icon={faTags} />}
             <span style={{ marginLeft: "10px" }} id="tags-popover-link">
               {selectedNote && (
