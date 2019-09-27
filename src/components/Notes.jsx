@@ -81,8 +81,8 @@ class Notes extends Component {
     this.setState({ selectedNote: note });
   };
 
-  save = () => {
-    const { allNotes, selectedNote, editorState } = this.state;
+  save = selectedNote => {
+    const { allNotes, editorState } = this.state;
     const currentEditorContent = convertToRaw(editorState.getCurrentContent());
 
     const newNote = {
@@ -90,7 +90,7 @@ class Notes extends Component {
       title: (selectedNote && selectedNote.title) || "",
       content: currentEditorContent,
       tags: (selectedNote && selectedNote.tags) || [],
-      collection: (selectedNote && selectedNote.collection) || []
+      collection: (selectedNote && selectedNote.collection) || {}
     };
 
     const existingIndex = allNotes.findIndex(n => n._id === selectedNote._id);

@@ -44,11 +44,11 @@ class EditorMenu extends Component {
   };
 
   handleCollectionSelect = event => {
-    console.log(event.target.value);
+    let name = event.target.value;
+    let { color, _id } = this.props.collections.find(c => c.name === name);
     const note = { ...this.props.selectedNote };
-    note.collection = event.target.value;
-    console.log("new note", note);
-    this.props.updateSelectedNote(note);
+    note.collection = { _id, name, color };
+    this.props.save(note);
   };
   handleTagsSelect = event => {};
 
@@ -68,7 +68,10 @@ class EditorMenu extends Component {
             <i className="fa fa-trash" aria-hidden="true" />
             <span> Delete</span>
           </div>
-          <div className="clickable editor-menu-option" onClick={save}>
+          <div
+            className="clickable editor-menu-option"
+            onClick={() => save(selectedNote)}
+          >
             <i className="fa fa-floppy-o" aria-hidden="true" />
             <span> Save</span>
           </div>
@@ -98,16 +101,16 @@ class EditorMenu extends Component {
                     toggle={() => this.togglePopover("collection")}
                   >
                     <PopoverHeader>select collection:</PopoverHeader>
-                    <PopoverBody>
+                    <PopoverBody key={selectedNote.collection.name}>
                       {collections.map(c => (
-                        <div className="form-check" key={c._id}>
+                        <div className="form-check clickable" key={c._id}>
                           <label className="form-check-label">
                             <input
                               className="form-check-input"
                               type="radio"
                               name="collection-choices"
                               id={c._id}
-                              value={{ name: c.name, color: c.color }}
+                              value={c.name}
                               checked={selectedNote.collection.name === c.name}
                               onChange={e => this.handleCollectionSelect(e)}
                             />
