@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import DraftEditor from "./DraftEditor";
 import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
 import SideBar from "./SideBar";
-import { notes } from "../services/fakePostsService";
-import { Collections } from "../services/fakeCollectionsService";
+import { NOTES } from "../services/fakePostsService";
+import { COLLECTIONS } from "../services/fakeCollectionsService";
 import "../css/notes.css";
 
 class Notes extends Component {
@@ -15,24 +15,58 @@ class Notes extends Component {
       editorState: EditorState.createEmpty(),
       selectedNote: null,
       searchQuery: "",
-      collections: [],
-      title: ""
+      collections: []
     };
 
-    this.onChange = editorState => {
+    this.onEditorChange = editorState => {
       this.setState({ editorState });
     };
-
-    this.handleTitle = this.handleTitle.bind(this);
   }
 
   componentDidMount() {
-    this.setState({ allNotes: notes, collections: Collections });
-    this.populateEditor();
+    const id = this.props.match.params.id || null;
+
+    if (!id || !NOTES)
+      return this.setState({ allNotes: NOTES, collections: COLLECTIONS });
+
+    const note = NOTES.find(n => n._id === id) || null;
+    const editorState = note
+      ? EditorState.createWithContent(convertFromRaw(note.content))
+      : EditorState.createEmpty();
+
+    this.setState({
+      allNotes: NOTES,
+      collections: COLLECTIONS,
+      selectedNote: note,
+      editorState
+    });
   }
 
   componentDidUpdate() {
-    this.populateEditor();
+    const id = this.props.match.params.id;
+
+    if (!id || !this.state.allNotes) return;
+
+    if (id === "new") {
+      this.setState({
+        editorState: EditorState.createEmpty(),
+        selectedNote: null,
+        title: ""
+      });
+      return this.props.history.replace("/notes");
+    }
+
+    const note = this.state.allNotes.find(n => n._id === id);
+    if (!note) return this.props.history.replace("/notes");
+    const editorState = EditorState.createWithContent(
+      convertFromRaw(note.content)
+    );
+
+    if (this.state.selectedNote && id !== this.state.selectedNote._id)
+      return this.setState({ selectedNote: note, editorState });
+
+    if (!this.state.selectedNote)
+      return this.setState({ selectedNote: note, editorState });
   }
 
   handleSearch = query => {
@@ -43,60 +77,26 @@ class Notes extends Component {
     this.setState({ searchQuery: "" });
   };
 
-  handleTitle = title => {
-    this.setState({ title });
+  updateSelectedNote = note => {
+    this.setState({ selectedNote: note });
   };
 
-  populateEditor() {
-    const id = this.props.match.params.id;
-
-    if (!id) return;
-    if (!this.state.allNotes) return;
-
-    if (
-      id === "new" &&
-      this.state.editorState !== EditorState.createEmpty() &&
-      this.state.selectedNote !== null
-    ) {
-      return this.setState({
-        editorState: EditorState.createEmpty(),
-        selectedNote: null,
-        title: ""
-      });
-    }
-
-    const note = this.state.allNotes.find(n => n._id === id);
-
-    if (!note) return this.props.history.replace("/notes");
-
-    if (note && this.state.selectedNote !== note) {
-      const editorState = EditorState.createWithContent(
-        convertFromRaw(note.content)
-      );
-
-      return this.setState({
-        editorState,
-        selectedNote: note,
-        title: note.title
-      });
-    }
-  }
-
   save = () => {
-    const { allNotes, selectedNote, editorState, title } = this.state;
+    const { allNotes, selectedNote, editorState } = this.state;
     const currentEditorContent = convertToRaw(editorState.getCurrentContent());
 
     const newNote = {
-      _id: Date.now().toString(),
-      title: title,
+      _id: (selectedNote && selectedNote._id) || Date.now().toString(),
+      title: (selectedNote && selectedNote.title) || "",
       content: currentEditorContent,
       tags: (selectedNote && selectedNote.tags) || [],
       collection: (selectedNote && selectedNote.collection) || []
     };
 
-    if (selectedNote) {
-      newNote._id = selectedNote._id;
-      allNotes.splice(allNotes.indexOf(selectedNote), 1, newNote);
+    const existingIndex = allNotes.findIndex(n => n._id === selectedNote._id);
+
+    if (existingIndex !== -1) {
+      allNotes.splice(existingIndex, 1, newNote);
       this.setState({ allNotes, selectedNote: newNote });
     } else {
       allNotes.push(newNote);
@@ -139,11 +139,12 @@ class Notes extends Component {
           selectedNote={selectedNote}
         />
         <DraftEditor
-          onChange={this.onChange}
+          onEditorChange={this.onEditorChange}
           handleTitle={this.handleTitle}
           title={title}
           save={this.save}
           handleDelete={this.handleDelete}
+          updateSelectedNote={this.updateSelectedNote}
           collections={collections}
           editorState={editorState}
           selectedNote={selectedNote}

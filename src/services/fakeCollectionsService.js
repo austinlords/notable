@@ -1,4 +1,4 @@
-export const Collections = [
+export const COLLECTIONS = [
   {
     _id: "adsfasdfadsf",
     name: "Books",
@@ -17,5 +17,5 @@ export const Collections = [
 ];
 
 export function getCollection(id) {
-  return Collections.find(c => c._id === id);
+  return COLLECTIONS.find(c => c._id === id);
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { Editor, RichUtils } from "draft-js";
+import { Editor, RichUtils, convertToRaw } from "draft-js";
 import Textarea from "react-expanding-textarea";
 import EditorMenu from "./EditorMenu";
 import "../css/notes.css";
@@ -8,9 +8,6 @@ import "draft-js/dist/Draft.css";
 class DraftEditor extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      title: ""
-    };
 
     this.focus = () => this.editor.focus();
 
@@ -19,12 +16,25 @@ class DraftEditor extends React.Component {
     this.toggleInlineStyle = this._toggleInlineStyle.bind(this);
   }
 
-  componentDidMount() {}
-
-  componentDidUpdate() {
-    if (this.props.selectedNote && this.state.title === "")
-      return this.setState({ title: this.props.selectedNote.title });
-  }
+  handleTitle = title => {
+    if (this.props.selectedNote) {
+      const note = { ...this.props.selectedNote };
+      note.title = title;
+      return this.props.updateSelectedNote(note);
+    } else {
+      const currentEditorContent = convertToRaw(
+        this.props.editorState.getCurrentContent()
+      );
+      const note = {
+        _id: Date.now().toString(),
+        title: title,
+        content: currentEditorContent,
+        tags: [],
+        collection: []
+      };
+      return this.props.updateSelectedNote(note);
+    }
+  };
 
   _handleKeyCommand(command, editorState) {
     const newState = RichUtils.handleKeyCommand(editorState, command);
@@ -51,7 +61,6 @@ class DraftEditor extends React.Component {
     display: "inline-flex",
     fontFamily: "Arial, Helvetica, sans-serif",
     fontSize: "14px",
-
     margin: "auto 0px"
   };
 
@@ -71,6 +80,7 @@ class DraftEditor extends React.Component {
             handleDelete={this.props.handleDelete}
             selectedNote={this.props.selectedNote}
             collections={this.props.collections}
+            updateSelectedNote={this.props.updateSelectedNote}
           />
           <div id="stying-controls" style={this.controlsStyle}>
             <InlineStyleControls
@@ -91,8 +101,10 @@ class DraftEditor extends React.Component {
               className="textarea"
               id="title-textarea"
               placeholder="Title..."
-              value={this.props.title}
-              onChange={e => this.props.handleTitle(e.target.value)}
+              value={
+                this.props.selectedNote ? this.props.selectedNote.title : ""
+              }
+              onChange={e => this.handleTitle(e.target.value)}
             />
             <hr></hr>
           </div>
@@ -103,7 +115,7 @@ class DraftEditor extends React.Component {
               editorState={this.props.editorState}
               handleKeyCommand={this.handleKeyCommand}
               keyBindingFn={this.mapKeyToEditorCommand}
-              onChange={this.props.onChange}
+              onChange={this.props.onEditorChange}
               ref={ref => (this.editor = ref)}
               spellCheck={true}
             />

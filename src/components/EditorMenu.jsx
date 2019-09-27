@@ -43,7 +43,13 @@ class EditorMenu extends Component {
       this.setState({ tagsPopoverOpen: !this.state.tagsPopoverOpen });
   };
 
-  handleCollectionSelect = event => {};
+  handleCollectionSelect = event => {
+    console.log(event.target.value);
+    const note = { ...this.props.selectedNote };
+    note.collection = event.target.value;
+    console.log("new note", note);
+    this.props.updateSelectedNote(note);
+  };
   handleTagsSelect = event => {};
 
   render() {
@@ -101,7 +107,7 @@ class EditorMenu extends Component {
                               type="radio"
                               name="collection-choices"
                               id={c._id}
-                              value={c.name}
+                              value={{ name: c.name, color: c.color }}
                               checked={selectedNote.collection.name === c.name}
                               onChange={e => this.handleCollectionSelect(e)}
                             />
