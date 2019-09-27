@@ -93,12 +93,17 @@ class Notes extends Component {
       collection: (selectedNote && selectedNote.collection) || {}
     };
 
-    const existingIndex = allNotes.findIndex(n => n._id === selectedNote._id);
-
-    if (existingIndex !== -1) {
-      allNotes.splice(existingIndex, 1, newNote);
-      this.setState({ allNotes, selectedNote: newNote });
-    } else {
+    try {
+      const existingIndex = allNotes.findIndex(n => n._id === selectedNote._id);
+      if (existingIndex !== -1) {
+        allNotes.splice(existingIndex, 1, newNote);
+        this.setState({ allNotes, selectedNote: newNote });
+      } else {
+        allNotes.push(newNote);
+        this.setState({ allNotes, selectedNote: newNote });
+        this.props.history.replace(`/notes/${newNote._id}`);
+      }
+    } catch {
       allNotes.push(newNote);
       this.setState({ allNotes, selectedNote: newNote });
       this.props.history.replace(`/notes/${newNote._id}`);

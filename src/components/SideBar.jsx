@@ -141,6 +141,7 @@ class SideBar extends Component {
             allNotes={allNotes}
             selectedNote={selectedNote}
             searchQuery={searchQuery}
+            collections={collections}
           />
         </div>
       </div>

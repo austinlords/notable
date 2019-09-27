@@ -77,22 +77,19 @@ class EditorMenu extends Component {
           </div>
         </div>
         <div id="notes-meta-data" style={this.metaDataStyle}>
-          <div style={{ textAlign: "right", padding: "0px 10px" }}>
-            {selectedNote && (
-              <FontAwesomeIcon
-                icon={faBook}
-                style={{ transform: "rotate(-20deg)" }}
-              />
-            )}
+          <div
+            style={{ textAlign: "right", padding: "0px 10px" }}
+            id="collection-popover-link"
+            className="link-no-underline"
+          >
+            <FontAwesomeIcon
+              icon={faBook}
+              style={{ transform: "rotate(-20deg)", color: "black" }}
+            />
             <span style={{ marginLeft: "10px" }}>
               {selectedNote && (
                 <>
-                  <span
-                    id="collection-popover-link"
-                    className="link-no-underline"
-                  >
-                    {selectedNote.collection.name}
-                  </span>
+                  <span>{selectedNote.collection.name}</span>
                   <UncontrolledPopover
                     placement="bottom"
                     isOpen={this.state.collectionPopoverOpen}
@@ -118,6 +115,7 @@ class EditorMenu extends Component {
                           </label>
                         </div>
                       ))}
+                      <small>(note will save on selection)</small>
                     </PopoverBody>
                   </UncontrolledPopover>
                 </>

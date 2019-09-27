@@ -143,7 +143,7 @@ export const NOTES = [
     collection: {
       _id: "nvcxcbvtsasdg",
       name: "Other",
-      color: "gray"
+      color: "lightgray"
     },
     updated: "2019-08-11T04:05:42.426Z"
   }

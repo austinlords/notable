@@ -12,7 +12,7 @@ export const COLLECTIONS = [
   {
     _id: "nvcxcbvtsasdg",
     name: "Other",
-    color: "gray"
+    color: "lightgray"
   }
 ];
 
