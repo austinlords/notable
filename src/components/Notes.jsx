@@ -108,6 +108,15 @@ class Notes extends Component {
       this.setState({ allNotes, selectedNote: newNote });
       this.props.history.replace(`/notes/${newNote._id}`);
     }
+
+    if (
+      this.state.collections.filter(c => c._id === newNote.collection._id)
+        .length === 0
+    ) {
+      let collections = this.state.collections;
+      collections.push(newNote.collection);
+      this.setState({ collections });
+    }
   };
 
   handleDelete = () => {

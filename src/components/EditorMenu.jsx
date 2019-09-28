@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import EditorCollections from "./Collections";
+import EditorCollections from "./EditorCollections";
 import EditorTags from "./EditorTags";
 
 class EditorMenu extends Component {

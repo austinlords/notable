@@ -88,7 +88,11 @@ const NotesFilter = ({
           <span> Collection</span>
         </button>
       </div>
-      <div id="collection-filter" style={collectionTagStyle}>
+      <div
+        id="collection-filter"
+        style={collectionTagStyle}
+        key={collections.length}
+      >
         <div className="list-group clickable">
           <div
             style={dropdownTitle}

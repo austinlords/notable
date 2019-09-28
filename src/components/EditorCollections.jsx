@@ -2,10 +2,16 @@ import React, { Component } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBook } from "@fortawesome/free-solid-svg-icons";
 import { UncontrolledPopover, PopoverBody, PopoverHeader } from "reactstrap";
+import randomColor from "./../utils/randomColor";
 
 class EditorCollections extends Component {
   state = {
-    collectionPopoverOpen: false
+    collectionPopoverOpen: false,
+    newCollection: ""
+  };
+
+  onChange = event => {
+    this.setState({ newCollection: event.target.value });
   };
 
   togglePopover = () => {
@@ -19,6 +25,23 @@ class EditorCollections extends Component {
     let { color, _id } = this.props.collections.find(c => c.name === name);
     const note = { ...this.props.selectedNote };
     note.collection = { _id, name, color };
+    this.props.save(note);
+  };
+
+  pressEnter = event => {
+    if (
+      event.keyCode !== 13 ||
+      this.props.selectedNote.collection === this.state.newTag
+    )
+      return;
+
+    let note = { ...this.props.selectedNote };
+    note.collection = {
+      _id: Date.now().toString(),
+      name: this.state.newCollection,
+      color: randomColor()
+    };
+    this.setState({ newCollection: "" });
     this.props.save(note);
   };
 
@@ -64,7 +87,27 @@ class EditorCollections extends Component {
                       </label>
                     </div>
                   ))}
-                  <small>(note will save on selection)</small>
+                  <label>
+                    <small>Or create a new collection!</small>
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={this.state.newCollection}
+                    onChange={e => this.onChange(e)}
+                    placeholder="new collection..."
+                    style={{
+                      fontSize: ".9rem",
+                      lineHeight: "1",
+                      padding: "0px .75rem",
+                      width: "150px",
+                      height: "calc(2rem + 2px)"
+                    }}
+                    onKeyDown={this.pressEnter}
+                  />
+                  <small>
+                    <em>press Enter to save</em>
+                  </small>{" "}
                 </PopoverBody>
               </UncontrolledPopover>
             </>
