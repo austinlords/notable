@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import moment from "moment";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTags } from "@fortawesome/free-solid-svg-icons";
+import TagsPreview from "./common/TagsPreview";
 import config from "../config";
 
 class NotesPreview extends Component {
@@ -163,19 +162,12 @@ class NotesPreview extends Component {
                     <div style={this.previewStyle}>
                       {this.generateSearchPreview(n)}
                     </div>
-                    <small>
-                      <FontAwesomeIcon
-                        icon={faTags}
-                        style={{
-                          fontSize: "10px",
-                          opacity: "0.8",
-                          color: "slategray"
-                        }}
-                      />
-                      <span style={this.tagsStyle}>
-                        {(n.tags && n.tags.join(", ")) || "(no tags)"}
-                      </span>
-                    </small>
+                    <TagsPreview
+                      fontSize="11px"
+                      tags={n.tags}
+                      style={{ marginTop: "5px" }}
+                      iconColor="darkslateblue"
+                    />
                   </div>
                 </Link>
               </div>

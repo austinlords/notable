@@ -110,6 +110,7 @@ class Notes extends Component {
     }
 
     if (
+      newNote.collection._id &&
       this.state.collections.filter(c => c._id === newNote.collection._id)
         .length === 0
     ) {

@@ -31,7 +31,13 @@ class EditorMenu extends Component {
   };
 
   render() {
-    const { save, handleDelete, selectedNote, collections } = this.props;
+    const {
+      save,
+      handleDelete,
+      selectedNote,
+      collections,
+      editorState
+    } = this.props;
 
     return (
       <div style={this.menuStyle}>
@@ -59,8 +65,13 @@ class EditorMenu extends Component {
             selectedNote={selectedNote}
             collections={collections}
             save={save}
+            editorState={editorState}
           />
-          <EditorTags selectedNote={selectedNote} save={save} />
+          <EditorTags
+            selectedNote={selectedNote}
+            save={save}
+            editorState={editorState}
+          />
         </div>
       </div>
     );

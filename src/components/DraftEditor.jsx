@@ -30,7 +30,7 @@ class DraftEditor extends React.Component {
         title: title,
         content: currentEditorContent,
         tags: [],
-        collection: []
+        collection: {}
       };
       return this.props.updateSelectedNote(note);
     }
@@ -81,6 +81,7 @@ class DraftEditor extends React.Component {
             selectedNote={this.props.selectedNote}
             collections={this.props.collections}
             updateSelectedNote={this.props.updateSelectedNote}
+            editorState={this.props.editorState}
           />
           <div id="stying-controls" style={this.controlsStyle}>
             <InlineStyleControls

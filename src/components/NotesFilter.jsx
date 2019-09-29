@@ -88,11 +88,7 @@ const NotesFilter = ({
           <span> Collection</span>
         </button>
       </div>
-      <div
-        id="collection-filter"
-        style={collectionTagStyle}
-        key={collections.length}
-      >
+      <div id="collection-filter" style={collectionTagStyle}>
         <div className="list-group clickable">
           <div
             style={dropdownTitle}
@@ -136,9 +132,8 @@ const NotesFilter = ({
                 className="form-check-input"
                 type="radio"
                 name="collection-choices"
-                id="allCollectionInput"
                 value=""
-                checked={!collectionFilter}
+                checked={collectionFilter === ""}
                 onChange={e => handleRadioSelect(e)}
               />
               All
@@ -151,7 +146,6 @@ const NotesFilter = ({
                   className="form-check-input"
                   type="radio"
                   name="collection-choices"
-                  id={c._id}
                   value={c.name}
                   checked={collectionFilter === c.name}
                   onChange={e => handleRadioSelect(e)}

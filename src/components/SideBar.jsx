@@ -130,6 +130,7 @@ class SideBar extends Component {
           tagsFilter={this.state.tagsFilter}
           collections={collections}
           tags={tags}
+          key={collections.length}
         />
         <div className="sidebar-preview">
           <NotesSearch
