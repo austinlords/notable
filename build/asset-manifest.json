@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/notable-react/static/css/main.2f1ef8ff.chunk.css",
+    "main.js": "/notable-react/static/js/main.441bdc73.chunk.js",
+    "main.js.map": "/notable-react/static/js/main.441bdc73.chunk.js.map",
+    "runtime~main.js": "/notable-react/static/js/runtime~main.b6418689.js",
+    "runtime~main.js.map": "/notable-react/static/js/runtime~main.b6418689.js.map",
+    "static/css/2.8eac3199.chunk.css": "/notable-react/static/css/2.8eac3199.chunk.css",
+    "static/js/2.761f163b.chunk.js": "/notable-react/static/js/2.761f163b.chunk.js",
+    "static/js/2.761f163b.chunk.js.map": "/notable-react/static/js/2.761f163b.chunk.js.map",
+    "index.html": "/notable-react/index.html",
+    "precache-manifest.ae28dd5f18e19ea9d0b1634f981bc1fc.js": "/notable-react/precache-manifest.ae28dd5f18e19ea9d0b1634f981bc1fc.js",
+    "service-worker.js": "/notable-react/service-worker.js",
+    "static/css/2.8eac3199.chunk.css.map": "/notable-react/static/css/2.8eac3199.chunk.css.map",
+    "static/css/main.2f1ef8ff.chunk.css.map": "/notable-react/static/css/main.2f1ef8ff.chunk.css.map",
+    "static/media/font-awesome.css": "/notable-react/static/media/fontawesome-webfont.fee66e71.woff"
+  }
+}
