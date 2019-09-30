@@ -6,15 +6,25 @@ import {
   faCaretDown,
   faUserCircle,
   faBook,
-  faTags
+  faTags,
+  faEdit,
+  faCheckCircle
 } from "@fortawesome/free-solid-svg-icons";
-import { UncontrolledPopover, PopoverBody, PopoverHeader } from "reactstrap";
+import {
+  UncontrolledPopover,
+  PopoverBody,
+  InputGroup,
+  InputGroupAddon,
+  Input,
+  InputGroupText
+} from "reactstrap";
 import randomColor from "./../utils/randomColor";
 
 class NotesFilter extends Component {
   state = {
     collectionPopoverOpen: false,
-    newCollection: ""
+    newCollection: "",
+    editMode: false
   };
 
   onChange = event => {
@@ -25,6 +35,10 @@ class NotesFilter extends Component {
     this.setState({
       collectionPopoverOpen: !this.state.collectionPopoverOpen
     });
+  };
+
+  toggleEditMode = () => {
+    this.setState({ editMode: !this.state.editMode });
   };
 
   pressEnter = event => {
@@ -75,7 +89,8 @@ class NotesFilter extends Component {
     color: "white",
     display: "flex",
     alignItems: "flex-end",
-    padding: "0 10px"
+    padding: "0 10px",
+    justifyContent: "space-around"
   };
 
   collectionTagStyle = {
@@ -115,16 +130,38 @@ class NotesFilter extends Component {
             <div style={{ fontSize: "11px" }}>lords.austin@gmail.com</div>
           </div>
         </div>
-        <div id="add-collection" style={this.buttonSectionStyle}>
+        <div style={this.buttonSectionStyle}>
           <button
             type="button"
             className="btn btn-secondary btn-sm"
             style={{ height: "25px", fontSize: "11px" }}
             padding="2px"
+            id="add-collection"
           >
             <FontAwesomeIcon icon={faPlus} />
             <span> Collection</span>
           </button>
+          {this.state.editMode ? (
+            <button
+              className="btn btn-primary btn-sm"
+              style={{ height: "25px", fontSize: "11px" }}
+              padding="2px"
+              onClick={this.toggleEditMode}
+            >
+              <FontAwesomeIcon icon={faCheckCircle} />
+              <span> Done</span>
+            </button>
+          ) : (
+            <button
+              className="btn btn-danger btn-sm"
+              style={{ height: "25px", fontSize: "11px" }}
+              padding="2px"
+              onClick={this.toggleEditMode}
+            >
+              <FontAwesomeIcon icon={faEdit} />
+              <span> Edit</span>
+            </button>
+          )}
         </div>
         <UncontrolledPopover
           placement="bottom"
@@ -133,7 +170,6 @@ class NotesFilter extends Component {
           trigger="legacy"
           toggle={() => this.togglePopover()}
         >
-          <PopoverHeader>new collection:</PopoverHeader>
           <PopoverBody>
             <input
               type="text"
@@ -167,17 +203,10 @@ class NotesFilter extends Component {
               aria-expanded={collectionsOpen}
               aria-controls="collections"
             >
-              <div
-                style={{
-                  height: "100%",
-                  width: "100%"
-                }}
-              >
-                <FontAwesomeIcon
-                  icon={collectionsOpen ? faCaretDown : faCaretRight}
-                  className="faCaretDropdown"
-                />
-              </div>
+              <FontAwesomeIcon
+                icon={collectionsOpen ? faCaretDown : faCaretRight}
+                className="faCaretDropdown"
+              />
               <div>
                 <span>Collections </span>
                 <span style={{ paddingLeft: "10px" }}>
@@ -200,34 +229,57 @@ class NotesFilter extends Component {
               overflow: "auto"
             }}
           >
-            <div key="allCollections" className="form-check clickable">
-              <label className="form-check-label">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="collection-choices"
-                  value=""
-                  checked={collectionFilter === ""}
-                  onChange={e => handleRadioSelect(e)}
-                />
-                All
-              </label>
-            </div>
-            {collections.map(c => (
-              <div className="form-check" key={c._id}>
+            {this.state.editMode ? (
+              <div></div>
+            ) : (
+              <div key="allCollections" className="form-check clickable">
                 <label className="form-check-label">
                   <input
                     className="form-check-input"
                     type="radio"
                     name="collection-choices"
-                    value={c.name}
-                    checked={collectionFilter === c.name}
+                    value=""
+                    checked={collectionFilter === ""}
                     onChange={e => handleRadioSelect(e)}
                   />
-                  {c.name}
+                  All
                 </label>
               </div>
-            ))}
+            )}
+            {collections.map(c =>
+              this.state.editMode ? (
+                <InputGroup style={{ fontSize: "11px" }}>
+                  <InputGroupAddon
+                    addonType="prepend"
+                    style={{ backgroundColor: "red" }}
+                  >
+                    <InputGroupText style={{ fontSize: "11px" }}>
+                      delete
+                    </InputGroupText>
+                  </InputGroupAddon>
+                  <Input value={c.name} />
+                  <InputGroupAddon addonType="append">
+                    <InputGroupText style={{ backgroundColor: c.color }}>
+                      color
+                    </InputGroupText>
+                  </InputGroupAddon>
+                </InputGroup>
+              ) : (
+                <div className="form-check" key={c._id}>
+                  <label className="form-check-label">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="collection-choices"
+                      value={c.name}
+                      checked={collectionFilter === c.name}
+                      onChange={e => handleRadioSelect(e)}
+                    />
+                    {c.name}
+                  </label>
+                </div>
+              )
+            )}
           </div>
         </div>
         <div id="tags-filter" style={this.collectionTagStyle}>
@@ -240,17 +292,10 @@ class NotesFilter extends Component {
               aria-expanded="false"
               aria-controls="tags"
             >
-              <div
-                style={{
-                  height: "100%",
-                  width: "100%"
-                }}
-              >
-                <FontAwesomeIcon
-                  icon={tagsOpen ? faCaretDown : faCaretRight}
-                  className="faCaretDropdown"
-                />
-              </div>
+              <FontAwesomeIcon
+                icon={tagsOpen ? faCaretDown : faCaretRight}
+                className="faCaretDropdown"
+              />
               <div>
                 <span>Tags </span>
                 <span style={{ paddingLeft: "10px" }}>
