@@ -81,6 +81,21 @@ class Notes extends Component {
     this.setState({ selectedNote: note });
   };
 
+  updateCollections = (collection, action) => {
+    let collections = [...this.state.collections];
+
+    if (collections.includes(collection) && action === "delete")
+      return this.setState({
+        collections: collections.splice(
+          collections.findIndex(c => c._id === collection._id),
+          1
+        )
+      });
+
+    if (!collections.includes(collection) && action === "add")
+      return this.setState({ collections: [...collections, collection] });
+  };
+
   save = selectedNote => {
     const { allNotes, editorState } = this.state;
     const currentEditorContent = convertToRaw(editorState.getCurrentContent());
@@ -152,6 +167,7 @@ class Notes extends Component {
           onClear={this.handleClear}
           collections={collections}
           selectedNote={selectedNote}
+          updateCollections={this.updateCollections}
         />
         <DraftEditor
           onEditorChange={this.onEditorChange}

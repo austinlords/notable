@@ -107,7 +107,8 @@ class SideBar extends Component {
       selectedNote,
       onSearch,
       onClear,
-      collections
+      collections,
+      updateCollections
     } = this.props;
 
     let tags = [];
@@ -131,6 +132,7 @@ class SideBar extends Component {
           collections={collections}
           tags={tags}
           key={collections.length}
+          updateCollections={updateCollections}
         />
         <div className="sidebar-preview">
           <NotesSearch

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPlus,
@@ -8,19 +8,40 @@ import {
   faBook,
   faTags
 } from "@fortawesome/free-solid-svg-icons";
+import { UncontrolledPopover, PopoverBody, PopoverHeader } from "reactstrap";
+import randomColor from "./../utils/randomColor";
 
-const NotesFilter = ({
-  handleDropdownClick,
-  handleRadioSelect,
-  handleCheckboxSelect,
-  collectionsOpen,
-  tagsOpen,
-  collectionFilter,
-  tagsFilter,
-  collections,
-  tags
-}) => {
-  const filterStyle = {
+class NotesFilter extends Component {
+  state = {
+    collectionPopoverOpen: false,
+    newCollection: ""
+  };
+
+  onChange = event => {
+    this.setState({ newCollection: event.target.value });
+  };
+
+  togglePopover = () => {
+    this.setState({
+      collectionPopoverOpen: !this.state.collectionPopoverOpen
+    });
+  };
+
+  pressEnter = event => {
+    if (event.keyCode !== 13) return;
+
+    if (this.state.newCollection === "") return;
+
+    const collection = {
+      _id: Date.now().toString(),
+      name: this.state.newCollection,
+      color: randomColor()
+    };
+    this.setState({ newCollection: "" });
+    this.props.updateCollections(collection, "add");
+  };
+
+  filterStyle = {
     background: "#112",
     display: "grid",
     gridTemplateRows: "40px 60px 200px 300px",
@@ -30,7 +51,7 @@ const NotesFilter = ({
     width: "100%"
   };
 
-  const profileDivStyle = {
+  profileDivStyle = {
     background: "black",
     height: "100%",
     width: "100%",
@@ -41,14 +62,14 @@ const NotesFilter = ({
     borderRadius: "10px"
   };
 
-  const profileContentStyle = {
+  profileContentStyle = {
     display: "grid",
     gridTemplateColumns: "20% auto",
     width: "100%",
     cursor: "pointer"
   };
 
-  const buttonSectionStyle = {
+  buttonSectionStyle = {
     height: "100%",
     width: "100%",
     color: "white",
@@ -57,174 +78,219 @@ const NotesFilter = ({
     padding: "0 10px"
   };
 
-  const collectionTagStyle = {
+  collectionTagStyle = {
     marginTop: "10px",
     color: "white",
     cursor: "pointer"
   };
 
-  const dropdownTitle = {
+  dropdownTitle = {
     display: "grid",
     gridTemplateColumns: "15px auto",
     width: "100%",
     alignItems: "baseline"
   };
 
-  return (
-    <div id="filterSection" style={filterStyle}>
-      <div id="profile-preview" style={profileDivStyle}>
-        <div style={profileContentStyle}>
-          <div style={{ display: "flex", margin: "auto" }}>
-            <FontAwesomeIcon icon={faUserCircle} />
-          </div>
+  render() {
+    const {
+      handleDropdownClick,
+      handleRadioSelect,
+      handleCheckboxSelect,
+      collectionsOpen,
+      tagsOpen,
+      collectionFilter,
+      tagsFilter,
+      collections,
+      tags
+    } = this.props;
 
-          <div style={{ fontSize: "11px" }}>lords.austin@gmail.com</div>
+    return (
+      <div id="filterSection" style={this.filterStyle}>
+        <div id="profile-preview" style={this.profileDivStyle}>
+          <div style={this.profileContentStyle}>
+            <div style={{ display: "flex", margin: "auto" }}>
+              <FontAwesomeIcon icon={faUserCircle} />
+            </div>
+
+            <div style={{ fontSize: "11px" }}>lords.austin@gmail.com</div>
+          </div>
         </div>
-      </div>
-      <div id="add-collection" style={buttonSectionStyle}>
-        <button
-          type="button"
-          className="btn btn-secondary btn-sm"
-          style={{ height: "25px", fontSize: "11px" }}
-          padding="2px"
-        >
-          <FontAwesomeIcon icon={faPlus} />
-          <span> Collection</span>
-        </button>
-      </div>
-      <div id="collection-filter" style={collectionTagStyle}>
-        <div className="list-group clickable">
-          <div
-            style={dropdownTitle}
-            onClick={e => handleDropdownClick(e)}
-            data-toggle="collapse"
-            data-target="#collections"
-            aria-expanded={collectionsOpen}
-            aria-controls="collections"
+        <div id="add-collection" style={this.buttonSectionStyle}>
+          <button
+            type="button"
+            className="btn btn-secondary btn-sm"
+            style={{ height: "25px", fontSize: "11px" }}
+            padding="2px"
           >
-            <div
-              style={{
-                height: "100%",
-                width: "100%"
-              }}
-            >
-              <FontAwesomeIcon
-                icon={collectionsOpen ? faCaretDown : faCaretRight}
-                className="faCaretDropdown"
-              />
-            </div>
-            <div>
-              <span>Collections </span>
-              <span style={{ paddingLeft: "10px" }}>
-                {" "}
-                <FontAwesomeIcon
-                  icon={faBook}
-                  style={{ fontSize: "14px", transform: "rotate(-20deg)" }}
-                />
-              </span>
-            </div>
-          </div>
+            <FontAwesomeIcon icon={faPlus} />
+            <span> Collection</span>
+          </button>
         </div>
-        <div
-          className="collapse multi-collapse show"
-          id="collections"
-          style={{
-            marginLeft: "10px",
-            fontSize: "14px",
-            height: "90%",
-            overflow: "auto"
-          }}
+        <UncontrolledPopover
+          placement="bottom"
+          isOpen={this.state.collectionPopoverOpen}
+          target="add-collection"
+          trigger="legacy"
+          toggle={() => this.togglePopover()}
         >
-          <div key="allCollections" className="form-check clickable">
-            <label className="form-check-label">
-              <input
-                className="form-check-input"
-                type="radio"
-                name="collection-choices"
-                value=""
-                checked={collectionFilter === ""}
-                onChange={e => handleRadioSelect(e)}
-              />
-              All
-            </label>
+          <PopoverHeader>new collection:</PopoverHeader>
+          <PopoverBody>
+            <input
+              type="text"
+              className="form-control"
+              value={this.state.newCollection}
+              onChange={e => this.onChange(e)}
+              placeholder="new collection..."
+              style={{
+                fontSize: ".9rem",
+                marginTop: "10px",
+                lineHeight: "1",
+                padding: "0px .75rem",
+                width: "150px",
+                height: "calc(2rem + 2px)"
+              }}
+              onKeyDown={this.pressEnter}
+              autoFocus
+            />
+            <small>
+              <em>press Enter to save</em>
+            </small>{" "}
+          </PopoverBody>
+        </UncontrolledPopover>
+        <div id="collection-filter" style={this.collectionTagStyle}>
+          <div className="list-group clickable">
+            <div
+              style={this.dropdownTitle}
+              onClick={e => handleDropdownClick(e)}
+              data-toggle="collapse"
+              data-target="#collections"
+              aria-expanded={collectionsOpen}
+              aria-controls="collections"
+            >
+              <div
+                style={{
+                  height: "100%",
+                  width: "100%"
+                }}
+              >
+                <FontAwesomeIcon
+                  icon={collectionsOpen ? faCaretDown : faCaretRight}
+                  className="faCaretDropdown"
+                />
+              </div>
+              <div>
+                <span>Collections </span>
+                <span style={{ paddingLeft: "10px" }}>
+                  {" "}
+                  <FontAwesomeIcon
+                    icon={faBook}
+                    style={{ fontSize: "14px", transform: "rotate(-20deg)" }}
+                  />
+                </span>
+              </div>
+            </div>
           </div>
-          {collections.map(c => (
-            <div className="form-check" key={c._id}>
+          <div
+            className="collapse multi-collapse show"
+            id="collections"
+            style={{
+              marginLeft: "10px",
+              fontSize: "14px",
+              height: "90%",
+              overflow: "auto"
+            }}
+          >
+            <div key="allCollections" className="form-check clickable">
               <label className="form-check-label">
                 <input
                   className="form-check-input"
                   type="radio"
                   name="collection-choices"
-                  value={c.name}
-                  checked={collectionFilter === c.name}
+                  value=""
+                  checked={collectionFilter === ""}
                   onChange={e => handleRadioSelect(e)}
                 />
-                {c.name}
+                All
               </label>
             </div>
-          ))}
-        </div>
-      </div>
-      <div id="tags-filter" style={collectionTagStyle}>
-        <div className="list-group">
-          <div
-            style={dropdownTitle}
-            onClick={e => handleDropdownClick(e)}
-            data-toggle="collapse"
-            data-target="#tags"
-            aria-expanded="false"
-            aria-controls="tags"
-          >
-            <div
-              style={{
-                height: "100%",
-                width: "100%"
-              }}
-            >
-              <FontAwesomeIcon
-                icon={tagsOpen ? faCaretDown : faCaretRight}
-                className="faCaretDropdown"
-              />
-            </div>
-            <div>
-              <span>Tags </span>
-              <span style={{ paddingLeft: "10px" }}>
-                {" "}
-                <FontAwesomeIcon icon={faTags} style={{ fontSize: "12px" }} />
-              </span>
-            </div>
+            {collections.map(c => (
+              <div className="form-check" key={c._id}>
+                <label className="form-check-label">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="collection-choices"
+                    value={c.name}
+                    checked={collectionFilter === c.name}
+                    onChange={e => handleRadioSelect(e)}
+                  />
+                  {c.name}
+                </label>
+              </div>
+            ))}
           </div>
         </div>
-        <div
-          className="collapse multi-collapse show"
-          id="tags"
-          style={{
-            marginLeft: "10px",
-            fontSize: "14px",
-            height: "90%",
-            overflow: "auto"
-          }}
-        >
-          {tags.map(tag => (
-            <div className="form-check" key={tag}>
-              <label className="form-check-label">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  name="tag-choices"
-                  id={tag}
-                  value={tag}
-                  checked={tagsFilter !== [] && tagsFilter.includes(tag)}
-                  onChange={e => handleCheckboxSelect(e)}
+        <div id="tags-filter" style={this.collectionTagStyle}>
+          <div className="list-group">
+            <div
+              style={this.dropdownTitle}
+              onClick={e => handleDropdownClick(e)}
+              data-toggle="collapse"
+              data-target="#tags"
+              aria-expanded="false"
+              aria-controls="tags"
+            >
+              <div
+                style={{
+                  height: "100%",
+                  width: "100%"
+                }}
+              >
+                <FontAwesomeIcon
+                  icon={tagsOpen ? faCaretDown : faCaretRight}
+                  className="faCaretDropdown"
                 />
-                {tag}
-              </label>
+              </div>
+              <div>
+                <span>Tags </span>
+                <span style={{ paddingLeft: "10px" }}>
+                  {" "}
+                  <FontAwesomeIcon icon={faTags} style={{ fontSize: "12px" }} />
+                </span>
+              </div>
             </div>
-          ))}
+          </div>
+          <div
+            className="collapse multi-collapse show"
+            id="tags"
+            style={{
+              marginLeft: "10px",
+              fontSize: "14px",
+              height: "90%",
+              overflow: "auto"
+            }}
+          >
+            {tags.map(tag => (
+              <div className="form-check" key={tag}>
+                <label className="form-check-label">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    name="tag-choices"
+                    id={tag}
+                    value={tag}
+                    checked={tagsFilter !== [] && tagsFilter.includes(tag)}
+                    onChange={e => handleCheckboxSelect(e)}
+                  />
+                  {tag}
+                </label>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 export default NotesFilter;
