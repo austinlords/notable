@@ -6,7 +6,7 @@ const CollectionPreview = ({ fontSize, collection, style, length }) => {
   let len = length || 20;
   let colStr = collection.hasOwnProperty("name")
     ? collection.name
-    : "(add collection)";
+    : "(collection)";
 
   if (colStr.length > len) colStr = colStr.slice(0, len) + "...";
 

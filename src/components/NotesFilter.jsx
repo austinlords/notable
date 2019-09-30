@@ -23,7 +23,7 @@ const NotesFilter = ({
   const filterStyle = {
     background: "#112",
     display: "grid",
-    gridTemplateRows: "40px 60px 300px auto",
+    gridTemplateRows: "40px 60px 200px 300px",
     overflow: "auto",
     padding: "15px 5px",
     height: "100%",
@@ -53,13 +53,12 @@ const NotesFilter = ({
     width: "100%",
     color: "white",
     display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
+    alignItems: "flex-end",
     padding: "0 10px"
   };
 
   const collectionTagStyle = {
-    marginTop: "15px",
+    marginTop: "10px",
     color: "white",
     cursor: "pointer"
   };
@@ -83,7 +82,12 @@ const NotesFilter = ({
         </div>
       </div>
       <div id="add-collection" style={buttonSectionStyle}>
-        <button type="button" className="btn btn-secondary btn-sm">
+        <button
+          type="button"
+          className="btn btn-secondary btn-sm"
+          style={{ height: "25px", fontSize: "11px" }}
+          padding="2px"
+        >
           <FontAwesomeIcon icon={faPlus} />
           <span> Collection</span>
         </button>
@@ -124,7 +128,12 @@ const NotesFilter = ({
         <div
           className="collapse multi-collapse show"
           id="collections"
-          style={{ marginLeft: "10px", fontSize: "14px" }}
+          style={{
+            marginLeft: "10px",
+            fontSize: "14px",
+            height: "90%",
+            overflow: "auto"
+          }}
         >
           <div key="allCollections" className="form-check clickable">
             <label className="form-check-label">
@@ -189,7 +198,12 @@ const NotesFilter = ({
         <div
           className="collapse multi-collapse show"
           id="tags"
-          style={{ marginLeft: "10px", fontSize: "14px" }}
+          style={{
+            marginLeft: "10px",
+            fontSize: "14px",
+            height: "90%",
+            overflow: "auto"
+          }}
         >
           {tags.map(tag => (
             <div className="form-check" key={tag}>

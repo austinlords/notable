@@ -4,7 +4,7 @@ import { faTags } from "@fortawesome/free-solid-svg-icons";
 
 const TagsPreview = ({ fontSize, tags, style, length, iconColor }) => {
   let tagLen = length || 40;
-  let tagsStr = tags.length > 0 ? tags.join(", ") : "(add tags)";
+  let tagsStr = tags.length > 0 ? tags.join(", ") : "(tags)";
 
   if (tagsStr.length > tagLen) tagsStr = tagsStr.slice(0, tagLen) + "...";
 
