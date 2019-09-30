@@ -39,20 +39,20 @@ class DraftEditor extends React.Component {
   _handleKeyCommand(command, editorState) {
     const newState = RichUtils.handleKeyCommand(editorState, command);
     if (newState) {
-      this.props.onChange(newState);
+      this.props.onEditorChange(newState);
       return true;
     }
     return false;
   }
 
   _toggleBlockType(blockType) {
-    this.props.onChange(
+    this.props.onEditorChange(
       RichUtils.toggleBlockType(this.props.editorState, blockType)
     );
   }
 
   _toggleInlineStyle(inlineStyle) {
-    this.props.onChange(
+    this.props.onEditorChange(
       RichUtils.toggleInlineStyle(this.props.editorState, inlineStyle)
     );
   }
