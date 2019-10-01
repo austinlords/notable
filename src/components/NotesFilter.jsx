@@ -8,16 +8,11 @@ import {
   faBook,
   faTags,
   faEdit,
-  faCheckCircle
+  faCheckCircle,
+  faMinusCircle,
+  faFillDrip
 } from "@fortawesome/free-solid-svg-icons";
-import {
-  UncontrolledPopover,
-  PopoverBody,
-  InputGroup,
-  InputGroupAddon,
-  Input,
-  InputGroupText
-} from "reactstrap";
+import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import randomColor from "./../utils/randomColor";
 
 class NotesFilter extends Component {
@@ -248,22 +243,35 @@ class NotesFilter extends Component {
             )}
             {collections.map(c =>
               this.state.editMode ? (
-                <InputGroup style={{ fontSize: "11px" }}>
-                  <InputGroupAddon
-                    addonType="prepend"
-                    style={{ backgroundColor: "red" }}
-                  >
-                    <InputGroupText style={{ fontSize: "11px" }}>
-                      delete
-                    </InputGroupText>
-                  </InputGroupAddon>
-                  <Input value={c.name} />
-                  <InputGroupAddon addonType="append">
-                    <InputGroupText style={{ backgroundColor: c.color }}>
-                      color
-                    </InputGroupText>
-                  </InputGroupAddon>
-                </InputGroup>
+                <div className="edit-group">
+                  <div className="edit-group-prepend">
+                    <FontAwesomeIcon
+                      icon={faMinusCircle}
+                      style={{
+                        color: "red",
+                        fontSize: "14px",
+                        margin: "auto 10px auto 0px"
+                      }}
+                      value={c._id}
+                    />
+                  </div>
+                  <input
+                    type="text"
+                    className="edit-form-control"
+                    aria-label="Small"
+                    value={c.name}
+                  />
+                  <div className="edit-group-prepend">
+                    <FontAwesomeIcon
+                      icon={faFillDrip}
+                      style={{
+                        color: c.color,
+                        margin: "auto 0px auto 10px",
+                        fontSize: "14px"
+                      }}
+                    />
+                  </div>
+                </div>
               ) : (
                 <div className="form-check" key={c._id}>
                   <label className="form-check-label">
