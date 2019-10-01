@@ -133,6 +133,7 @@ class SideBar extends Component {
           tags={tags}
           key={collections.length}
           updateCollections={updateCollections}
+          allNotes={allNotes}
         />
         <div className="sidebar-preview">
           <NotesSearch

@@ -50,6 +50,14 @@ class NotesFilter extends Component {
     this.props.updateCollections(collection, "add");
   };
 
+  handleCollectionDelete = event => {
+    const collectionId = event.currentTarget.getAttribute("data");
+    let allCollections = [...this.props.collections];
+
+    let collection = allCollections.filter(c => c._id === collectionId);
+    this.props.updateCollections(collection[0], "delete");
+  };
+
   filterStyle = {
     background: "#112",
     display: "grid",
@@ -243,8 +251,12 @@ class NotesFilter extends Component {
             )}
             {collections.map(c =>
               this.state.editMode ? (
-                <div className="edit-group">
-                  <div className="edit-group-prepend">
+                <div key={c._id} className="edit-group">
+                  <div
+                    className="edit-group-prepend"
+                    data={c._id}
+                    onClick={e => this.handleCollectionDelete(e)}
+                  >
                     <FontAwesomeIcon
                       icon={faMinusCircle}
                       style={{
@@ -252,7 +264,6 @@ class NotesFilter extends Component {
                         fontSize: "14px",
                         margin: "auto 10px auto 0px"
                       }}
-                      value={c._id}
                     />
                   </div>
                   <input

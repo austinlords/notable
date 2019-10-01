@@ -84,13 +84,13 @@ class Notes extends Component {
   updateCollections = (collection, action) => {
     let collections = [...this.state.collections];
 
-    if (collections.includes(collection) && action === "delete")
-      return this.setState({
-        collections: collections.splice(
-          collections.findIndex(c => c._id === collection._id),
-          1
-        )
-      });
+    if (action === "delete") {
+      collections.splice(
+        collections.findIndex(c => c._id === collection._id),
+        1
+      );
+      return this.setState({ collections });
+    }
 
     if (!collections.includes(collection) && action === "add")
       return this.setState({ collections: [...collections, collection] });
