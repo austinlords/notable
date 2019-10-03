@@ -1,6 +1,11 @@
+:root {
+  --editor-head-height: 80px;
+}
+
 .app-page {
   width: 100%;
   height: calc(100vh - var(--navbar-height));
+  max-height: calc(100vh - var(--navbar-height));
   padding: 0;
   margin: auto;
   display: grid;
@@ -11,7 +16,6 @@
 .sidebar-preview {
   height: 100%;
   width: 100%;
-  background: #eee;
   padding: 15px 5px;
   margin: 0px;
   display: grid;
@@ -25,10 +29,10 @@
 }
 
 .editor-window {
-  background: white;
+  background: var(--floral-white);
   min-width: 600px;
   display: grid;
-  grid-template-rows: 80px auto;
+  grid-template-rows: var(--editor-head-height) auto;
   height: 100%;
 }
 
@@ -36,7 +40,7 @@
   display: grid;
   padding: 0 15px;
   grid-template-rows: 40px auto;
-  background: rgba(0, 174, 255, 0.041);
+  background: var(--light-blue);
 }
 
 .editor-menu-option {
@@ -95,6 +99,9 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
+  max-height: calc(100vh - var(--editor-head-height) - var(--navbar-height));
+  background: white;
 }
 
 .DraftEditor-root,
@@ -104,7 +111,6 @@
 
 .public-DraftEditor-content {
   height: 100%;
-  overflow-y: scroll;
   padding: 10px;
 }
 

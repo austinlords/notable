@@ -59,7 +59,6 @@ class NotesFilter extends Component {
   };
 
   filterStyle = {
-    background: "#112",
     display: "grid",
     gridTemplateRows: "40px 60px 200px 300px",
     overflow: "auto",
@@ -123,7 +122,7 @@ class NotesFilter extends Component {
     } = this.props;
 
     return (
-      <div id="filterSection" style={this.filterStyle}>
+      <div id="filterSection" style={this.filterStyle} className="bg-dark-blue">
         <div id="profile-preview" style={this.profileDivStyle}>
           <div style={this.profileContentStyle}>
             <div style={{ display: "flex", margin: "auto" }}>

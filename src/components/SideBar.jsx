@@ -22,7 +22,6 @@ class SideBar extends Component {
     display: "grid",
     gridTemplateColumns: "200px auto",
     margin: 0,
-    background: "salmon",
     width: "100%",
     height: "100%"
   };
@@ -135,7 +134,7 @@ class SideBar extends Component {
           updateCollections={updateCollections}
           allNotes={allNotes}
         />
-        <div className="sidebar-preview">
+        <div className="sidebar-preview bg-light-gray">
           <NotesSearch
             onSearch={onSearch}
             searchQuery={searchQuery}

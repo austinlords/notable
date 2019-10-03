@@ -1,5 +1,34 @@
 :root {
   --navbar-height: 45px;
+  --dark-blue: #060e13;
+  --light-blue: #f0f8ff;
+  --mint-green: #45ff91;
+  --floral-white: #fffcef;
+  --orange: #ff8c38;
+  --gray: #e8e6da;
+  --light-gray: #eee;
+}
+
+.bg-dark-blue {
+  background-color: var(--dark-blue);
+}
+.bg-light-blue {
+  background-color: var(--light-blue);
+}
+.bg-mint-green {
+  background-color: var(--mint-green);
+}
+.bg-floral-white {
+  background-color: var(--floral-white);
+}
+.bg-orange {
+  background-color: var(--orange);
+}
+.bg-gray {
+  background-color: var(--gray);
+}
+.bg-light-gray {
+  background-color: var(--light-gray);
 }
 
 .app-background {
