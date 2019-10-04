@@ -3,6 +3,8 @@ import { convertToRaw } from "draft-js";
 import { UncontrolledPopover, PopoverBody, PopoverHeader } from "reactstrap";
 import CollectionPreview from "./common/CollectionPreview";
 import randomColor from "./../utils/randomColor";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMinusCircle } from "@fortawesome/free-solid-svg-icons";
 
 class EditorCollections extends Component {
   state = {
@@ -21,11 +23,18 @@ class EditorCollections extends Component {
   };
 
   handleCollectionSelect = event => {
-    let name = event.target.value;
-    let { color, _id } = this.props.collections.find(c => c.name === name);
     const note = { ...this.props.selectedNote };
-    note.collection = { _id, name, color };
-    this.props.save(note);
+
+    if (event.currentTarget.getAttribute("data") === "delete") {
+      note.collection = {};
+      this.props.save(note);
+    } else {
+      let { color, _id, name } = this.props.collections.find(
+        c => c._id === event.target.value
+      );
+      note.collection = { _id, name, color };
+      this.props.save(note);
+    }
   };
 
   pressEnter = event => {
@@ -82,7 +91,7 @@ class EditorCollections extends Component {
                       className="form-check-input"
                       type="radio"
                       name="select-collection-choices"
-                      value={c.name}
+                      value={c._id}
                       checked={
                         selectedNote
                           ? selectedNote.collection.name === c.name
@@ -94,6 +103,23 @@ class EditorCollections extends Component {
                   </label>
                 </div>
               ))
+            ) : (
+              <div></div>
+            )}
+            {collections.length > 0 &&
+            selectedNote &&
+            selectedNote.collection.hasOwnProperty("_id") ? (
+              <div
+                className="clickable"
+                style={{ color: "red" }}
+                onClick={e => this.handleCollectionSelect(e)}
+                data="delete"
+              >
+                <FontAwesomeIcon icon={faMinusCircle} />{" "}
+                <span>
+                  <em>clear collection</em>
+                </span>
+              </div>
             ) : (
               <div></div>
             )}

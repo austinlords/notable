@@ -85,8 +85,6 @@ export const NOTES = [
       ],
       entityMap: {}
     },
-    preview:
-      "Just some notes....  Lineup Damian Lillard CJ McCollum Jusif Nurkic Kent Ba...",
     tags: ["Portland", "Sports", "Basketball"],
     collection: {
       _id: "rht5wsbsgnw",
@@ -112,7 +110,6 @@ export const NOTES = [
       ],
       entityMap: {}
     },
-    preview: "Insert some book notes here. Nothing much...",
     tags: ["Books", "History"],
     collection: {
       _id: "adsfasdfadsf",
@@ -138,7 +135,6 @@ export const NOTES = [
       ],
       entityMap: {}
     },
-    preview: "Some of the best mountain biking in Oregon.",
     tags: ["Portland", "Mountain Biking"],
     collection: {
       _id: "nvcxcbvtsasdg",

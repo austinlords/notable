@@ -83,13 +83,35 @@ class Notes extends Component {
 
   updateCollections = (collection, action) => {
     let collections = [...this.state.collections];
+    let allNotes = [...this.state.allNotes];
 
     if (action === "delete") {
       collections.splice(
         collections.findIndex(c => c._id === collection._id),
         1
       );
-      return this.setState({ collections });
+      let notesToChange = allNotes
+        .filter(n => n.collection._id === collection._id)
+        .map(n => ({
+          _id: n._id,
+          title: n.title,
+          content: n.content,
+          tags: n.tags,
+          collection: {},
+          updated: n.updated
+        }));
+
+      notesToChange.forEach(newNote => {
+        allNotes.splice(
+          allNotes.findIndex(oldNote => newNote._id === oldNote._id),
+          1,
+          newNote
+        );
+      });
+
+      console.log(notesToChange);
+
+      return this.setState({ collections, allNotes });
     }
 
     if (!collections.includes(collection) && action === "add")

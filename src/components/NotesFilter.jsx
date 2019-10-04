@@ -19,7 +19,8 @@ class NotesFilter extends Component {
   state = {
     collectionPopoverOpen: false,
     newCollection: "",
-    editMode: false
+    editMode: false,
+    editCollections: []
   };
 
   onChange = event => {
@@ -97,8 +98,7 @@ class NotesFilter extends Component {
 
   collectionTagStyle = {
     marginTop: "10px",
-    color: "white",
-    cursor: "pointer"
+    color: "white"
   };
 
   dropdownTitle = {
@@ -227,7 +227,7 @@ class NotesFilter extends Component {
             style={{
               marginLeft: "10px",
               fontSize: "14px",
-              height: "90%",
+              height: "95%",
               overflow: "auto"
             }}
           >
@@ -281,6 +281,21 @@ class NotesFilter extends Component {
                       }}
                     />
                   </div>
+                  {
+                    <span>
+                      <FontAwesomeIcon
+                        icon={faCheckCircle}
+                        style={{
+                          color: "#007bff",
+                          margin: "auto 0px auto 10px",
+                          fontSize: "14px",
+                          position: "absolute",
+                          left: "115px",
+                          top: "5px"
+                        }}
+                      />
+                    </span>
+                  }
                 </div>
               ) : (
                 <div className="form-check" key={c._id}>
