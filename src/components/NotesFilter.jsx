@@ -12,15 +12,18 @@ import {
   faMinusCircle,
   faFillDrip
 } from "@fortawesome/free-solid-svg-icons";
-import { UncontrolledPopover, PopoverBody } from "reactstrap";
+import { UncontrolledPopover, PopoverBody, PopoverHeader } from "reactstrap";
+import FilterCollectionsEdit from "./FilterCollectionsEdit";
 import randomColor from "./../utils/randomColor";
 
 class NotesFilter extends Component {
   state = {
     collectionPopoverOpen: false,
+    colorPopoverOpen: false,
     newCollection: "",
     editMode: false,
-    editCollections: []
+    editCollections: [],
+    colorChange: ""
   };
 
   onChange = event => {
@@ -34,7 +37,21 @@ class NotesFilter extends Component {
   };
 
   toggleEditMode = () => {
-    this.setState({ editMode: !this.state.editMode });
+    const currentCollections = [...this.props.collections];
+    if (!this.state.editMode) {
+      this.setState({ editMode: true, editCollections: currentCollections });
+    } else {
+      let collectionsToUpdate = this.state.editCollections.filter(
+        (c, index) => {
+          return (
+            c.name !== currentCollections[index].name ||
+            c.color !== currentCollections[index].color
+          );
+        }
+      );
+      collectionsToUpdate.forEach(c => this.props.updateCollections(c, "edit"));
+      this.setState({ editMode: !this.state.editMode });
+    }
   };
 
   pressEnter = event => {
@@ -57,6 +74,19 @@ class NotesFilter extends Component {
 
     let collection = allCollections.filter(c => c._id === collectionId);
     this.props.updateCollections(collection[0], "delete");
+  };
+
+  handleCollectionChange = (collection, index, event) => {
+    const editCollections = [...this.state.editCollections];
+    const collectionToUpdate = { ...collection };
+    collectionToUpdate.name = event.currentTarget.value;
+    editCollections.splice(index, 1, collectionToUpdate);
+
+    this.setState({ editCollections });
+  };
+
+  handleColorChange = (color, event) => {
+    this.setState({ colorChange: color.hex });
   };
 
   filterStyle = {
@@ -248,56 +278,14 @@ class NotesFilter extends Component {
                 </label>
               </div>
             )}
-            {collections.map(c =>
-              this.state.editMode ? (
-                <div key={c._id} className="edit-group">
-                  <div
-                    className="edit-group-prepend"
-                    data={c._id}
-                    onClick={e => this.handleCollectionDelete(e)}
-                  >
-                    <FontAwesomeIcon
-                      icon={faMinusCircle}
-                      style={{
-                        color: "red",
-                        fontSize: "14px",
-                        margin: "auto 10px auto 0px"
-                      }}
-                    />
-                  </div>
-                  <input
-                    type="text"
-                    className="edit-form-control"
-                    aria-label="Small"
-                    value={c.name}
-                  />
-                  <div className="edit-group-prepend">
-                    <FontAwesomeIcon
-                      icon={faFillDrip}
-                      style={{
-                        color: c.color,
-                        margin: "auto 0px auto 10px",
-                        fontSize: "14px"
-                      }}
-                    />
-                  </div>
-                  {
-                    <span>
-                      <FontAwesomeIcon
-                        icon={faCheckCircle}
-                        style={{
-                          color: "#007bff",
-                          margin: "auto 0px auto 10px",
-                          fontSize: "14px",
-                          position: "absolute",
-                          left: "115px",
-                          top: "5px"
-                        }}
-                      />
-                    </span>
-                  }
-                </div>
-              ) : (
+            {this.state.editMode ? (
+              <FilterCollectionsEdit
+                editCollections={this.state.editCollections}
+                handleCollectionChange={this.handleCollectionChange}
+                handleCollectionDelete={this.handleCollectionDelete}
+              />
+            ) : (
+              collections.map(c => (
                 <div className="form-check" key={c._id}>
                   <label className="form-check-label">
                     <input
@@ -311,7 +299,7 @@ class NotesFilter extends Component {
                     {c.name}
                   </label>
                 </div>
-              )
+              ))
             )}
           </div>
         </div>

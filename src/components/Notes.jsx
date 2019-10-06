@@ -81,41 +81,39 @@ class Notes extends Component {
     this.setState({ selectedNote: note });
   };
 
-  updateCollections = (collection, action) => {
+  updateCollections = (newCollection, action) => {
     let collections = [...this.state.collections];
     let allNotes = [...this.state.allNotes];
+    let indexToUpdate = collections.findIndex(c => c._id === newCollection._id);
 
     if (action === "delete") {
-      collections.splice(
-        collections.findIndex(c => c._id === collection._id),
-        1
-      );
-      let notesToChange = allNotes
-        .filter(n => n.collection._id === collection._id)
-        .map(n => ({
-          _id: n._id,
-          title: n.title,
-          content: n.content,
-          tags: n.tags,
-          collection: {},
-          updated: n.updated
-        }));
-
-      notesToChange.forEach(newNote => {
-        allNotes.splice(
-          allNotes.findIndex(oldNote => newNote._id === oldNote._id),
-          1,
-          newNote
-        );
-      });
-
-      console.log(notesToChange);
-
-      return this.setState({ collections, allNotes });
+      collections.splice(indexToUpdate, 1);
+    } else if (action === "edit") {
+      collections.splice(indexToUpdate, 1, newCollection);
     }
+    let notesToChange = allNotes
+      .filter(n => n.collection._id === newCollection._id)
+      .map(n => ({
+        _id: n._id,
+        title: n.title,
+        content: n.content,
+        tags: n.tags,
+        collection: action === "edit" ? newCollection : {},
+        updated: n.updated
+      }));
 
-    if (!collections.includes(collection) && action === "add")
-      return this.setState({ collections: [...collections, collection] });
+    notesToChange.forEach(newNote => {
+      allNotes.splice(
+        allNotes.findIndex(oldNote => newNote._id === oldNote._id),
+        1,
+        newNote
+      );
+    });
+
+    if (!collections.includes(newCollection) && action === "add")
+      collections.push(newCollection);
+
+    return this.setState({ collections, allNotes });
   };
 
   save = selectedNote => {
