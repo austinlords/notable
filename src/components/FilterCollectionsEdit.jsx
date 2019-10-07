@@ -52,7 +52,7 @@ class FilterCollectionsEdit extends Component {
                   <Popover id={c._id}>
                     <Popover.Title>{c.color}</Popover.Title>
                     <Popover.Content>
-                      <ColorSwatch />
+                      <ColorSwatch color={c.color} />
                     </Popover.Content>
                   </Popover>
                 </div>

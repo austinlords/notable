@@ -130,13 +130,9 @@ class NotesPreview extends Component {
                   background:
                     this.props.selectedNote &&
                     n._id === this.props.selectedNote._id
-                      ? n.collection.color
-                      : "white",
-                  border:
-                    this.props.selectedNote &&
-                    n._id === this.props.selectedNote._id
-                      ? `1px dotted ${n.collection.color}`
-                      : "none"
+                      ? (n.collection.color && n.collection.color) ||
+                        "lightgray"
+                      : "white"
                 }}
                 key={n._id}
               >
