@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPlus,
@@ -8,32 +8,18 @@ import {
   faBook,
   faTags,
   faEdit,
-  faCheckCircle,
-  faMinusCircle,
-  faFillDrip
+  faCheckCircle
 } from "@fortawesome/free-solid-svg-icons";
-import { UncontrolledPopover, PopoverBody, PopoverHeader } from "reactstrap";
+import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import FilterCollectionsEdit from "./FilterCollectionsEdit";
 import randomColor from "./../utils/randomColor";
 
 class NotesFilter extends Component {
   state = {
-    collectionPopoverOpen: false,
     colorPopoverOpen: false,
-    newCollection: "",
     editMode: false,
     editCollections: [],
     colorChange: ""
-  };
-
-  onChange = event => {
-    this.setState({ newCollection: event.target.value });
-  };
-
-  togglePopover = () => {
-    this.setState({
-      collectionPopoverOpen: !this.state.collectionPopoverOpen
-    });
   };
 
   toggleEditMode = () => {
@@ -52,20 +38,6 @@ class NotesFilter extends Component {
       collectionsToUpdate.forEach(c => this.props.updateCollections(c, "edit"));
       this.setState({ editMode: !this.state.editMode });
     }
-  };
-
-  pressEnter = event => {
-    if (event.keyCode !== 13) return;
-
-    if (this.state.newCollection === "") return;
-
-    const collection = {
-      _id: Date.now().toString(),
-      name: this.state.newCollection,
-      color: randomColor()
-    };
-    this.setState({ newCollection: "" });
-    this.props.updateCollections(collection, "add");
   };
 
   handleCollectionDelete = event => {
@@ -98,34 +70,6 @@ class NotesFilter extends Component {
     width: "100%"
   };
 
-  profileDivStyle = {
-    background: "black",
-    height: "100%",
-    width: "100%",
-    color: "white",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: "10px"
-  };
-
-  profileContentStyle = {
-    display: "grid",
-    gridTemplateColumns: "20% auto",
-    width: "100%",
-    cursor: "pointer"
-  };
-
-  buttonSectionStyle = {
-    height: "100%",
-    width: "100%",
-    color: "white",
-    display: "flex",
-    alignItems: "flex-end",
-    padding: "0 10px",
-    justifyContent: "space-around"
-  };
-
   collectionTagStyle = {
     marginTop: "10px",
     color: "white"
@@ -153,78 +97,9 @@ class NotesFilter extends Component {
 
     return (
       <div id="filterSection" style={this.filterStyle} className="bg-dark-blue">
-        <div id="profile-preview" style={this.profileDivStyle}>
-          <div style={this.profileContentStyle}>
-            <div style={{ display: "flex", margin: "auto" }}>
-              <FontAwesomeIcon icon={faUserCircle} />
-            </div>
+        <ProfileWidget />
+        <CollectionButtons updateCollections={this.props.updateCollections} />
 
-            <div style={{ fontSize: "11px" }}>lords.austin@gmail.com</div>
-          </div>
-        </div>
-        <div style={this.buttonSectionStyle}>
-          <button
-            type="button"
-            className="btn btn-secondary btn-sm"
-            style={{ height: "25px", fontSize: "11px" }}
-            padding="2px"
-            id="add-collection"
-          >
-            <FontAwesomeIcon icon={faPlus} />
-            <span> Collection</span>
-          </button>
-          {this.state.editMode ? (
-            <button
-              className="btn btn-primary btn-sm"
-              style={{ height: "25px", fontSize: "11px" }}
-              padding="2px"
-              onClick={this.toggleEditMode}
-            >
-              <FontAwesomeIcon icon={faCheckCircle} />
-              <span> Done</span>
-            </button>
-          ) : (
-            <button
-              className="btn btn-danger btn-sm"
-              style={{ height: "25px", fontSize: "11px" }}
-              padding="2px"
-              onClick={this.toggleEditMode}
-            >
-              <FontAwesomeIcon icon={faEdit} />
-              <span> Edit</span>
-            </button>
-          )}
-        </div>
-        <UncontrolledPopover
-          placement="bottom"
-          isOpen={this.state.collectionPopoverOpen}
-          target="add-collection"
-          trigger="legacy"
-          toggle={() => this.togglePopover()}
-        >
-          <PopoverBody>
-            <input
-              type="text"
-              className="form-control"
-              value={this.state.newCollection}
-              onChange={e => this.onChange(e)}
-              placeholder="new collection..."
-              style={{
-                fontSize: ".9rem",
-                marginTop: "10px",
-                lineHeight: "1",
-                padding: "0px .75rem",
-                width: "150px",
-                height: "calc(2rem + 2px)"
-              }}
-              onKeyDown={this.pressEnter}
-              autoFocus
-            />
-            <small>
-              <em>press Enter to save</em>
-            </small>{" "}
-          </PopoverBody>
-        </UncontrolledPopover>
         <div id="collection-filter" style={this.collectionTagStyle}>
           <div className="list-group clickable">
             <div
@@ -358,5 +233,136 @@ class NotesFilter extends Component {
     );
   }
 }
+
+const ProfileWidget = () => {
+  let profileDivStyle = {
+    background: "black",
+    height: "100%",
+    width: "100%",
+    color: "white",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: "10px"
+  };
+
+  let profileContentStyle = {
+    display: "grid",
+    gridTemplateColumns: "20% auto",
+    width: "100%",
+    cursor: "pointer"
+  };
+
+  return (
+    <div id="profile-preview" style={profileDivStyle}>
+      <div style={profileContentStyle}>
+        <div style={{ display: "flex", margin: "auto" }}>
+          <FontAwesomeIcon icon={faUserCircle} />
+        </div>
+        <div style={{ fontSize: "11px" }}>lords.austin@gmail.com</div>
+      </div>
+    </div>
+  );
+};
+
+const CollectionButtons = ({ updateCollections }) => {
+  let [popoverOpen, togglePopover] = useState(false);
+  let [editMode, toggleEditMode] = useState(false);
+  let [newCollection, setNewCollection] = useState("");
+
+  let pressEnter = event => {
+    if (event.keyCode !== 13) return;
+
+    if (newCollection === "") return;
+
+    const collection = {
+      _id: Date.now().toString(),
+      name: newCollection,
+      color: randomColor()
+    };
+    setNewCollection("");
+    updateCollections(collection, "add");
+  };
+
+  let style = {
+    height: "100%",
+    width: "100%",
+    color: "white",
+    display: "flex",
+    alignItems: "flex-end",
+    padding: "0 10px",
+    justifyContent: "space-around"
+  };
+
+  let buttonStyle = {
+    height: "25px",
+    fontSize: "11px",
+    padding: "2px 5px"
+  };
+
+  return (
+    <div>
+      <div style={style}>
+        <button
+          className="btn btn-secondary btn-sm"
+          style={buttonStyle}
+          id="add-collection"
+        >
+          <FontAwesomeIcon icon={faPlus} />
+          <span> Collection</span>
+        </button>
+        {editMode ? (
+          <button
+            className="btn btn-primary btn-sm"
+            style={buttonStyle}
+            onClick={() => toggleEditMode(!editMode)}
+          >
+            <FontAwesomeIcon icon={faCheckCircle} />
+            <span> Done</span>
+          </button>
+        ) : (
+          <button
+            className="btn btn-danger btn-sm"
+            style={buttonStyle}
+            onClick={() => toggleEditMode(!editMode)}
+          >
+            <FontAwesomeIcon icon={faEdit} />
+            <span> Edit</span>
+          </button>
+        )}
+      </div>
+      <UncontrolledPopover
+        placement="bottom"
+        isOpen={popoverOpen}
+        target="add-collection"
+        trigger="legacy"
+        toggle={() => togglePopover(!popoverOpen)}
+      >
+        <PopoverBody>
+          <input
+            type="text"
+            className="form-control"
+            value={newCollection}
+            onChange={e => setNewCollection(e.target.value)}
+            placeholder="new collection..."
+            style={{
+              fontSize: ".9rem",
+              marginTop: "10px",
+              lineHeight: "1",
+              padding: "0px .75rem",
+              width: "150px",
+              height: "calc(2rem + 2px)"
+            }}
+            onKeyDown={pressEnter}
+            autoFocus
+          />
+          <small>
+            <em>press Enter to save</em>
+          </small>{" "}
+        </PopoverBody>
+      </UncontrolledPopover>
+    </div>
+  );
+};
 
 export default NotesFilter;
