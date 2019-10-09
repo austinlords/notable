@@ -123,7 +123,6 @@ class SideBar extends Component {
           handleDropdownClick={this.handleDropdownClick}
           handleRadioSelect={this.handleRadioSelect}
           handleCheckboxSelect={this.handleCheckboxSelect}
-          tagsOpen={this.state.tagsOpen}
           collectionFilter={this.state.collectionFilter}
           tagsFilter={this.state.tagsFilter}
           collections={collections}

@@ -18,10 +18,8 @@ import randomColor from "./../utils/randomColor";
 
 class NotesFilter extends Component {
   state = {
-    colorPopoverOpen: false,
     editMode: false,
-    collectionsToEdit: [],
-    colorChange: ""
+    collectionsToEdit: []
   };
 
   toggleEditMode = () => {
