@@ -7,7 +7,6 @@ class SideBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      collectionsOpen: true,
       tagsOpen: true,
       collectionFilter: "",
       tagsFilter: []
@@ -124,7 +123,6 @@ class SideBar extends Component {
           handleDropdownClick={this.handleDropdownClick}
           handleRadioSelect={this.handleRadioSelect}
           handleCheckboxSelect={this.handleCheckboxSelect}
-          collectionsOpen={this.state.collectionsOpen}
           tagsOpen={this.state.tagsOpen}
           collectionFilter={this.state.collectionFilter}
           tagsFilter={this.state.tagsFilter}

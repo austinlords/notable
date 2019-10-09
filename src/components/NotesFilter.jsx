@@ -8,26 +8,28 @@ import {
   faBook,
   faTags,
   faEdit,
-  faCheckCircle
+  faCheckCircle,
+  faMinusCircle,
+  faFillDrip
 } from "@fortawesome/free-solid-svg-icons";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
-import FilterCollectionsEdit from "./FilterCollectionsEdit";
+import { Popover, OverlayTrigger } from "react-bootstrap";
 import randomColor from "./../utils/randomColor";
 
 class NotesFilter extends Component {
   state = {
     colorPopoverOpen: false,
     editMode: false,
-    editCollections: [],
+    collectionsToEdit: [],
     colorChange: ""
   };
 
   toggleEditMode = () => {
     const currentCollections = [...this.props.collections];
     if (!this.state.editMode) {
-      this.setState({ editMode: true, editCollections: currentCollections });
+      this.setState({ editMode: true, collectionsToEdit: currentCollections });
     } else {
-      let collectionsToUpdate = this.state.editCollections.filter(
+      let collectionsToUpdate = this.state.collectionsToEdit.filter(
         (c, index) => {
           return (
             c.name !== currentCollections[index].name ||
@@ -49,12 +51,12 @@ class NotesFilter extends Component {
   };
 
   handleCollectionChange = (collection, index, event) => {
-    const editCollections = [...this.state.editCollections];
+    const collectionsToEdit = [...this.state.collectionsToEdit];
     const collectionToUpdate = { ...collection };
     collectionToUpdate.name = event.currentTarget.value;
-    editCollections.splice(index, 1, collectionToUpdate);
+    collectionsToEdit.splice(index, 1, collectionToUpdate);
 
-    this.setState({ editCollections });
+    this.setState({ collectionsToEdit });
   };
 
   handleColorChange = (color, event) => {
@@ -70,25 +72,10 @@ class NotesFilter extends Component {
     width: "100%"
   };
 
-  collectionTagStyle = {
-    marginTop: "10px",
-    color: "white"
-  };
-
-  dropdownTitle = {
-    display: "grid",
-    gridTemplateColumns: "15px auto",
-    width: "100%",
-    alignItems: "baseline"
-  };
-
   render() {
     const {
-      handleDropdownClick,
       handleRadioSelect,
       handleCheckboxSelect,
-      collectionsOpen,
-      tagsOpen,
       collectionFilter,
       tagsFilter,
       collections,
@@ -97,144 +84,33 @@ class NotesFilter extends Component {
 
     return (
       <div id="filterSection" style={this.filterStyle} className="bg-dark-blue">
-        <ProfileWidget />
-        <CollectionButtons updateCollections={this.props.updateCollections} />
-
-        <div id="collection-filter" style={this.collectionTagStyle}>
-          <div className="list-group clickable">
-            <div
-              style={this.dropdownTitle}
-              onClick={e => handleDropdownClick(e)}
-              data-toggle="collapse"
-              data-target="#collections"
-              aria-expanded={collectionsOpen}
-              aria-controls="collections"
-            >
-              <FontAwesomeIcon
-                icon={collectionsOpen ? faCaretDown : faCaretRight}
-                className="faCaretDropdown"
-              />
-              <div>
-                <span>Collections </span>
-                <span style={{ paddingLeft: "10px" }}>
-                  {" "}
-                  <FontAwesomeIcon
-                    icon={faBook}
-                    style={{ fontSize: "14px", transform: "rotate(-20deg)" }}
-                  />
-                </span>
-              </div>
-            </div>
-          </div>
-          <div
-            className="collapse multi-collapse show"
-            id="collections"
-            style={{
-              marginLeft: "10px",
-              fontSize: "14px",
-              height: "95%",
-              overflow: "auto"
-            }}
-          >
-            {this.state.editMode ? (
-              <div></div>
-            ) : (
-              <div key="allCollections" className="form-check clickable">
-                <label className="form-check-label">
-                  <input
-                    className="form-check-input"
-                    type="radio"
-                    name="collection-choices"
-                    value=""
-                    checked={collectionFilter === ""}
-                    onChange={e => handleRadioSelect(e)}
-                  />
-                  All
-                </label>
-              </div>
-            )}
-            {this.state.editMode ? (
-              <FilterCollectionsEdit
-                editCollections={this.state.editCollections}
-                handleCollectionChange={this.handleCollectionChange}
-                handleCollectionDelete={this.handleCollectionDelete}
-              />
-            ) : (
-              collections.map(c => (
-                <div className="form-check" key={c._id}>
-                  <label className="form-check-label">
-                    <input
-                      className="form-check-input"
-                      type="radio"
-                      name="collection-choices"
-                      value={c.name}
-                      checked={collectionFilter === c.name}
-                      onChange={e => handleRadioSelect(e)}
-                    />
-                    {c.name}
-                  </label>
-                </div>
-              ))
-            )}
-          </div>
-        </div>
-        <div id="tags-filter" style={this.collectionTagStyle}>
-          <div className="list-group">
-            <div
-              style={this.dropdownTitle}
-              onClick={e => handleDropdownClick(e)}
-              data-toggle="collapse"
-              data-target="#tags"
-              aria-expanded="false"
-              aria-controls="tags"
-            >
-              <FontAwesomeIcon
-                icon={tagsOpen ? faCaretDown : faCaretRight}
-                className="faCaretDropdown"
-              />
-              <div>
-                <span>Tags </span>
-                <span style={{ paddingLeft: "10px" }}>
-                  {" "}
-                  <FontAwesomeIcon icon={faTags} style={{ fontSize: "12px" }} />
-                </span>
-              </div>
-            </div>
-          </div>
-          <div
-            className="collapse multi-collapse show"
-            id="tags"
-            style={{
-              marginLeft: "10px",
-              fontSize: "14px",
-              height: "90%",
-              overflow: "auto"
-            }}
-          >
-            {tags.map(tag => (
-              <div className="form-check" key={tag}>
-                <label className="form-check-label">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    name="tag-choices"
-                    id={tag}
-                    value={tag}
-                    checked={tagsFilter !== [] && tagsFilter.includes(tag)}
-                    onChange={e => handleCheckboxSelect(e)}
-                  />
-                  {tag}
-                </label>
-              </div>
-            ))}
-          </div>
-        </div>
+        <Profile />
+        <Buttons
+          updateCollections={this.props.updateCollections}
+          editMode={this.state.editMode}
+          toggleEditMode={this.toggleEditMode}
+        />
+        <CollectionFilter
+          toggleEditMode={this.toggleEditMode}
+          editMode={this.state.editMode}
+          handleRadioSelect={handleRadioSelect}
+          handleCollectionChange={this.handleCollectionChange}
+          handleCollectionDelete={this.handleCollectionDelete}
+          collections={collections}
+          collectionFilter={collectionFilter}
+          collectionsToEdit={this.state.collectionsToEdit}
+        />
+        <TagFilter
+          tags={tags}
+          tagsFilter={tagsFilter}
+          handleCheckboxSelect={handleCheckboxSelect}
+        />
       </div>
     );
   }
 }
 
-const ProfileWidget = () => {
+const Profile = () => {
   let profileDivStyle = {
     background: "black",
     height: "100%",
@@ -265,9 +141,8 @@ const ProfileWidget = () => {
   );
 };
 
-const CollectionButtons = ({ updateCollections }) => {
+const Buttons = ({ updateCollections, toggleEditMode, editMode }) => {
   let [popoverOpen, togglePopover] = useState(false);
-  let [editMode, toggleEditMode] = useState(false);
   let [newCollection, setNewCollection] = useState("");
 
   let pressEnter = event => {
@@ -315,7 +190,7 @@ const CollectionButtons = ({ updateCollections }) => {
           <button
             className="btn btn-primary btn-sm"
             style={buttonStyle}
-            onClick={() => toggleEditMode(!editMode)}
+            onClick={() => toggleEditMode()}
           >
             <FontAwesomeIcon icon={faCheckCircle} />
             <span> Done</span>
@@ -324,7 +199,7 @@ const CollectionButtons = ({ updateCollections }) => {
           <button
             className="btn btn-danger btn-sm"
             style={buttonStyle}
-            onClick={() => toggleEditMode(!editMode)}
+            onClick={() => toggleEditMode()}
           >
             <FontAwesomeIcon icon={faEdit} />
             <span> Edit</span>
@@ -362,6 +237,284 @@ const CollectionButtons = ({ updateCollections }) => {
         </PopoverBody>
       </UncontrolledPopover>
     </div>
+  );
+};
+
+let collectionTagStyle = {
+  marginTop: "10px",
+  color: "white"
+};
+
+let dropdownTitle = {
+  display: "grid",
+  gridTemplateColumns: "15px auto",
+  width: "100%",
+  alignItems: "baseline"
+};
+
+const CollectionFilter = ({
+  editMode,
+  handleRadioSelect,
+  handleCollectionChange,
+  handleCollectionDelete,
+  collections,
+  collectionFilter,
+  collectionsToEdit
+}) => {
+  let [dropdownOpen, setDropdownOpen] = useState(true);
+
+  return (
+    <div id="collection-filter" style={collectionTagStyle}>
+      <div className="list-group clickable">
+        <div
+          style={dropdownTitle}
+          onClick={() => setDropdownOpen(!dropdownOpen)}
+          data-toggle="collapse"
+          data-target="#collections"
+          aria-expanded={dropdownOpen}
+          aria-controls="collections"
+        >
+          <FontAwesomeIcon
+            icon={dropdownOpen ? faCaretDown : faCaretRight}
+            className="faCaretDropdown"
+          />
+          <div>
+            <span>Collections </span>
+            <span style={{ paddingLeft: "10px" }}>
+              {" "}
+              <FontAwesomeIcon
+                icon={faBook}
+                style={{ fontSize: "14px", transform: "rotate(-20deg)" }}
+              />
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        className="collapse multi-collapse show"
+        id="collections"
+        style={{
+          marginLeft: "10px",
+          fontSize: "14px",
+          height: "95%",
+          overflow: "auto"
+        }}
+      >
+        {editMode ? (
+          <div></div>
+        ) : (
+          <div key="allCollections" className="form-check clickable">
+            <label className="form-check-label">
+              <input
+                className="form-check-input"
+                type="radio"
+                name="collection-choices"
+                value=""
+                checked={collectionFilter === ""}
+                onChange={e => handleRadioSelect(e)}
+              />
+              All
+            </label>
+          </div>
+        )}
+        {editMode ? (
+          <EditCollections
+            collectionsToEdit={collectionsToEdit}
+            handleCollectionChange={handleCollectionChange}
+            handleCollectionDelete={handleCollectionDelete}
+          />
+        ) : (
+          collections.map(c => (
+            <div className="form-check" key={c._id}>
+              <label className="form-check-label">
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  name="collection-choices"
+                  value={c.name}
+                  checked={collectionFilter === c.name}
+                  onChange={e => handleRadioSelect(e)}
+                />
+                {c.name}
+              </label>
+            </div>
+          ))
+        )}
+      </div>
+    </div>
+  );
+};
+
+const TagFilter = ({ tags, tagsFilter, handleCheckboxSelect }) => {
+  let [dropdownOpen, setDropdownOpen] = useState(true);
+
+  return (
+    <div id="tags-filter" style={collectionTagStyle}>
+      <div className="list-group clickable">
+        <div
+          style={dropdownTitle}
+          onClick={() => setDropdownOpen(!dropdownOpen)}
+          data-toggle="collapse"
+          data-target="#tags"
+          aria-expanded={dropdownOpen}
+          aria-controls="tags"
+        >
+          <FontAwesomeIcon
+            icon={dropdownOpen ? faCaretDown : faCaretRight}
+            className="faCaretDropdown"
+          />
+          <div>
+            <span>Tags </span>
+            <span style={{ paddingLeft: "10px" }}>
+              {" "}
+              <FontAwesomeIcon icon={faTags} style={{ fontSize: "12px" }} />
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        className="collapse multi-collapse show"
+        id="tags"
+        style={{
+          marginLeft: "10px",
+          fontSize: "14px",
+          height: "90%",
+          overflow: "auto"
+        }}
+      >
+        {tags.map(tag => (
+          <div className="form-check" key={tag}>
+            <label className="form-check-label">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                name="tag-choices"
+                id={tag}
+                value={tag}
+                checked={tagsFilter !== [] && tagsFilter.includes(tag)}
+                onChange={e => handleCheckboxSelect(e)}
+              />
+              {tag}
+            </label>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const EditCollections = ({
+  collectionsToEdit,
+  handleCollectionChange,
+  handleCollectionDelete
+}) => {
+  return (
+    <div>
+      {collectionsToEdit.map((c, i) => (
+        <div key={c._id} className="edit-group">
+          <div
+            className="edit-group-prepend"
+            data={c._id}
+            onClick={e => handleCollectionDelete(e)}
+          >
+            <FontAwesomeIcon
+              icon={faMinusCircle}
+              style={{
+                color: "red",
+                fontSize: "14px",
+                margin: "auto 10px auto 0px"
+              }}
+              className="clickable"
+            />
+          </div>
+          <input
+            type="text"
+            className="edit-form-control"
+            aria-label="Small"
+            value={c.name}
+            onChange={e => handleCollectionChange(c, i, e)}
+          />
+          <EditColor color={c.color} collection={c} />
+        </div>
+      ))}
+    </div>
+  );
+};
+
+const EditColor = ({ color, collection }) => {
+  const [colors, setColor] = useState([
+    "#BCAAA4",
+    "#EF9A9A",
+    "#C5E1A5",
+    "#FFCC80",
+    "#CE93D8",
+    "#4FC3F7"
+  ]);
+  const [activeColor, setActiveColor] = useState(color);
+
+  const componentStyle = {
+    width: "180px",
+    height: "60px",
+    display: "grid",
+    gridTemplateRows: "30px 30px",
+    gridTemplateColumns: "auto"
+  };
+
+  const divStyle = {
+    width: "180px",
+    height: "30px",
+    display: "grid",
+    gridTemplateColumns: "repeat(6, 30px)"
+  };
+
+  const swatchStyle = {
+    width: "100%",
+    height: "100%",
+    padding: "2px"
+  };
+
+  return (
+    <OverlayTrigger
+      trigger="click"
+      placement="top"
+      rootClose
+      overlay={
+        <div>
+          <Popover id={collection._id}>
+            <Popover.Title>{collection.color}</Popover.Title>
+            <Popover.Content>
+              <div style={componentStyle}>
+                <div style={divStyle}>
+                  {colors.map(c => (
+                    <div style={swatchStyle} key={c}>
+                      <div
+                        style={{ backgroundColor: c }}
+                        className="w100 h100 hover-grow-10 clickable"
+                        data={c}
+                        onClick={() => setActiveColor()}
+                      ></div>
+                    </div>
+                  ))}
+                </div>
+                <div></div>
+              </div>
+            </Popover.Content>
+          </Popover>
+        </div>
+      }
+    >
+      <div className="edit-group-prepend">
+        <FontAwesomeIcon
+          icon={faFillDrip}
+          style={{
+            color: collection.color,
+            margin: "auto 0px auto 10px",
+            fontSize: "14px"
+          }}
+          className="clickable"
+        />
+      </div>
+    </OverlayTrigger>
   );
 };
 
