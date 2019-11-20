@@ -1,12 +1,12 @@
-# Notable: A simple note-taking web application
+# Notable: A full-feature note-taking web application
 
-## Built with React.js -> Node.js (Express) -> MongoDB
+## Built with React.js
 
-Currently in production.
+Front-end is now beta-testing! You can view a live demo of the web app with dummy-data here: https://www.austinlords.com/notable-react. 
 
-This web app will allow you to create rich-text notes. Your entire library will be instantly searchable by keyword and can be filtered by tags, topics, or medium.
+This web app will allow you to create rich-text notes. Your entire library will be instantly searchable and can be filtered by collections or tags.
 
-Instructions for use will be uploaded when project is deployed.
+Any and all feedback is welcome.
 
 Cheers,
 Austin

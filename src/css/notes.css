@@ -188,3 +188,7 @@
   left: 15px !important;
   top: -5px !important;
 }
+
+.list-group-item-action:hover {
+  z-index: auto !important;
+}

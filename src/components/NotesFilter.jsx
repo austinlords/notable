@@ -48,10 +48,14 @@ class NotesFilter extends Component {
     this.props.updateCollections(collection[0], "delete");
   };
 
-  handleCollectionChange = (collection, index, event) => {
+  handleCollectionEdit = (type, collection, index, value) => {
     const collectionsToEdit = [...this.state.collectionsToEdit];
     const collectionToUpdate = { ...collection };
-    collectionToUpdate.name = event.currentTarget.value;
+
+    if (type === "name") collectionToUpdate.name = value;
+
+    if (type === "color") collectionToUpdate.color = value;
+
     collectionsToEdit.splice(index, 1, collectionToUpdate);
 
     this.setState({ collectionsToEdit });
@@ -92,7 +96,7 @@ class NotesFilter extends Component {
           toggleEditMode={this.toggleEditMode}
           editMode={this.state.editMode}
           handleRadioSelect={handleRadioSelect}
-          handleCollectionChange={this.handleCollectionChange}
+          handleCollectionEdit={this.handleCollectionEdit}
           handleCollectionDelete={this.handleCollectionDelete}
           collections={collections}
           collectionFilter={collectionFilter}
@@ -253,7 +257,7 @@ let dropdownTitle = {
 const CollectionFilter = ({
   editMode,
   handleRadioSelect,
-  handleCollectionChange,
+  handleCollectionEdit,
   handleCollectionDelete,
   collections,
   collectionFilter,
@@ -318,7 +322,7 @@ const CollectionFilter = ({
         {editMode ? (
           <EditCollections
             collectionsToEdit={collectionsToEdit}
-            handleCollectionChange={handleCollectionChange}
+            handleCollectionEdit={handleCollectionEdit}
             handleCollectionDelete={handleCollectionDelete}
           />
         ) : (
@@ -403,7 +407,7 @@ const TagFilter = ({ tags, tagsFilter, handleCheckboxSelect }) => {
 
 const EditCollections = ({
   collectionsToEdit,
-  handleCollectionChange,
+  handleCollectionEdit,
   handleCollectionDelete
 }) => {
   return (
@@ -430,17 +434,22 @@ const EditCollections = ({
             className="edit-form-control"
             aria-label="Small"
             value={c.name}
-            onChange={e => handleCollectionChange(c, i, e)}
+            onChange={e => handleCollectionEdit("name", c, i, e.target.value)}
           />
-          <EditColor color={c.color} collection={c} />
+          <EditColor
+            color={c.color}
+            collection={c}
+            handleCollectionEdit={handleCollectionEdit}
+            index={i}
+          />
         </div>
       ))}
     </div>
   );
 };
 
-const EditColor = ({ color, collection }) => {
-  const [colors, setColor] = useState([
+const EditColor = ({ color, collection, handleCollectionEdit, index }) => {
+  const [colors, setColors] = useState([
     "#BCAAA4",
     "#EF9A9A",
     "#C5E1A5",
@@ -448,13 +457,13 @@ const EditColor = ({ color, collection }) => {
     "#CE93D8",
     "#4FC3F7"
   ]);
-  const [activeColor, setActiveColor] = useState(color);
+  const [newColor, setNewColor] = useState("");
 
   const componentStyle = {
     width: "180px",
-    height: "60px",
+    height: "70px",
     display: "grid",
-    gridTemplateRows: "30px 30px",
+    gridTemplateRows: "30px 40px",
     gridTemplateColumns: "auto"
   };
 
@@ -478,8 +487,10 @@ const EditColor = ({ color, collection }) => {
       rootClose
       overlay={
         <div>
-          <Popover id={collection._id}>
-            <Popover.Title>{collection.color}</Popover.Title>
+          <Popover id={collection._id} style={{ border: `3px solid ${color}` }}>
+            <Popover.Title>
+              selected: <em>{color}</em>
+            </Popover.Title>
             <Popover.Content>
               <div style={componentStyle}>
                 <div style={divStyle}>
@@ -488,13 +499,66 @@ const EditColor = ({ color, collection }) => {
                       <div
                         style={{ backgroundColor: c }}
                         className="w100 h100 hover-grow-10 clickable"
-                        data={c}
-                        onClick={() => setActiveColor()}
+                        onClick={() =>
+                          handleCollectionEdit("color", collection, index, c)
+                        }
                       ></div>
                     </div>
                   ))}
                 </div>
-                <div></div>
+                <div
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    display: "grid",
+                    gridTemplateColumns: "40% 60% auto"
+                  }}
+                >
+                  <button
+                    className="btn btn-small btn-info"
+                    style={{
+                      padding: "2px 5px",
+                      fontSize: "12px",
+                      margin: "auto"
+                    }}
+                    onClick={() => setColors(colors.map(() => randomColor()))}
+                  >
+                    random!
+                  </button>
+                  <input
+                    className="form-control"
+                    placeholder="hex key..."
+                    value={newColor}
+                    onChange={e => setNewColor(e.target.value)}
+                    type="text"
+                    maxLength="6"
+                    style={{
+                      margin: "auto",
+                      padding: "2px 25px 2px 5px",
+                      height: "auto",
+                      fontSize: "12px"
+                    }}
+                  />
+                  <FontAwesomeIcon
+                    icon={faCheckCircle}
+                    style={{
+                      margin: "auto",
+                      position: "relative",
+                      left: "-20px",
+                      color: "blue",
+                      fontSize: "16px"
+                    }}
+                    className="clickable hover-grow-10"
+                    onClick={() =>
+                      handleCollectionEdit(
+                        "color",
+                        collection,
+                        index,
+                        "#" + newColor
+                      )
+                    }
+                  />
+                </div>
               </div>
             </Popover.Content>
           </Popover>
