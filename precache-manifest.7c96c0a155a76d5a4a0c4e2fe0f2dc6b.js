@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "9beeb74c6de94b5e34d904862bb9ac44",
+    "revision": "176e2b07b30bbc8fb47f54a3b1731823",
     "url": "/notable-react/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/notable-react/static/css/2.6ee9977c.chunk.css"
   },
   {
-    "revision": "2aeac1f80d080dbfbaff",
+    "revision": "04b336b1aa1f54977b9e",
     "url": "/notable-react/static/css/main.239f8cb8.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/notable-react/static/js/2.82b02c6b.chunk.js"
   },
   {
-    "revision": "2aeac1f80d080dbfbaff",
-    "url": "/notable-react/static/js/main.f70ff64b.chunk.js"
+    "revision": "04b336b1aa1f54977b9e",
+    "url": "/notable-react/static/js/main.95064485.chunk.js"
   },
   {
     "revision": "d06482bdba81331533ae",
