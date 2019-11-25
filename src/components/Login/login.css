@@ -1,0 +1,41 @@
+.background {
+  background: linear-gradient(
+    149deg,
+    rgba(0, 44, 255, 1) 0%,
+    rgba(68, 177, 246, 1) 50%,
+    rgba(90, 235, 255, 1) 100%
+  );
+}
+
+#signInForm > input {
+  font-size: 0.9rem;
+  height: calc(1em + 0.75rem + 2px);
+}
+
+#signInForm > button {
+  font-size: 0.9rem;
+  height: calc(0.8em + 0.75rem + 2px);
+  padding: 2px 10px;
+}
+
+.masthead {
+  height: 100vh;
+  width: 100%;
+  margin-top: 0px;
+}
+
+#masthead-heading {
+  margin: 0px auto 50px auto;
+  padding-top: 30px;
+  color: white;
+  text-align: center;
+}
+
+#signUpForm {
+  max-width: 500px;
+  margin: 30px auto;
+  background-color: white;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 5px 5px 5px -3px black;
+}

@@ -15,7 +15,8 @@ class Notes extends Component {
       editorState: EditorState.createEmpty(),
       selectedNote: null,
       searchQuery: "",
-      collections: []
+      collections: [],
+      user: props.user
     };
 
     this.onEditorChange = editorState => {
@@ -174,7 +175,8 @@ class Notes extends Component {
       searchQuery,
       collections,
       selectedNote,
-      title
+      title,
+      user
     } = this.state;
 
     return (
@@ -188,6 +190,7 @@ class Notes extends Component {
           collections={collections}
           selectedNote={selectedNote}
           updateCollections={this.updateCollections}
+          user={user}
         />
         <DraftEditor
           onEditorChange={this.onEditorChange}

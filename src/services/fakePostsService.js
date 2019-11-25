@@ -116,7 +116,8 @@ export const NOTES = [
       name: "Books",
       color: "cyan"
     },
-    updated: "2019-03-11T04:05:42.426Z"
+    updated: "2019-03-11T04:05:42.426Z",
+    user: "lords.austin@gmail.com"
   },
   {
     _id: "thtrjsbehrytu5667s5335y",

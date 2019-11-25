@@ -1,4 +1,4 @@
 module.exports = {
-  apiUrl: "http://localhost:4000/api",
+  apiUrl: "https://notes-notable.herokuapp.com/api/",
   notesPreviewLength: 75
 };

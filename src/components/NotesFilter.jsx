@@ -81,12 +81,13 @@ class NotesFilter extends Component {
       collectionFilter,
       tagsFilter,
       collections,
-      tags
+      tags,
+      user
     } = this.props;
 
     return (
       <div id="filterSection" style={this.filterStyle} className="bg-dark-blue">
-        <Profile />
+        <Profile user={user} />
         <Buttons
           updateCollections={this.props.updateCollections}
           editMode={this.state.editMode}
@@ -112,7 +113,7 @@ class NotesFilter extends Component {
   }
 }
 
-const Profile = () => {
+const Profile = ({ user }) => {
   let profileDivStyle = {
     background: "black",
     height: "100%",
@@ -137,7 +138,7 @@ const Profile = () => {
         <div style={{ display: "flex", margin: "auto" }}>
           <FontAwesomeIcon icon={faUserCircle} />
         </div>
-        <div style={{ fontSize: "11px" }}>lords.austin@gmail.com</div>
+        <div style={{ fontSize: "11px" }}>{user.email}</div>
       </div>
     </div>
   );
