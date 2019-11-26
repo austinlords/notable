@@ -31,9 +31,6 @@ const Login = props => {
 
       props.authenticator(user);
       setUser(user);
-
-      console.log("response from server: ", response);
-      console.log("body response", user);
     } catch (error) {
       console.log("network error: ", error);
     }
