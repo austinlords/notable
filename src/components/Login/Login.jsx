@@ -1,38 +1,22 @@
 import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { toast } from "react-toastify";
+import { login } from "../../services/auth";
 import "./login.css";
-import config from "../../config";
 
-const Login = props => {
+const Login = ({ user, updateUser }) => {
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
-  let [user, setUser] = useState(null);
 
   const handleLogin = async event => {
     event.preventDefault();
     try {
-      const response = await fetch(`${config.apiUrl}login`, {
-        method: "POST",
-        body: JSON.stringify({
-          email: email.trim().toLowerCase(),
-          password: password.trim()
-        }),
-        mode: "cors",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json"
-        }
-      });
-      const user = await response.json();
-      if (response.status !== 200) {
-        return toast.error(user.message);
+      let newUser = await login(email, password);
+      if (newUser) {
+        updateUser(newUser);
       }
-
-      props.authenticator(user);
-      setUser(user);
     } catch (error) {
-      console.log("network error: ", error);
+      toast.error(error);
     }
   };
 

@@ -138,7 +138,7 @@ const Profile = ({ user }) => {
         <div style={{ display: "flex", margin: "auto" }}>
           <FontAwesomeIcon icon={faUserCircle} />
         </div>
-        <div style={{ fontSize: "11px" }}>{user.email}</div>
+        <div style={{ fontSize: "11px" }}>{user && user.email}</div>
       </div>
     </div>
   );
