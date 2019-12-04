@@ -14,6 +14,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import { Popover, OverlayTrigger } from "react-bootstrap";
+import AppContext from "../context/AppContext";
 import randomColor from "./../utils/randomColor";
 
 class NotesFilter extends Component {
@@ -81,13 +82,12 @@ class NotesFilter extends Component {
       collectionFilter,
       tagsFilter,
       collections,
-      tags,
-      user
+      tags
     } = this.props;
 
     return (
       <div id="filterSection" style={this.filterStyle} className="bg-dark-blue">
-        <Profile user={user} />
+        <Profile />
         <Buttons
           updateCollections={this.props.updateCollections}
           editMode={this.state.editMode}
@@ -113,7 +113,7 @@ class NotesFilter extends Component {
   }
 }
 
-const Profile = ({ user }) => {
+const Profile = () => {
   let profileDivStyle = {
     background: "black",
     height: "100%",
@@ -133,14 +133,20 @@ const Profile = ({ user }) => {
   };
 
   return (
-    <div id="profile-preview" style={profileDivStyle}>
-      <div style={profileContentStyle}>
-        <div style={{ display: "flex", margin: "auto" }}>
-          <FontAwesomeIcon icon={faUserCircle} />
+    <AppContext.Consumer>
+      {value => (
+        <div id="profile-preview" style={profileDivStyle}>
+          <div style={profileContentStyle}>
+            <div style={{ display: "flex", margin: "auto" }}>
+              <FontAwesomeIcon icon={faUserCircle} />
+            </div>
+            <div style={{ fontSize: "11px" }}>
+              {(value.user && value.user.email) || "DEMO MODE (no user)"}
+            </div>
+          </div>
         </div>
-        <div style={{ fontSize: "11px" }}>{user && user.email}</div>
-      </div>
-    </div>
+      )}
+    </AppContext.Consumer>
   );
 };
 

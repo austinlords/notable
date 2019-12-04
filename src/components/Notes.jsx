@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import DraftEditor from "./DraftEditor";
 import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
 import SideBar from "./SideBar";
-import { NOTES } from "../services/fakePostsService";
+import { getNotes } from "../services/notesService";
+import { ALLNOTES } from "../services/fakePostsService";
 import { COLLECTIONS } from "../services/fakeCollectionsService";
 import "../css/notes.css";
 
@@ -15,8 +16,7 @@ class Notes extends Component {
       editorState: EditorState.createEmpty(),
       selectedNote: null,
       searchQuery: "",
-      collections: [],
-      user: props.user
+      collections: []
     };
 
     this.onEditorChange = editorState => {
@@ -24,8 +24,14 @@ class Notes extends Component {
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const id = this.props.match.params.id || null;
+
+    try {
+      var NOTES = await getNotes();
+    } catch (err) {
+      NOTES = ALLNOTES;
+    }
 
     if (!id || !NOTES)
       return this.setState({ allNotes: NOTES, collections: COLLECTIONS });
@@ -175,8 +181,7 @@ class Notes extends Component {
       searchQuery,
       collections,
       selectedNote,
-      title,
-      user
+      title
     } = this.state;
 
     return (
@@ -190,7 +195,6 @@ class Notes extends Component {
           collections={collections}
           selectedNote={selectedNote}
           updateCollections={this.updateCollections}
-          user={user}
         />
         <DraftEditor
           onEditorChange={this.onEditorChange}

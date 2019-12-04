@@ -6,6 +6,7 @@ import Notes from "./components/Notes";
 import Login from "./components/Login/Login";
 import Register from "./components/Login/Register";
 import { validateUser } from "./services/auth";
+import AppContext from "./context/AppContext";
 import "react-toastify/dist/ReactToastify.min.css";
 import "./css/App.css";
 
@@ -37,53 +38,60 @@ class App extends Component {
 
     return (
       <React.Fragment>
-        <ToastContainer />
-        <NavBar user={this.state.user} updateUser={this.updateUser} />
-        <main className="app-background">
-          <Switch>
-            <Route
-              path="/notes/:id"
-              render={props => (
-                <Notes
-                  user={this.state.user}
-                  updateUser={this.updateUser}
-                  {...props}
-                />
-              )}
-            />
-            <Route
-              path="/notes"
-              render={props => (
-                <Notes
-                  user={this.state.user}
-                  updateUser={this.updateUser}
-                  {...props}
-                />
-              )}
-            />
-            <Route
-              path="/login"
-              render={props => (
-                <Login
-                  user={this.state.user}
-                  updateUser={this.updateUser}
-                  {...props}
-                />
-              )}
-            />
-            <Route
-              path="/register"
-              render={props => (
-                <Register
-                  user={this.state.user}
-                  updateUser={this.updateUser}
-                  {...props}
-                />
-              )}
-            />
-            <Redirect from="/" exact to="/notes" />
-          </Switch>
-        </main>
+        <AppContext.Provider
+          value={{
+            user: this.state.user,
+            updateUser: this.updateUser
+          }}
+        >
+          <ToastContainer />
+          <NavBar />
+          <main className="app-background">
+            <Switch>
+              <Route
+                path="/notes/:id"
+                render={props => (
+                  <Notes
+                    user={this.state.user}
+                    updateUser={this.updateUser}
+                    {...props}
+                  />
+                )}
+              />
+              <Route
+                path="/notes"
+                render={props => (
+                  <Notes
+                    user={this.state.user}
+                    updateUser={this.updateUser}
+                    {...props}
+                  />
+                )}
+              />
+              <Route
+                path="/login"
+                render={props => (
+                  <Login
+                    user={this.state.user}
+                    updateUser={this.updateUser}
+                    {...props}
+                  />
+                )}
+              />
+              <Route
+                path="/register"
+                render={props => (
+                  <Register
+                    user={this.state.user}
+                    updateUser={this.updateUser}
+                    {...props}
+                  />
+                )}
+              />
+              <Redirect from="/" exact to="/notes" />
+            </Switch>
+          </main>
+        </AppContext.Provider>
       </React.Fragment>
     );
   }

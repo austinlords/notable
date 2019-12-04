@@ -1,4 +1,4 @@
-export const NOTES = [
+export const ALLNOTES = [
   {
     _id: "fg0gr34hgioa98g4",
     title: "Portland Trail Blazers",
@@ -147,5 +147,5 @@ export const NOTES = [
 ];
 
 export function getNote(id) {
-  return NOTES.find(n => n._id === id);
+  return ALLNOTES.find(n => n._id === id);
 }

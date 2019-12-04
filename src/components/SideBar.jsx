@@ -106,8 +106,7 @@ class SideBar extends Component {
       onSearch,
       onClear,
       collections,
-      updateCollections,
-      user
+      updateCollections
     } = this.props;
 
     let tags = [];
@@ -131,7 +130,6 @@ class SideBar extends Component {
           key={collections.length}
           updateCollections={updateCollections}
           allNotes={allNotes}
-          user={user}
         />
         <div className="sidebar-preview bg-light-gray">
           <NotesSearch
