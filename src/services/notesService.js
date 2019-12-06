@@ -13,8 +13,8 @@ export async function getNotes() {
     });
     const notes = await response.json();
     if (response.status !== 200) {
-      toast.error(notes.message);
-      return [];
+      toast.info("User not logged in. Demo mode activated!");
+      return null;
     }
     notes.forEach(n => {
       n.collection = n.col;

@@ -3,7 +3,7 @@ import DraftEditor from "./DraftEditor";
 import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
 import SideBar from "./SideBar";
 import { getNotes } from "../services/notesService";
-import { ALLNOTES } from "../services/fakePostsService";
+import { DEMONOTES } from "../services/demoNotesService";
 import { COLLECTIONS } from "../services/fakeCollectionsService";
 import "../css/notes.css";
 
@@ -27,16 +27,25 @@ class Notes extends Component {
   async componentDidMount() {
     const id = this.props.match.params.id || null;
 
-    try {
-      var NOTES = await getNotes();
-    } catch (err) {
-      NOTES = ALLNOTES;
+    var NOTES;
+
+    if (this.props.user) {
+      try {
+        NOTES = await getNotes();
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      NOTES = DEMONOTES;
     }
 
     if (!id || !NOTES)
       return this.setState({ allNotes: NOTES, collections: COLLECTIONS });
 
     const note = NOTES.find(n => n._id === id) || null;
+    if (note && !note.content.entityMap) {
+      note.content.entityMap = Object.create({});
+    }
     const editorState = note
       ? EditorState.createWithContent(convertFromRaw(note.content))
       : EditorState.createEmpty();
@@ -49,7 +58,23 @@ class Notes extends Component {
     });
   }
 
-  componentDidUpdate() {
+  async componentDidUpdate(prevProps) {
+    var { allNotes } = this.state;
+
+    // if User logged in, update notes
+    if (prevProps.user !== this.props.user) {
+      try {
+        allNotes = await getNotes();
+        if (!allNotes) {
+          this.setState({ allNotes: DEMONOTES });
+        } else {
+          this.setState({ allNotes });
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
     const id = this.props.match.params.id;
 
     if (!id || !this.state.allNotes) return;
@@ -63,7 +88,11 @@ class Notes extends Component {
       return this.props.history.replace("/notes");
     }
 
-    const note = this.state.allNotes.find(n => n._id === id);
+    const note = await allNotes.find(n => n._id === id);
+
+    if (note && !note.content.entityMap) {
+      note.content.entityMap = Object.create({});
+    }
     if (!note) return this.props.history.replace("/notes");
     const editorState = EditorState.createWithContent(
       convertFromRaw(note.content)

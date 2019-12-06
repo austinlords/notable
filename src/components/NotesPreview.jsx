@@ -117,7 +117,6 @@ class NotesPreview extends Component {
 
   render() {
     let filtered = this.filter(this.props.allNotes);
-    console.log("filtered notes: ", filtered);
 
     return (
       <div className="list-group preview-section">
