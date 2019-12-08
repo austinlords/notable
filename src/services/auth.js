@@ -8,12 +8,14 @@ export const logout = async () => {
       credentials: "include"
     });
     if (response.status === 200) {
-      return null;
+      let body = await response.json();
+      toast(body.message);
+      return 200;
     } else {
       throw new Error("Could not log out user. Please try again.");
     }
   } catch (error) {
-    throw new Error("Server error: ", error);
+    toast.error("Server error: ", error);
   }
 };
 
@@ -29,7 +31,7 @@ export const validateUser = async () => {
       return user;
     }
   } catch (error) {
-    throw new Error("Server error: ", error);
+    toast.error("Server error: ", error);
   }
 };
 
@@ -54,7 +56,7 @@ export const login = async (email, password) => {
     }
     return user;
   } catch (error) {
-    throw new Error("network error: ", error);
+    toast.error("network error: ", error);
   }
 };
 
@@ -79,6 +81,6 @@ export const register = async (email, password) => {
     }
     return user;
   } catch (error) {
-    throw new Error("network error: ", error);
+    toast.error("network error: ", error);
   }
 };

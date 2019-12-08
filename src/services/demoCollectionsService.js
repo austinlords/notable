@@ -1,4 +1,4 @@
-export const COLLECTIONS = [
+export const DEMOCOLLECTIONS = [
   {
     _id: "adsfasdfadsf",
     name: "Books",
@@ -17,5 +17,5 @@ export const COLLECTIONS = [
 ];
 
 export function getCollection(id) {
-  return COLLECTIONS.find(c => c._id === id);
+  return DEMOCOLLECTIONS.find(c => c._id === id);
 }

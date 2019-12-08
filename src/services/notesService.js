@@ -1,15 +1,11 @@
 import config from "../config";
 import { toast } from "react-toastify";
 
-export async function getNotes() {
+async function getNotes() {
   try {
     const response = await fetch(`${config.apiUrl}notes`, {
       method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      mode: "cors"
+      credentials: "include"
     });
     const notes = await response.json();
     if (response.status !== 200) {
@@ -26,7 +22,7 @@ export async function getNotes() {
   }
 }
 
-export async function saveNote(note) {
+async function postNote(note) {
   try {
     const response = await fetch(config.apiUrl + "notes", {
       method: "POST",
@@ -34,50 +30,69 @@ export async function saveNote(note) {
       headers: {
         "Content-Type": "application/json"
       },
-      mode: "cors",
-      body: {
-        title: note.body,
+      body: JSON.stringify({
+        title: note.title,
         content: note.content,
         tags: note.tags,
-        col: note.collection,
+        collection: note.collection,
         user: note.user
-      }
+      })
     });
     const updatedNote = await response.json();
     if (response.status !== 200) {
-      toast.error(updatedNote.message);
-      return [];
+      return null;
     }
+
+    updatedNote.collection = updatedNote.col;
+    delete updatedNote.col;
+
     return updatedNote;
   } catch (error) {
     console.log(error);
   }
 }
 
-export async function updateNote(note) {
+async function putNote(note) {
   try {
-    const response = await fetch(config.apiUrl + "notes" + note._id, {
+    const response = await fetch(config.apiUrl + "notes/" + note._id, {
       method: "PUT",
       credentials: "include",
       headers: {
         "Content-Type": "application/json"
       },
-      mode: "cors",
-      body: {
-        title: note.body,
+      body: JSON.stringify({
+        title: note.title,
         content: note.content,
         tags: note.tags,
-        col: note.collection,
+        collection: note.collection,
         user: note.user
-      }
+      })
     });
     const updatedNote = await response.json();
     if (response.status !== 200) {
-      toast.error(updatedNote.message);
-      return [];
+      return null;
     }
+
+    updatedNote.collection = updatedNote.col;
+    delete updatedNote.col;
+
     return updatedNote;
   } catch (error) {
     console.log(error);
   }
 }
+
+async function deleteNote(id) {
+  const response = await fetch(config.apiUrl + "notes/" + id, {
+    method: "DELETE",
+    credentials: "include"
+  });
+
+  if (!response.ok) {
+    return null;
+  }
+
+  return id;
+}
+
+export { getNotes, putNote, postNote, deleteNote };

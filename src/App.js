@@ -14,7 +14,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: null
+      user: null,
+      receivedAsyncData: false
     };
 
     this.updateUser = this.updateUser.bind(this);
@@ -23,7 +24,7 @@ class App extends Component {
   async componentDidMount() {
     try {
       const user = await validateUser();
-      if (user) this.setState({ user });
+      this.setState({ user, receivedAsyncData: true });
     } catch (error) {
       console.log(error);
     }
@@ -34,6 +35,8 @@ class App extends Component {
   };
 
   render() {
+    if (!this.state.receivedAsyncData) return <div>loading...</div>;
+
     return (
       <React.Fragment>
         <AppContext.Provider

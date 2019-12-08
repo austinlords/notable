@@ -130,8 +130,7 @@ class NotesPreview extends Component {
                   background:
                     this.props.selectedNote &&
                     n._id === this.props.selectedNote._id
-                      ? (n.collection.color && n.collection.color) ||
-                        "lightgray"
+                      ? (n.collection && n.collection.color) || "lightgray"
                       : "white"
                 }}
                 key={n._id}
@@ -139,7 +138,7 @@ class NotesPreview extends Component {
                 <div
                   style={{
                     ...this.collectionStyle,
-                    backgroundColor: n.collection.color
+                    backgroundColor: n.collection.color || "none"
                   }}
                 >
                   <span>{n.collection.name}</span>
