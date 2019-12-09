@@ -39,8 +39,8 @@ class EditorTags extends Component {
     if (note.tags.includes(this.state.newTag)) return;
 
     note.tags.push(this.state.newTag);
-    this.setState({ newTag: "" });
     this.props.save(note);
+    this.setState({ newTag: "" });
   };
 
   render() {

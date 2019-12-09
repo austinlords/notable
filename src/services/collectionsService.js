@@ -1,9 +1,8 @@
-import config from "../config";
-import { toast } from "react-toastify";
+import { apiUrl } from "../config";
 
 export async function getCollections() {
   try {
-    const response = await fetch(`${config.apiUrl}collections`, {
+    const response = await fetch(apiUrl + "collections", {
       method: "GET",
       credentials: "include",
       headers: {
@@ -25,7 +24,7 @@ export async function getCollections() {
 
 export async function postCollection(collection) {
   try {
-    const response = await fetch(config.apiUrl + "collections", {
+    const response = await fetch(apiUrl + "collections", {
       method: "POST",
       credentials: "include",
       headers: {
@@ -52,21 +51,18 @@ export async function postCollection(collection) {
 
 export async function putCollection(collection) {
   try {
-    const response = await fetch(
-      config.apiUrl + "collections/" + collection._id,
-      {
-        method: "PUT",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          name: collection.name,
-          color: collection.color,
-          user: collection.user
-        })
-      }
-    );
+    const response = await fetch(apiUrl + "collections/" + collection._id, {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        name: collection.name,
+        color: collection.color,
+        user: collection.user
+      })
+    });
 
     const updatedCollection = await response.json();
 
@@ -81,7 +77,7 @@ export async function putCollection(collection) {
 
 export async function deleteCollection(id) {
   try {
-    const response = await fetch(config.apiUrl + "collections/" + id, {
+    const response = await fetch(apiUrl + "collections/" + id, {
       method: "DELETE",
       credentials: "include"
     });

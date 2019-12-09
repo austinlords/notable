@@ -76,7 +76,7 @@ class Notes extends Component {
   async componentDidUpdate(prevProps) {
     var { allNotes } = this.state;
 
-    // if User logged out, update state to demo
+    // if User logged out, update state to DEMO
     if (prevProps.user && this.props.user == null) {
       this.setState({
         allNotes: DEMONOTES,
@@ -133,25 +133,6 @@ class Notes extends Component {
     let allNotes = [...this.state.allNotes];
     let indexToUpdate = collections.findIndex(c => c._id === newCollection._id);
 
-    newCollection.user = this.props.user.email;
-
-    try {
-      if (action === "delete") {
-        const deletedId = await deleteCollection(newCollection._id);
-        if (!deletedId) throw new Error("Error deleting collection. Try again");
-
-        collections.splice(indexToUpdate, 1);
-      } else if (action === "edit") {
-        newCollection = await putCollection(newCollection);
-        if (!newCollection)
-          throw new Error("Error updated collection. Try again");
-
-        collections.splice(indexToUpdate, 1, newCollection);
-      }
-    } catch (error) {
-      return toast.error(error.message);
-    }
-
     let notesToChange = allNotes
       .filter(n => n.collection._id === newCollection._id)
       .map(n => ({
@@ -163,93 +144,134 @@ class Notes extends Component {
         updated: n.updated
       }));
 
-    console.log(notesToChange);
+    if (this.props.user) {
+      newCollection.user = this.props.user.email;
 
-    try {
-      notesToChange.forEach(async newNote => {
-        const updatedNote = await putNote(newNote);
-        if (!updatedNote)
-          throw new Error("Error updating note: " + newNote.title);
-
-        allNotes.splice(
-          allNotes.findIndex(oldNote => updatedNote._id === oldNote._id),
-          1,
-          updatedNote
-        );
-      });
-    } catch (error) {
-      return toast.error(error.message);
-    }
-
-    if (!collections.includes(newCollection) && action === "add") {
+      // all sync stuff
       try {
-        const postedCollection = await postCollection(newCollection);
-        if (!postedCollection)
-          throw new Error("Error creating new collection. Try again");
+        // DELETE COLLECTION
+        if (action === "delete") {
+          const deletedId = await deleteCollection(newCollection._id);
+          if (!deletedId)
+            throw new Error("Error deleting collection. Try again");
+        }
+        // PUT COLLECTION
+        if (action === "edit") {
+          newCollection = await putCollection(newCollection);
+          if (!newCollection)
+            throw new Error("Error updated collection. Try again");
+        }
 
-        collections.push(postedCollection);
+        // PUT NOTES
+        notesToChange.forEach(async newNote => {
+          const updatedNote = await putNote(newNote);
+          if (!updatedNote)
+            throw new Error("Error updating note: " + newNote.title);
+
+          allNotes.splice(
+            allNotes.findIndex(oldNote => updatedNote._id === oldNote._id),
+            1,
+            updatedNote
+          );
+        });
+
+        // POST COLLECTION
+        if (!collections.includes(newCollection) && action === "add") {
+          const postedCollection = await postCollection(newCollection);
+          if (!postedCollection)
+            throw new Error("Error creating new collection. Try again");
+        }
       } catch (error) {
         return toast.error(error.message);
       }
     }
 
-    return this.setState({ collections, allNotes });
+    // if DEMO MODE: no async
+
+    if (action === "delete") collections.splice(indexToUpdate, 1);
+
+    if (action === "edit") collections.splice(indexToUpdate, 1, newCollection);
+
+    if (!this.props.user)
+      notesToChange.forEach(newNote => {
+        allNotes.splice(
+          allNotes.findIndex(oldNote => newNote._id === oldNote._id),
+          1,
+          newNote
+        );
+      });
+
+    if (!collections.includes(newCollection) && action === "add")
+      collections.push(newCollection);
+
+    const selectedNote = allNotes.find(
+      note => note._id === this.props.match.params.id
+    );
+    return this.setState({ collections, allNotes, selectedNote });
   };
 
   save = async selectedNote => {
     const { allNotes, editorState } = this.state;
     const currentEditorContent = convertToRaw(editorState.getCurrentContent());
+    if (!selectedNote) selectedNote = Object.create({});
 
     const newNote = {
-      _id: (selectedNote && selectedNote._id) || Date.now().toString(),
-      title: (selectedNote && selectedNote.title) || "",
+      _id: selectedNote._id || Date.now().toString(),
+      title: selectedNote.title || "",
       content: currentEditorContent,
-      tags: (selectedNote && selectedNote.tags) || [],
-      collection: (selectedNote && selectedNote.collection) || {}
+      tags: selectedNote.tags || [],
+      collection: selectedNote.collection || {}
     };
 
-    try {
-      const existingIndex = allNotes.findIndex(n => n._id === selectedNote._id);
+    const existingIndex = allNotes.findIndex(n => n._id === selectedNote._id);
+    let collections = [...this.state.collections];
 
-      // Collection changes as well
-      if (
-        newNote.collection._id &&
-        this.state.collections.filter(c => c._id === newNote.collection._id)
-          .length === 0
-      ) {
-        let collections = this.state.collections;
-        newNote.collection.user = this.props.user.email;
-        const newCollection = await postCollection(newNote.collection);
-        if (!newCollection)
-          throw new Error("New collection not saved. Try again.");
+    const isNewCollection =
+      newNote.collection._id &&
+      !collections.filter(c => c._id === newNote.collection._id).length;
 
-        collections.push(newCollection);
-        this.setState({ collections });
+    var newCollection;
+    var savedNote;
+
+    // all async here
+    if (this.props.user) {
+      try {
+        // POST Collection
+        if (isNewCollection) {
+          newNote.collection.user = this.props.user.email;
+          newCollection = await postCollection(newNote.collection);
+          if (!newCollection)
+            throw new Error("New collection not saved. Try again.");
+        }
+        // PUT Note
+        if (existingIndex !== -1) {
+          savedNote = await putNote(newNote);
+          if (!savedNote) throw new Error("Error updating note");
+        } else {
+          // POST Note
+          savedNote = await postNote(newNote);
+          if (!savedNote) throw new Error("Error saving new note");
+        }
+      } catch (error) {
+        return toast.error(error.message);
       }
-      // update (PUT) existing note
-      if (existingIndex !== -1) {
-        const apiPutNote = await putNote(newNote);
-        if (!apiPutNote) throw new Error("Error updating note");
-
-        allNotes.splice(existingIndex, 1, apiPutNote);
-        this.setState({ allNotes, selectedNote: apiPutNote });
-      } else {
-        // POST new note
-        const apiPostNote = await postNote(newNote);
-        if (!apiPostNote) throw new Error("Error saving new note");
-
-        allNotes.push(apiPostNote);
-        this.setState({ allNotes, selectedNote: apiPostNote });
-        this.props.history.replace(`/notes/${apiPostNote._id}`);
-      }
-    } catch (error) {
-      toast.error(error.message);
-      /*
-      allNotes.push(newNote);
-      this.setState({ allNotes, selectedNote: newNote });
-      this.props.history.replace(`/notes/${newNote._id}`);
-      */
     }
+
+    // if DEMO mode
+    if (isNewCollection) collections.push(newCollection || newNote.collection);
+    if (existingIndex !== -1)
+      allNotes.splice(existingIndex, 1, savedNote || newNote);
+    if (existingIndex === -1) allNotes.push(savedNote || newNote);
+
+    const redirectId = savedNote ? savedNote._id : newNote._id;
+
+    this.setState({
+      allNotes,
+      selectedNote: savedNote || newNote,
+      collections
+    });
+
+    this.props.history.replace(`/notes/${redirectId}`);
   };
 
   handleDelete = async () => {

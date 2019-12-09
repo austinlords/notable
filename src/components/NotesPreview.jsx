@@ -7,7 +7,9 @@ import config from "../config";
 class NotesPreview extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      runRender: false
+    };
   }
 
   listItemStyle = {
@@ -46,6 +48,12 @@ class NotesPreview extends Component {
     padding: "1px",
     marginBottom: "0px"
   };
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.allNotes !== this.props.allNotes) {
+      this.setState({ runRender: !this.state.runRender });
+    }
+  }
 
   filter = notes => {
     let search = this.props.searchQuery.toLowerCase();
@@ -138,7 +146,7 @@ class NotesPreview extends Component {
                 <div
                   style={{
                     ...this.collectionStyle,
-                    backgroundColor: n.collection.color || "none"
+                    background: n.collection.color || "none"
                   }}
                 >
                   <span>{n.collection.name}</span>
