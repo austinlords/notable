@@ -36,7 +36,9 @@ class NotesFilter extends Component {
           );
         }
       );
-      collectionsToUpdate.forEach(c => this.props.updateCollections(c, "edit"));
+      collectionsToUpdate.forEach(
+        async c => await this.props.updateCollections(c, "edit")
+      );
       this.setState({ editMode: !this.state.editMode });
     }
   };
@@ -161,7 +163,7 @@ const Buttons = ({ updateCollections, toggleEditMode, editMode }) => {
 
     const collection = {
       _id: Date.now().toString(),
-      name: newCollection,
+      name: newCollection.trim(),
       color: randomColor()
     };
     setNewCollection("");
@@ -227,7 +229,7 @@ const Buttons = ({ updateCollections, toggleEditMode, editMode }) => {
             type="text"
             className="form-control"
             value={newCollection}
-            onChange={e => setNewCollection(e.target.value)}
+            onChange={e => setNewCollection(e.target.value.toLowerCase())}
             placeholder="new collection..."
             style={{
               fontSize: ".9rem",

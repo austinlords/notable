@@ -165,6 +165,7 @@ class Notes extends Component {
         // PUT NOTES
         notesToChange.forEach(async newNote => {
           const updatedNote = await putNote(newNote);
+          console.log("savedNote: ", updatedNote);
           if (!updatedNote)
             throw new Error("Error updating note: " + newNote.title);
 
@@ -177,8 +178,8 @@ class Notes extends Component {
 
         // POST COLLECTION
         if (!collections.includes(newCollection) && action === "add") {
-          const postedCollection = await postCollection(newCollection);
-          if (!postedCollection)
+          newCollection = await postCollection(newCollection);
+          if (!newCollection)
             throw new Error("Error creating new collection. Try again");
         }
       } catch (error) {
@@ -228,7 +229,7 @@ class Notes extends Component {
 
     const isNewCollection =
       newNote.collection._id &&
-      !collections.filter(c => c._id === newNote.collection._id).length;
+      !collections.filter(c => c.name === newNote.collection.name).length;
 
     var newCollection;
     var savedNote;

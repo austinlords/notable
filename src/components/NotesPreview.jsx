@@ -7,9 +7,7 @@ import config from "../config";
 class NotesPreview extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      runRender: false
-    };
+    this.state = {};
   }
 
   listItemStyle = {
@@ -49,13 +47,7 @@ class NotesPreview extends Component {
     marginBottom: "0px"
   };
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.allNotes !== this.props.allNotes) {
-      this.setState({ runRender: !this.state.runRender });
-    }
-  }
-
-  filter = notes => {
+  filterNotes = notes => {
     let search = this.props.searchQuery.toLowerCase();
 
     if (notes)
@@ -124,12 +116,13 @@ class NotesPreview extends Component {
   };
 
   render() {
-    let filtered = this.filter(this.props.allNotes);
+    let filtered = this.filterNotes(this.props.allNotes);
+    console.log("rerender", filtered);
 
     return (
       <div className="list-group preview-section">
         {filtered &&
-          filtered.map(n => {
+          filtered.map((n, index) => {
             return (
               <div
                 className="list-group-item"
@@ -148,6 +141,7 @@ class NotesPreview extends Component {
                     ...this.collectionStyle,
                     background: n.collection.color || "none"
                   }}
+                  key={index}
                 >
                   <span>{n.collection.name}</span>
                 </div>

@@ -13,7 +13,7 @@ class EditorCollections extends Component {
   };
 
   onChange = event => {
-    this.setState({ newCollection: event.target.value });
+    this.setState({ newCollection: event.target.value.toLowerCase() });
   };
 
   togglePopover = () => {
@@ -50,11 +50,16 @@ class EditorCollections extends Component {
           collection: {}
         };
     // don't allow duplicate collections
-    if (note.collection.name === this.state.newCollection) return;
+    const newCollection = this.state.newCollection.toLowerCase().trim();
+
+    const collectionAlreadyExists = !!this.props.collections.filter(
+      c => c.name === newCollection
+    ).length;
+    if (collectionAlreadyExists) return;
 
     note.collection = {
       _id: Date.now().toString(),
-      name: this.state.newCollection,
+      name: newCollection,
       color: randomColor()
     };
     this.setState({ newCollection: "" });

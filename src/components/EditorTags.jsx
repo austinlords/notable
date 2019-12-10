@@ -20,11 +20,13 @@ class EditorTags extends Component {
   };
 
   onChange = event => {
-    this.setState({ newTag: event.target.value });
+    this.setState({ newTag: event.target.value.toLowerCase() });
   };
 
   pressEnter = event => {
     if (event.keyCode !== 13) return;
+
+    const newTag = this.state.newTag.toLowerCase().trim();
 
     let note = this.props.selectedNote
       ? { ...this.props.selectedNote }
@@ -36,9 +38,9 @@ class EditorTags extends Component {
           collection: {}
         };
     // don't allow duplicate tags
-    if (note.tags.includes(this.state.newTag)) return;
+    if (note.tags.includes(newTag)) return;
 
-    note.tags.push(this.state.newTag);
+    note.tags.push(newTag);
     this.props.save(note);
     this.setState({ newTag: "" });
   };

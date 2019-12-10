@@ -73,7 +73,7 @@ class SideBar extends Component {
     }
   }
 
-  filter(notes) {
+  filterNotes(notes) {
     let filteredNotes = notes;
 
     if (this.state.collectionFilter)
@@ -112,9 +112,9 @@ class SideBar extends Component {
     let tags = [];
 
     if (allNotes) {
-      let notes = this.filter(allNotes);
+      let notes = this.filterNotes(allNotes);
       allNotes = notes.filteredNotes;
-      tags = notes.tags;
+      tags = notes.tags.sort();
     }
 
     return (
