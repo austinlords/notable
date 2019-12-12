@@ -1,17 +1,17 @@
 export const DEMOCOLLECTIONS = [
   {
     _id: "adsfasdfadsf",
-    name: "Books",
+    name: "books",
     color: "cyan"
   },
   {
     _id: "rht5wsbsgnw",
-    name: "Sports",
+    name: "sports",
     color: "greenyellow"
   },
   {
     _id: "nvcxcbvtsasdg",
-    name: "Other",
+    name: "other",
     color: "lightgray"
   }
 ];

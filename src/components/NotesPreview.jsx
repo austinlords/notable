@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 import TagsPreview from "./common/TagsPreview";
 import config from "../config";
+import truncate from "../utils/truncate";
 
 class NotesPreview extends Component {
   constructor(props) {
@@ -117,7 +118,8 @@ class NotesPreview extends Component {
 
   render() {
     let filtered = this.filterNotes(this.props.allNotes);
-    console.log("rerender", filtered);
+
+    let selectedId = this.props.selectedNote ? this.props.selectedNote._id : "";
 
     return (
       <div className="list-group preview-section">
@@ -129,8 +131,7 @@ class NotesPreview extends Component {
                 style={{
                   ...this.individualNotes,
                   background:
-                    this.props.selectedNote &&
-                    n._id === this.props.selectedNote._id
+                    n._id === selectedId
                       ? (n.collection && n.collection.color) || "lightgray"
                       : "white"
                 }}
@@ -143,7 +144,7 @@ class NotesPreview extends Component {
                   }}
                   key={index}
                 >
-                  <span>{n.collection.name}</span>
+                  <span>{truncate(n.collection.name, 12)}</span>
                 </div>
                 <Link
                   key={n._id}
@@ -164,6 +165,7 @@ class NotesPreview extends Component {
                       tags={n.tags}
                       style={{ marginTop: "5px" }}
                       iconColor="darkslateblue"
+                      length={n._id === selectedId ? 200 : 45}
                     />
                   </div>
                 </Link>

@@ -16,6 +16,7 @@ import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import { Popover, OverlayTrigger } from "react-bootstrap";
 import AppContext from "../context/AppContext";
 import randomColor from "./../utils/randomColor";
+import truncate from "./../utils/truncate";
 
 class NotesFilter extends Component {
   state = {
@@ -346,7 +347,7 @@ const CollectionFilter = ({
                   checked={collectionFilter === c.name}
                   onChange={e => handleRadioSelect(e)}
                 />
-                {c.name}
+                {truncate(c.name, 18)}
               </label>
             </div>
           ))
@@ -405,7 +406,7 @@ const TagFilter = ({ tags, tagsFilter, handleCheckboxSelect }) => {
                 checked={tagsFilter !== [] && tagsFilter.includes(tag)}
                 onChange={e => handleCheckboxSelect(e)}
               />
-              {tag}
+              {truncate(tag, 18)}
             </label>
           </div>
         ))}

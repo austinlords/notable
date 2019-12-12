@@ -85,10 +85,10 @@ export const DEMONOTES = [
       ],
       entityMap: {}
     },
-    tags: ["Portland", "Sports", "Basketball"],
+    tags: ["portland", "sports", "basketball"],
     collection: {
       _id: "rht5wsbsgnw",
-      name: "Sports",
+      name: "sports",
       color: "greenyellow"
     },
     updated: "2019-07-11T04:05:42.426Z"
@@ -110,10 +110,10 @@ export const DEMONOTES = [
       ],
       entityMap: {}
     },
-    tags: ["Books", "History"],
+    tags: ["books", "history"],
     collection: {
       _id: "adsfasdfadsf",
-      name: "Books",
+      name: "books",
       color: "cyan"
     },
     updated: "2019-03-11T04:05:42.426Z",
@@ -136,10 +136,10 @@ export const DEMONOTES = [
       ],
       entityMap: {}
     },
-    tags: ["Portland", "Mountain Biking"],
+    tags: ["portland", "mountain biking"],
     collection: {
       _id: "nvcxcbvtsasdg",
-      name: "Other",
+      name: "other",
       color: "lightgray"
     },
     updated: "2019-08-11T04:05:42.426Z"
