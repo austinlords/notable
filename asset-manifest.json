@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/notable-react/static/css/main.3c71bd64.chunk.css",
-    "main.js": "/notable-react/static/js/main.9680dedd.chunk.js",
-    "main.js.map": "/notable-react/static/js/main.9680dedd.chunk.js.map",
-    "runtime~main.js": "/notable-react/static/js/runtime~main.b6418689.js",
-    "runtime~main.js.map": "/notable-react/static/js/runtime~main.b6418689.js.map",
-    "static/css/2.a974039a.chunk.css": "/notable-react/static/css/2.a974039a.chunk.css",
-    "static/js/2.9ddf3ff3.chunk.js": "/notable-react/static/js/2.9ddf3ff3.chunk.js",
-    "static/js/2.9ddf3ff3.chunk.js.map": "/notable-react/static/js/2.9ddf3ff3.chunk.js.map",
-    "index.html": "/notable-react/index.html",
-    "precache-manifest.b6299927928fb4830d141c8093ceeec2.js": "/notable-react/precache-manifest.b6299927928fb4830d141c8093ceeec2.js",
-    "service-worker.js": "/notable-react/service-worker.js",
-    "static/css/2.a974039a.chunk.css.map": "/notable-react/static/css/2.a974039a.chunk.css.map",
-    "static/css/main.3c71bd64.chunk.css.map": "/notable-react/static/css/main.3c71bd64.chunk.css.map",
-    "static/media/font-awesome.css": "/notable-react/static/media/fontawesome-webfont.fee66e71.woff"
+    "main.css": "/notable/static/css/main.3c71bd64.chunk.css",
+    "main.js": "/notable/static/js/main.9680dedd.chunk.js",
+    "main.js.map": "/notable/static/js/main.9680dedd.chunk.js.map",
+    "runtime~main.js": "/notable/static/js/runtime~main.a75df12a.js",
+    "runtime~main.js.map": "/notable/static/js/runtime~main.a75df12a.js.map",
+    "static/css/2.f09a7ce3.chunk.css": "/notable/static/css/2.f09a7ce3.chunk.css",
+    "static/js/2.9ddf3ff3.chunk.js": "/notable/static/js/2.9ddf3ff3.chunk.js",
+    "static/js/2.9ddf3ff3.chunk.js.map": "/notable/static/js/2.9ddf3ff3.chunk.js.map",
+    "index.html": "/notable/index.html",
+    "precache-manifest.fa6ead08550aec5a484fde39ce17ac0b.js": "/notable/precache-manifest.fa6ead08550aec5a484fde39ce17ac0b.js",
+    "service-worker.js": "/notable/service-worker.js",
+    "static/css/2.f09a7ce3.chunk.css.map": "/notable/static/css/2.f09a7ce3.chunk.css.map",
+    "static/css/main.3c71bd64.chunk.css.map": "/notable/static/css/main.3c71bd64.chunk.css.map",
+    "static/media/font-awesome.css": "/notable/static/media/fontawesome-webfont.fee66e71.woff"
   }
 }
