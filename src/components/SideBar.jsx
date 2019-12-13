@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import NotesPreview from "./NotesPreview";
-import NotesSearch from "./NotesSearch";
 import NotesFilter from "./NotesFilter";
 
 class SideBar extends Component {
@@ -131,19 +130,14 @@ class SideBar extends Component {
           updateCollections={updateCollections}
           allNotes={allNotes}
         />
-        <div className="sidebar-preview bg-light-gray">
-          <NotesSearch
-            onSearch={onSearch}
-            searchQuery={searchQuery}
-            onClear={onClear}
-          />
-          <NotesPreview
-            allNotes={allNotes}
-            selectedNote={selectedNote}
-            searchQuery={searchQuery}
-            collections={collections}
-          />
-        </div>
+        <NotesPreview
+          allNotes={allNotes}
+          selectedNote={selectedNote}
+          searchQuery={searchQuery}
+          collections={collections}
+          onSearch={onSearch}
+          onClear={onClear}
+        />
       </div>
     );
   }

@@ -5,24 +5,6 @@ export const DEMONOTES = [
     content: {
       blocks: [
         {
-          key: "rhc1",
-          text: "Just some notes....",
-          type: "unstyled",
-          depth: 0,
-          inlineStyleRanges: [],
-          entityRanges: [],
-          data: {}
-        },
-        {
-          key: "81bq5",
-          text: "",
-          type: "unstyled",
-          depth: 0,
-          inlineStyleRanges: [],
-          entityRanges: [],
-          data: {}
-        },
-        {
           key: "20eqn",
           text: "Lineup",
           type: "header-three",
@@ -100,7 +82,7 @@ export const DEMONOTES = [
       blocks: [
         {
           key: "6ef7d",
-          text: "Insert some book notes here. Nothing much...",
+          text: "Book notes!",
           type: "unstyled",
           depth: 0,
           inlineStyleRanges: [],
@@ -126,8 +108,107 @@ export const DEMONOTES = [
       blocks: [
         {
           key: "rhc1",
-          text: "Some of the best mountain biking in Oregon",
+          text: "Some of the best mountain biking in Oregon...",
           type: "unstyled",
+          depth: 0,
+          inlineStyleRanges: [],
+          entityRanges: [],
+          data: {}
+        },
+        {
+          key: "300d5",
+          text: "",
+          type: "unstyled",
+          depth: 0,
+          inlineStyleRanges: [],
+          entityRanges: [],
+          data: {}
+        },
+        {
+          key: "ao9ar",
+          text: "Top Trails",
+          type: "header-three",
+          depth: 0,
+          inlineStyleRanges: [{ offset: 0, length: 10, style: "ITALIC" }],
+          entityRanges: [],
+          data: {}
+        },
+        {
+          key: "dm3nl",
+          text: "Hide and Seek",
+          type: "ordered-list-item",
+          depth: 0,
+          inlineStyleRanges: [],
+          entityRanges: [],
+          data: {}
+        },
+        {
+          key: "flb07",
+          text: "Rock Drop",
+          type: "ordered-list-item",
+          depth: 0,
+          inlineStyleRanges: [],
+          entityRanges: [],
+          data: {}
+        },
+        {
+          key: "70n88",
+          text: "Quid Pro Flow",
+          type: "ordered-list-item",
+          depth: 0,
+          inlineStyleRanges: [],
+          entityRanges: [],
+          data: {}
+        },
+        {
+          key: "erm74",
+          text: "Flow Motion",
+          type: "ordered-list-item",
+          depth: 0,
+          inlineStyleRanges: [],
+          entityRanges: [],
+          data: {}
+        },
+        {
+          key: "3insv",
+          text: "Communication Breakdown",
+          type: "ordered-list-item",
+          depth: 0,
+          inlineStyleRanges: [],
+          entityRanges: [],
+          data: {}
+        },
+        {
+          key: "6bku3",
+          text: "About",
+          type: "header-three",
+          depth: 0,
+          inlineStyleRanges: [{ offset: 0, length: 5, style: "UNDERLINE" }],
+          entityRanges: [],
+          data: {}
+        },
+        {
+          key: "606ro",
+          text: "Open Year-Round",
+          type: "unordered-list-item",
+          depth: 0,
+          inlineStyleRanges: [],
+          entityRanges: [],
+          data: {}
+        },
+        {
+          key: "dhs7n",
+          text: "No Fees",
+          type: "unordered-list-item",
+          depth: 0,
+          inlineStyleRanges: [],
+          entityRanges: [],
+          data: {}
+        },
+        {
+          key: "3k3j9",
+          text: "40 miles east of Portland off US Highway 26\n",
+          type: "unordered-list-item",
           depth: 0,
           inlineStyleRanges: [],
           entityRanges: [],
@@ -138,9 +219,9 @@ export const DEMONOTES = [
     },
     tags: ["portland", "mountain biking"],
     collection: {
-      _id: "nvcxcbvtsasdg",
-      name: "other",
-      color: "lightgray"
+      _id: "rht5wsbsgnw",
+      name: "sports",
+      color: "greenyellow"
     },
     updated: "2019-08-11T04:05:42.426Z"
   }

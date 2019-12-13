@@ -121,57 +121,79 @@ class NotesPreview extends Component {
 
     let selectedId = this.props.selectedNote ? this.props.selectedNote._id : "";
 
+    let { searchQuery, onSearch, onClear } = this.props;
+
     return (
-      <div className="list-group preview-section">
-        {filtered &&
-          filtered.map((n, index) => {
-            return (
-              <div
-                className="list-group-item"
-                style={{
-                  ...this.individualNotes,
-                  background:
-                    n._id === selectedId
-                      ? (n.collection && n.collection.color) || "lightgray"
-                      : "white"
-                }}
-                key={n._id}
-              >
+      <div className="sidebar-preview bg-light-gray">
+        <div className="input-group search-box">
+          <input
+            type="text"
+            className="form-control"
+            value={searchQuery}
+            onChange={e => onSearch(e.currentTarget.value)}
+            placeholder="Search..."
+          />
+          <div className="input-group-prepend">
+            <span
+              onClick={() => onClear()}
+              className="btn btn-outline-secondary"
+              type="button"
+            >
+              clear
+            </span>
+          </div>
+        </div>
+        <div className="list-group preview-section">
+          {filtered &&
+            filtered.map((n, index) => {
+              return (
                 <div
+                  className="list-group-item"
                   style={{
-                    ...this.collectionStyle,
-                    background: n.collection.color || "none"
+                    ...this.individualNotes,
+                    background:
+                      n._id === selectedId
+                        ? (n.collection && n.collection.color) || "lightgray"
+                        : "white"
                   }}
-                  key={index}
-                >
-                  <span>{truncate(n.collection.name, 12)}</span>
-                </div>
-                <Link
                   key={n._id}
-                  to={`/notes/${n._id}`}
-                  style={this.listItemStyle}
-                  className="list-group-item-action"
                 >
-                  <div>
-                    <div className="d-flex w-100 justify-content-between">
-                      <h5 className="mb-1">{this.generateTitle(n)}</h5>
-                      <small>{moment(n.updated).format("MMM D 'YY")}</small>
-                    </div>
-                    <div style={this.previewStyle}>
-                      {this.generateSearchPreview(n)}
-                    </div>
-                    <TagsPreview
-                      fontSize="11px"
-                      tags={n.tags}
-                      style={{ marginTop: "5px" }}
-                      iconColor="darkslateblue"
-                      length={n._id === selectedId ? 200 : 45}
-                    />
+                  <div
+                    style={{
+                      ...this.collectionStyle,
+                      background: n.collection.color || "none"
+                    }}
+                    key={index}
+                  >
+                    <span>{truncate(n.collection.name, 12)}</span>
                   </div>
-                </Link>
-              </div>
-            );
-          })}
+                  <Link
+                    key={n._id}
+                    to={`/notes/${n._id}`}
+                    style={this.listItemStyle}
+                    className="list-group-item-action"
+                  >
+                    <div>
+                      <div className="d-flex w-100 justify-content-between">
+                        <h5 className="mb-1">{this.generateTitle(n)}</h5>
+                        <small>{moment(n.updated).format("MMM D 'YY")}</small>
+                      </div>
+                      <div style={this.previewStyle}>
+                        {this.generateSearchPreview(n)}
+                      </div>
+                      <TagsPreview
+                        fontSize="11px"
+                        tags={n.tags}
+                        style={{ marginTop: "5px" }}
+                        iconColor="darkslateblue"
+                        length={n._id === selectedId ? 200 : 45}
+                      />
+                    </div>
+                  </Link>
+                </div>
+              );
+            })}
+        </div>
       </div>
     );
   }

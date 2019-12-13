@@ -165,7 +165,6 @@ class Notes extends Component {
         // PUT NOTES
         notesToChange.forEach(async newNote => {
           const updatedNote = await putNote(newNote);
-          console.log("savedNote: ", updatedNote);
           if (!updatedNote)
             throw new Error("Error updating note: " + newNote.title);
 
@@ -278,21 +277,22 @@ class Notes extends Component {
   handleDelete = async () => {
     let id = this.props.match.params.id;
 
-    try {
-      const deleteSuccess = await deleteNote(id);
-
-      if (!deleteSuccess) throw new Error("Could not delete note. Try again.");
-
-      this.setState({
-        allNotes: this.state.allNotes.filter(n => n._id !== id),
-        editorState: EditorState.createEmpty(),
-        selectedNote: null,
-        title: ""
-      });
-      this.props.history.replace("/notes");
-    } catch (error) {
-      toast.error(error.message);
+    if (this.props.user) {
+      try {
+        const deleteSuccess = await deleteNote(id);
+        if (!deleteSuccess)
+          throw new Error("Could not delete note. Try again.");
+      } catch (error) {
+        toast.error(error.message);
+      }
     }
+    this.setState({
+      allNotes: this.state.allNotes.filter(n => n._id !== id),
+      editorState: EditorState.createEmpty(),
+      selectedNote: null,
+      title: ""
+    });
+    this.props.history.replace("/notes");
   };
 
   render() {

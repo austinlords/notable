@@ -1,5 +1,5 @@
 :root {
-  --editor-head-height: 80px;
+  --head-height: 80px;
 }
 
 .app-page {
@@ -16,23 +16,28 @@
 .sidebar-preview {
   height: 100%;
   width: 100%;
-  padding: 15px 5px;
+  padding: 0 5px;
   margin: 0px;
   display: grid;
-  grid-template-rows: 50px auto;
+  grid-template-rows: var(--head-height) auto;
   grid-template-areas: "search" "content";
   overflow: auto;
 }
 
+.search-box {
+  margin: auto 0;
+}
+
 .preview-section {
   overflow-y: scroll;
+  max-height: calc(100vh - var(--head-height) - var(--navbar-height));
 }
 
 .editor-window {
   background: var(--floral-white);
   min-width: 600px;
   display: grid;
-  grid-template-rows: var(--editor-head-height) auto;
+  grid-template-rows: var(--head-height) auto;
   height: 100%;
 }
 
@@ -100,7 +105,7 @@
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  max-height: calc(100vh - var(--editor-head-height) - var(--navbar-height));
+  max-height: calc(100vh - var(--head-height) - var(--navbar-height));
   background: white;
 }
 

@@ -144,7 +144,7 @@ const Profile = () => {
               <FontAwesomeIcon icon={faUserCircle} />
             </div>
             <div style={{ fontSize: "11px" }}>
-              {(value.user && value.user.email) || "DEMO MODE (no user)"}
+              {(value.user && value.user.email) || "DEMO MODE"}
             </div>
           </div>
         </div>
@@ -308,7 +308,7 @@ const CollectionFilter = ({
         style={{
           marginLeft: "10px",
           fontSize: "14px",
-          height: "95%",
+          height: "85%",
           overflow: "auto"
         }}
       >
