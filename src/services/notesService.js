@@ -1,5 +1,4 @@
 import config from "../config";
-import { toast } from "react-toastify";
 
 async function getNotes() {
   try {
@@ -7,11 +6,10 @@ async function getNotes() {
       method: "GET",
       credentials: "include"
     });
-    const notes = await response.json();
-    if (response.status !== 200) {
-      toast.info("User not logged in. Demo mode activated!");
-      return null;
+    if (!response.ok) {
+      throw new Error("Could not get notes.");
     }
+    const notes = await response.json();
     notes.forEach(n => {
       n.collection = n.col;
       delete n.col;

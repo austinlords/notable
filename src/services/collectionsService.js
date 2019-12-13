@@ -13,7 +13,7 @@ export async function getCollections() {
     const collections = await response.json();
 
     if (response.status !== 200) {
-      return null;
+      throw new Error("Could not get notes.");
     }
 
     return collections;
