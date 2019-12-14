@@ -48,7 +48,7 @@ class Notes extends Component {
         COLLECTIONS = await getCollections();
       } catch (err) {
         console.log(err);
-        this.props.setUser(null);
+        this.props.updateUser(null);
         NOTES = DEMONOTES;
         COLLECTIONS = DEMOCOLLECTIONS;
       }

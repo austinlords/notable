@@ -1,96 +1,61 @@
-import config from "../config";
+import { apiUrl } from "../config";
+import {
+  httpGet,
+  httpPost,
+  httpPut,
+  httpDelete
+} from "../services/httpService";
 
 async function getNotes() {
-  try {
-    const response = await fetch(`${config.apiUrl}notes`, {
-      method: "GET",
-      credentials: "include"
-    });
-    if (!response.ok) {
-      throw new Error("Could not get notes.");
-    }
-    const notes = await response.json();
-    notes.forEach(n => {
-      n.collection = n.col;
-      delete n.col;
-    });
-    return notes;
-  } catch (error) {
-    console.log(error);
-  }
+  const notes = await httpGet(apiUrl + "notes");
+
+  notes.forEach(n => {
+    n.collection = n.col;
+    delete n.col;
+  });
+  return notes;
 }
 
 async function postNote(note) {
-  try {
-    const response = await fetch(config.apiUrl + "notes", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        title: note.title,
-        content: note.content,
-        tags: note.tags,
-        collection: note.collection,
-        user: note.user
-      })
-    });
-    const updatedNote = await response.json();
-    if (response.status !== 200) {
-      return null;
-    }
+  const updatedNote = await httpPost(
+    apiUrl + "notes",
+    JSON.stringify({
+      title: note.title,
+      content: note.content,
+      tags: note.tags,
+      collection: note.collection,
+      user: note.user
+    })
+  );
 
-    updatedNote.collection = updatedNote.col;
-    delete updatedNote.col;
+  updatedNote.collection = updatedNote.col;
+  delete updatedNote.col;
 
-    return updatedNote;
-  } catch (error) {
-    console.log(error);
-  }
+  return updatedNote;
 }
 
 async function putNote(note) {
-  try {
-    const response = await fetch(config.apiUrl + "notes/" + note._id, {
-      method: "PUT",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        title: note.title,
-        content: note.content,
-        tags: note.tags,
-        collection: note.collection,
-        user: note.user
-      })
-    });
-    const updatedNote = await response.json();
-    if (response.status !== 200) {
-      return null;
-    }
+  const updatedNote = await httpPut(
+    apiUrl + "notes/" + note._id,
+    JSON.stringify({
+      title: note.title,
+      content: note.content,
+      tags: note.tags,
+      collection: note.collection,
+      user: note.user
+    })
+  );
 
-    updatedNote.collection = updatedNote.col;
-    delete updatedNote.col;
+  updatedNote.collection = updatedNote.col;
+  delete updatedNote.col;
 
-    return updatedNote;
-  } catch (error) {
-    console.log(error);
-  }
+  return updatedNote;
 }
 
 async function deleteNote(id) {
-  const response = await fetch(config.apiUrl + "notes/" + id, {
-    method: "DELETE",
-    credentials: "include"
-  });
+  const deletedNote = await httpDelete(apiUrl + "notes/" + id);
 
-  if (!response.ok) {
-    return null;
-  }
-
-  return id;
+  return deletedNote._id;
 }
 
 export { getNotes, putNote, postNote, deleteNote };

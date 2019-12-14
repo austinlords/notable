@@ -1,86 +1,37 @@
-import config from "../config";
-import { toast } from "react-toastify";
+import { apiUrl } from "../config";
+import { httpGet, httpPost } from "../services/httpService";
 
 export const logout = async () => {
-  try {
-    const response = await fetch(`${config.apiUrl}logout`, {
-      method: "POST",
-      credentials: "include"
-    });
-    if (response.status === 200) {
-      let body = await response.json();
-      toast(body.message);
-      return 200;
-    } else {
-      throw new Error("Could not log out user. Please try again.");
-    }
-  } catch (error) {
-    toast.error("Server error: ", error);
-  }
+  const response = await httpPost(apiUrl + "logout");
+  localStorage.removeItem("notable-token");
+  return response.message;
 };
 
 export const validateUser = async () => {
-  try {
-    const response = await fetch(config.apiUrl + "user", {
-      credentials: "include"
-    });
-    if (response.status !== 200) {
-      return null;
-    } else {
-      const user = await response.json();
-      return user;
-    }
-  } catch (error) {
-    toast.error("Server error: ", error);
-  }
+  const user = await httpGet(apiUrl + "user");
+  if (user.error) return null;
+  return user;
 };
 
 export const login = async (email, password) => {
-  try {
-    const response = await fetch(`${config.apiUrl}login`, {
-      method: "POST",
-      body: JSON.stringify({
-        email: email.trim().toLowerCase(),
-        password: password.trim()
-      }),
-      mode: "cors",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
-    const user = await response.json();
-    if (response.status !== 200) {
-      toast.error(user.message);
-      return null;
-    }
-    return user;
-  } catch (error) {
-    toast.error("network error: ", error);
-  }
+  const user = await httpPost(
+    apiUrl + "login",
+    JSON.stringify({
+      email: email.trim().toLowerCase(),
+      password: password.trim()
+    })
+  );
+  return user;
 };
 
 export const register = async (email, password) => {
-  try {
-    const response = await fetch(`${config.apiUrl}register`, {
-      method: "POST",
-      body: JSON.stringify({
-        email: email.trim().toLowerCase(),
-        password: password.trim()
-      }),
-      mode: "cors",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
-    const user = await response.json();
-    if (response.status !== 200) {
-      toast.error(user.message);
-      return null;
-    }
-    return user;
-  } catch (error) {
-    toast.error("network error: ", error);
-  }
+  const user = await httpPost(
+    apiUrl + "register",
+    JSON.stringify({
+      email: email.trim().toLowerCase(),
+      password: password.trim()
+    })
+  );
+
+  return user;
 };

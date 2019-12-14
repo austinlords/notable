@@ -10,8 +10,11 @@ const NavBar = () => {
       {value => {
         async function handleLogout(e) {
           try {
-            const status = await logout();
-            if (status === 200) value.updateUser(null);
+            const message = await logout();
+            value.updateUser(null);
+            toast.success(message, {
+              position: toast.POSITION.BOTTOM_RIGHT
+            });
           } catch (error) {
             return toast.error(error);
           }

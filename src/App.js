@@ -24,6 +24,7 @@ class App extends Component {
   async componentDidMount() {
     try {
       const user = await validateUser();
+      if (!user) console.log("User not logged in");
       this.setState({ user, receivedAsyncData: true });
     } catch (error) {
       console.log(error);
