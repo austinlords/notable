@@ -18,6 +18,7 @@ import {
 import { DEMONOTES } from "../services/demoNotesService";
 import { DEMOCOLLECTIONS } from "../services/demoCollectionsService";
 import "../css/notes.css";
+import LoadingScreen from "./LoadingScreen";
 
 class Notes extends Component {
   constructor(props) {
@@ -309,7 +310,7 @@ class Notes extends Component {
       title
     } = this.state;
 
-    if (!allNotes || !collections) return <div></div>;
+    if (!allNotes || !collections) return <LoadingScreen />;
 
     return (
       <div className="app-page">

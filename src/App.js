@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
+import LoadingScreen from "./components/LoadingScreen";
 import { ToastContainer } from "react-toastify";
 import { toast } from "react-toastify";
 import NavBar from "./components/NavBar";
@@ -39,7 +40,7 @@ class App extends Component {
   };
 
   render() {
-    if (!this.state.receivedAsyncData) return <div>loading...</div>;
+    if (!this.state.receivedAsyncData) return <LoadingScreen />;
 
     return (
       <React.Fragment>
