@@ -337,7 +337,7 @@ const CollectionFilter = ({
           />
         ) : (
           collections.map(c => (
-            <div className="form-check" key={c._id}>
+            <div className="form-check" key={c._id} style={{}}>
               <label className="form-check-label">
                 <input
                   className="form-check-input"
@@ -347,7 +347,16 @@ const CollectionFilter = ({
                   checked={collectionFilter === c.name}
                   onChange={e => handleRadioSelect(e)}
                 />
-                {truncate(c.name, 18)}
+                <div
+                  style={{
+                    textShadow: `1px 0px #000, 0px 1px #000, -1px 0px #000, 0px -1px #000, 0px 0px 5px ${c.color}, 0px 0px 3px #FFF`,
+                    color: c.color,
+                    fontWeight: 600,
+                    fontSize: "15px"
+                  }}
+                >
+                  {truncate(c.name, 18)}
+                </div>
               </label>
             </div>
           ))

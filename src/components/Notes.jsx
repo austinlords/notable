@@ -47,7 +47,7 @@ class Notes extends Component {
         NOTES = await getNotes();
         COLLECTIONS = await getCollections();
       } catch (err) {
-        console.log(err);
+        toast.error(err.message);
         this.props.updateUser(null);
         NOTES = DEMONOTES;
         COLLECTIONS = DEMOCOLLECTIONS;
@@ -150,7 +150,7 @@ class Notes extends Component {
     if (this.props.user) {
       newCollection.user = this.props.user.email;
 
-      // all sync stuff
+      // all async stuff
       try {
         // DELETE COLLECTION
         if (action === "delete") {
@@ -162,7 +162,7 @@ class Notes extends Component {
         if (action === "edit") {
           newCollection = await putCollection(newCollection);
           if (!newCollection)
-            throw new Error("Error updated collection. Try again");
+            throw new Error("Error updating collection. Try again");
         }
 
         // PUT NOTES
@@ -245,6 +245,7 @@ class Notes extends Component {
           newCollection = await postCollection(newNote.collection);
           if (!newCollection)
             throw new Error("New collection not saved. Try again.");
+          newNote.collection = newCollection;
         }
         // PUT Note
         if (existingIndex !== -1) {
@@ -286,7 +287,7 @@ class Notes extends Component {
         if (!deleteSuccess)
           throw new Error("Could not delete note. Try again.");
       } catch (error) {
-        toast.error(error.message);
+        return toast.error(error.message);
       }
     }
     this.setState({

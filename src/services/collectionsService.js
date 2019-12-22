@@ -7,12 +7,17 @@ import {
 } from "../services/httpService";
 
 export async function getCollections() {
-  const collections = await httpGet(apiUrl + "collections");
-  return collections;
+  const response = await httpGet(apiUrl + "collections");
+
+  if (response.error) {
+    throw new Error(response.message);
+  }
+
+  return response;
 }
 
 export async function postCollection(collection) {
-  const updatedCollection = await httpPost(
+  const response = await httpPost(
     apiUrl + "collections",
     JSON.stringify({
       name: collection.name,
@@ -21,11 +26,15 @@ export async function postCollection(collection) {
     })
   );
 
-  return updatedCollection;
+  if (response.error) {
+    throw new Error(response.message);
+  }
+
+  return response;
 }
 
 export async function putCollection(collection) {
-  const updatedCollection = await httpPut(
+  const response = await httpPut(
     apiUrl + "collections/" + collection._id,
     JSON.stringify({
       name: collection.name,
@@ -34,11 +43,19 @@ export async function putCollection(collection) {
     })
   );
 
-  return updatedCollection;
+  if (response.error) {
+    throw new Error(response.message);
+  }
+
+  return response;
 }
 
 export async function deleteCollection(id) {
-  const deletedCollection = await httpDelete(apiUrl + "collections/" + id);
+  const response = await httpDelete(apiUrl + "collections/" + id);
 
-  return deletedCollection._id;
+  if (response.error) {
+    throw new Error(response.message);
+  }
+
+  return response._id;
 }

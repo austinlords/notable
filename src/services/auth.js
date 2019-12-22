@@ -8,24 +8,29 @@ export const logout = async () => {
 };
 
 export const validateUser = async () => {
-  const user = await httpGet(apiUrl + "user");
-  if (user.error) return null;
-  return user;
+  const response = await httpGet(apiUrl + "user");
+  if (response.error) return null;
+  return response;
 };
 
 export const login = async (email, password) => {
-  const user = await httpPost(
+  const response = await httpPost(
     apiUrl + "login",
     JSON.stringify({
       email: email.trim().toLowerCase(),
       password: password.trim()
     })
   );
-  return user;
+
+  if (response.error) {
+    throw new Error(response.message);
+  }
+
+  return response;
 };
 
 export const register = async (email, password) => {
-  const user = await httpPost(
+  const response = await httpPost(
     apiUrl + "register",
     JSON.stringify({
       email: email.trim().toLowerCase(),
@@ -33,5 +38,9 @@ export const register = async (email, password) => {
     })
   );
 
-  return user;
+  if (response.error) {
+    throw new Error(response.message);
+  }
+
+  return response;
 };

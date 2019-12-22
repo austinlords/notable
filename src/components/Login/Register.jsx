@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { toast } from "react-toastify";
 import { register } from "../../services/auth";
-
 import "./login.css";
 
 const Register = ({ user, updateUser }) => {
@@ -17,7 +16,7 @@ const Register = ({ user, updateUser }) => {
         updateUser(newUser);
       }
     } catch (error) {
-      toast.error(error);
+      toast.error(error.message);
     }
   };
 

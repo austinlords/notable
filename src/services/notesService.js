@@ -7,17 +7,21 @@ import {
 } from "../services/httpService";
 
 async function getNotes() {
-  const notes = await httpGet(apiUrl + "notes");
+  const response = await httpGet(apiUrl + "notes");
 
-  notes.forEach(n => {
+  if (response.error) {
+    throw new Error(response.message);
+  }
+
+  response.forEach(n => {
     n.collection = n.col;
     delete n.col;
   });
-  return notes;
+  return response;
 }
 
 async function postNote(note) {
-  const updatedNote = await httpPost(
+  const response = await httpPost(
     apiUrl + "notes",
     JSON.stringify({
       title: note.title,
@@ -28,14 +32,18 @@ async function postNote(note) {
     })
   );
 
-  updatedNote.collection = updatedNote.col;
-  delete updatedNote.col;
+  if (response.error) {
+    throw new Error(response.message);
+  }
 
-  return updatedNote;
+  response.collection = response.col;
+  delete response.col;
+
+  return response;
 }
 
 async function putNote(note) {
-  const updatedNote = await httpPut(
+  const response = await httpPut(
     apiUrl + "notes/" + note._id,
     JSON.stringify({
       title: note.title,
@@ -46,16 +54,24 @@ async function putNote(note) {
     })
   );
 
-  updatedNote.collection = updatedNote.col;
-  delete updatedNote.col;
+  if (response.error) {
+    throw new Error(response.message);
+  }
 
-  return updatedNote;
+  response.collection = response.col;
+  delete response.col;
+
+  return response;
 }
 
 async function deleteNote(id) {
-  const deletedNote = await httpDelete(apiUrl + "notes/" + id);
+  const response = await httpDelete(apiUrl + "notes/" + id);
 
-  return deletedNote._id;
+  if (response.error) {
+    throw new Error(response.message);
+  }
+
+  return response._id;
 }
 
 export { getNotes, putNote, postNote, deleteNote };

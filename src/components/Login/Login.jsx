@@ -16,7 +16,7 @@ const Login = ({ user, updateUser }) => {
         updateUser(newUser);
       }
     } catch (error) {
-      toast.error(error);
+      toast.error(error.message);
     }
   };
 

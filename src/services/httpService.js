@@ -9,14 +9,18 @@ export const httpGet = async urlPath => {
       credentials: "include"
     });
 
-    if (!response.ok)
-      throw new Error("Error: GET request failed on path " + urlPath);
+    const resBody = await response.json();
+
+    if (!response.ok) {
+      throw new Error(resBody.message);
+    }
 
     localStorage.setItem("notable-token", response.headers.get("x-auth"));
 
-    return await response.json();
+    return resBody;
   } catch (error) {
     console.log(error);
+    return { message: error.message, error: true };
   }
 };
 
@@ -32,14 +36,18 @@ export const httpPost = async (urlPath, body) => {
       body
     });
 
-    if (!response.ok)
-      throw new Error("Error: POST request failed on path " + urlPath);
+    let resBody = await response.json();
+
+    if (!response.ok) {
+      throw new Error(resBody.message);
+    }
 
     localStorage.setItem("notable-token", response.headers.get("x-auth"));
 
-    return await response.json();
+    return resBody;
   } catch (error) {
     console.log(error);
+    return { message: error.message, error: true };
   }
 };
 
@@ -55,14 +63,18 @@ export const httpPut = async (urlPath, body) => {
       body
     });
 
-    if (!response.ok)
-      throw new Error("Error: PUT request failed on path " + urlPath);
+    const resBody = await response.json();
+
+    if (!response.ok) {
+      throw new Error(resBody.message);
+    }
 
     localStorage.setItem("notable-token", response.headers.get("x-auth"));
 
-    return await response.json();
+    return resBody;
   } catch (error) {
     console.log(error);
+    return { message: error.message, error: true };
   }
 };
 
@@ -77,13 +89,17 @@ export const httpDelete = async urlPath => {
       credentials: "include"
     });
 
-    if (!response.ok)
-      throw new Error("Error: DELETE request failed on path " + urlPath);
+    const resBody = await response.json();
+
+    if (!response.ok) {
+      throw new Error(resBody.message);
+    }
 
     localStorage.setItem("notable-token", response.headers.get("x-auth"));
 
-    return await response.json();
+    return resBody;
   } catch (error) {
     console.log(error);
+    return { message: error.message, error: true };
   }
 };

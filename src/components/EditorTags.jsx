@@ -40,6 +40,9 @@ class EditorTags extends Component {
     // don't allow duplicate tags
     if (note.tags.includes(newTag)) return;
 
+    // do not directly modify this.props.selectedNote.tags with push method
+    note.tags = [...note.tags];
+
     note.tags.push(newTag);
     this.props.save(note);
     this.setState({ newTag: "" });

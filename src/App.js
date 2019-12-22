@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import NavBar from "./components/NavBar";
 import Notes from "./components/Notes";
 import Login from "./components/Login/Login";
@@ -27,7 +28,9 @@ class App extends Component {
       if (!user) console.log("User not logged in");
       this.setState({ user, receivedAsyncData: true });
     } catch (error) {
+      toast.error("Unexpected error: please try refreshing the page.");
       console.log(error);
+      this.setState({ receivedAsyncData: true });
     }
   }
 
