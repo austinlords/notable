@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import NotesPreview from "./NotesPreview";
-import NotesFilter from "./NotesFilter";
+import Preview from "./Preview";
+import Filter from "./Filter";
 import styles from "./sidebar.module.css";
 
 class SideBar extends Component {
@@ -97,8 +97,7 @@ class SideBar extends Component {
       selectedNote,
       onSearch,
       onClear,
-      collections,
-      updateCollections
+      collections
     } = this.props;
 
     let tags = [];
@@ -111,19 +110,16 @@ class SideBar extends Component {
 
     return (
       <div className={styles.wholeSidebar}>
-        <NotesFilter
+        <Filter
           handleDropdownClick={this.handleDropdownClick}
           handleRadioSelect={this.handleRadioSelect}
           handleCheckboxSelect={this.handleCheckboxSelect}
           collectionFilter={this.state.collectionFilter}
           tagsFilter={this.state.tagsFilter}
-          collections={collections}
           tags={tags}
           key={collections.length}
-          updateCollections={updateCollections}
-          allNotes={allNotes}
         />
-        <NotesPreview
+        <Preview
           allNotes={allNotes}
           selectedNote={selectedNote}
           searchQuery={searchQuery}

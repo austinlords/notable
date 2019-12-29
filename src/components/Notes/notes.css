@@ -197,3 +197,35 @@
 .list-group-item-action:hover {
   z-index: auto !important;
 }
+
+#filterSection {
+  display: grid;
+  grid-template-rows: 40px 60px 200px auto;
+  overflow: auto;
+  padding: 15px 5px;
+  height: 100%;
+  width: 100%;
+}
+
+#tags-filter {
+  overflow: auto;
+}
+
+.collection-tag-style {
+  margin-top: 10px;
+  color: white;
+}
+
+.dropdown-title {
+  display: grid;
+  grid-template-columns: 15px auto;
+  width: 100%;
+  align-items: baseline;
+}
+
+#collections {
+  margin-left: 10px;
+  font-size: 14px;
+  height: 85%;
+  overflow: auto;
+}

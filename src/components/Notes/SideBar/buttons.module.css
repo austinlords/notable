@@ -1,0 +1,24 @@
+.buttonsDiv {
+  height: 100%;
+  width: 100%;
+  color: white;
+  display: flex;
+  align-items: flex-end;
+  padding: 0 10px;
+  justify-content: space-around;
+}
+
+.indButtons {
+  height: 25px;
+  font-size: 11px !important;
+  padding: 2px 5px !important;
+}
+
+#popoverInput {
+  font-size: 0.9rem;
+  margin-top: 10px;
+  line-height: 1;
+  padding: 0px 0.75rem;
+  width: 150px;
+  height: calc(2rem + 2px);
+}
