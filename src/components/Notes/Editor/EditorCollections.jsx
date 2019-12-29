@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { convertToRaw } from "draft-js";
 import { UncontrolledPopover, PopoverBody, PopoverHeader } from "reactstrap";
-import CollectionPreview from "./common/CollectionPreview";
-import randomColor from "./../utils/randomColor";
+import CollectionPreview from "../../common/CollectionPreview";
+import randomColor from "../../../utils/randomColor";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinusCircle } from "@fortawesome/free-solid-svg-icons";
 

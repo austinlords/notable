@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import moment from "moment";
-import TagsPreview from "./common/TagsPreview";
-import config from "../config";
-import truncate from "../utils/truncate";
+import TagsPreview from "../../common/TagsPreview";
+import config from "../../../config";
+import truncate from "../../../utils/truncate";
 
 class NotesPreview extends Component {
   constructor(props) {

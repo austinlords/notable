@@ -14,9 +14,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import { Popover, OverlayTrigger } from "react-bootstrap";
-import AppContext from "../context/AppContext";
-import randomColor from "./../utils/randomColor";
-import truncate from "./../utils/truncate";
+import AppContext from "../../../context/AppContext.js";
+import randomColor from "../../../utils/randomColor";
+import truncate from "../../../utils/truncate";
 
 class NotesFilter extends Component {
   state = {

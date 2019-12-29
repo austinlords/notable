@@ -1,0 +1,11 @@
+.white {
+  color: white;
+}
+
+.wholeSidebar {
+  display: grid;
+  grid-template-columns: 200px auto;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}

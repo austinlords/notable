@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import NotesPreview from "./NotesPreview";
 import NotesFilter from "./NotesFilter";
+import styles from "./sidebar.module.css";
 
 class SideBar extends Component {
   constructor(props) {
@@ -15,14 +16,6 @@ class SideBar extends Component {
     this.handleRadioSelect = this.handleRadioSelect.bind(this);
     this.handleDropdownClick = this.handleDropdownClick.bind(this);
   }
-
-  sidebarStyle = {
-    display: "grid",
-    gridTemplateColumns: "200px auto",
-    margin: 0,
-    width: "100%",
-    height: "100%"
-  };
 
   handleDropdownClick(e) {
     const dataTarget = e.currentTarget.getAttribute("data-target");
@@ -117,7 +110,7 @@ class SideBar extends Component {
     }
 
     return (
-      <div style={this.sidebarStyle}>
+      <div className={styles.wholeSidebar}>
         <NotesFilter
           handleDropdownClick={this.handleDropdownClick}
           handleRadioSelect={this.handleRadioSelect}

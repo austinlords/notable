@@ -3,7 +3,7 @@ import { convertToRaw } from "draft-js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinusCircle } from "@fortawesome/free-solid-svg-icons";
 import { UncontrolledPopover, PopoverBody, PopoverHeader } from "reactstrap";
-import TagsPreview from "./common/TagsPreview";
+import TagsPreview from "../../common/TagsPreview";
 
 class EditorTags extends Component {
   state = { tagsPopoverOpen: false, newTag: "" };

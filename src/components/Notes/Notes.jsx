@@ -1,24 +1,25 @@
 import React, { Component } from "react";
 import { toast } from "react-toastify";
-import DraftEditor from "./DraftEditor";
+import DraftEditor from "./Editor/DraftEditor";
 import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
-import SideBar from "./SideBar";
+import SideBar from "./SideBar/SideBar";
 import {
   getNotes,
   putNote,
   postNote,
   deleteNote
-} from "../services/notesService";
+} from "../../services/notesService";
 import {
   getCollections,
   putCollection,
   postCollection,
   deleteCollection
-} from "../services/collectionsService";
-import { DEMONOTES } from "../services/demoNotesService";
-import { DEMOCOLLECTIONS } from "../services/demoCollectionsService";
-import "../css/notes.css";
-import LoadingScreen from "./LoadingScreen";
+} from "../../services/collectionsService";
+import { DEMONOTES } from "../../services/demoNotesService";
+import { DEMOCOLLECTIONS } from "../../services/demoCollectionsService";
+import "./notes.css";
+import LoadingScreen from "../common/LoadingScreen";
+import NotesContext from "../../context/NotesContext";
 
 class Notes extends Component {
   constructor(props) {
@@ -312,30 +313,45 @@ class Notes extends Component {
 
     if (!allNotes || !collections) return <LoadingScreen />;
 
+    const context = Object.assign(
+      {},
+      this.state,
+      { handleClear: this.handleClear },
+      { handleDelete: this.handleDelete },
+      { handleSearch: this.handleSearch },
+      { updateCollections: this.updateCollections },
+      { updateSelectedNote: this.updateSelectedNote },
+      { onEditorChange: this.onEditorChange },
+      { save: this.save }
+    );
+
+    console.log("Notes context: ", context);
+
     return (
-      <div className="app-page">
-        <SideBar
-          editorState={editorState}
-          allNotes={allNotes}
-          onSearch={this.handleSearch}
-          searchQuery={searchQuery}
-          onClear={this.handleClear}
-          collections={collections}
-          selectedNote={selectedNote}
-          updateCollections={this.updateCollections}
-        />
-        <DraftEditor
-          onEditorChange={this.onEditorChange}
-          handleTitle={this.handleTitle}
-          title={title}
-          save={this.save}
-          handleDelete={this.handleDelete}
-          updateSelectedNote={this.updateSelectedNote}
-          collections={collections}
-          editorState={editorState}
-          selectedNote={selectedNote}
-        />
-      </div>
+      <NotesContext.Provider value={context}>
+        <div className="app-page">
+          <SideBar
+            editorState={editorState}
+            allNotes={allNotes}
+            onSearch={this.handleSearch}
+            searchQuery={searchQuery}
+            onClear={this.handleClear}
+            collections={collections}
+            selectedNote={selectedNote}
+            updateCollections={this.updateCollections}
+          />
+          <DraftEditor
+            onEditorChange={this.onEditorChange}
+            title={title}
+            save={this.save}
+            handleDelete={this.handleDelete}
+            updateSelectedNote={this.updateSelectedNote}
+            collections={collections}
+            editorState={editorState}
+            selectedNote={selectedNote}
+          />
+        </div>
+      </NotesContext.Provider>
     );
   }
 }

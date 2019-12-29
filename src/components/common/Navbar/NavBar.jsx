@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import { logout } from "../services/auth";
+import { logout } from "../../../services/auth";
 import { toast } from "react-toastify";
-import AppContext from "../context/AppContext";
+import AppContext from "../../../context/AppContext";
 
 const NavBar = () => {
   const app = useContext(AppContext);
