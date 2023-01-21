@@ -2,7 +2,7 @@
 
 This was the largest project I ever completed before landing my first software developer job! 
 
-*Update 2023: No updates has been made on the project since early 2020. Recently, Heroku shut down and deleted the back-end (lack of use), but you can still view the front-end!*
+*Update January 2023: No updates has been made on the project since 2019. Recently, Heroku shut down and deleted the back-end (lack of use), but you can still view the front-end!*
 
 ---
 
